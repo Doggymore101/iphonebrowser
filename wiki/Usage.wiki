@@ -4,7 +4,7 @@
 = Introduction =
 
 iPhoneBrowser is a windows based file browser for your iPhone.  It features drag and drop uploading to our phone, automatic and manual backups of files on your phone, previews of text and picture files and very cool icons.
-
+http://iphonebrowser.googlecode.com/files/Screenshot2.png
 
 = Usage =
 To use, plug in your iPhone and run iPhoneBrowser.  The screen should show up with a listing of your folders on the left.  Once a folder is selected, the files show up on the upper right.  Select a file to see the contents in the lower right.  Right-click a file to see a menu describing your different options, Save As, Backup File, Restore File (not yet implemented), Replace File and Delete File.  You can also drag and drop files into the file window to upload them to that folder.
