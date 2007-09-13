@@ -1,0 +1,14 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ReferencePath>C:\Documents and Settings\Pete\My Documents\Visual Studio 2005\Projects\Manzana\trunk\Manzana\bin\Release\</ReferencePath>
+    <PublishUrlHistory>publish/|ftp://ftp.ccandcs.com/public_html/Apps/iPhoneBrowser/|ftp://ftp.ccandcs.com/www/temp/|/publish/|https://iphonebrowser.googlecode.com/svn/trunk/</PublishUrlHistory>
+    <InstallUrlHistory>http://ccandcs.com/Apps/iPhoneBrowser/</InstallUrlHistory>
+    <SupportUrlHistory>http://code.google.com/p/iphonebrowser/wiki/Usage</SupportUrlHistory>
+    <UpdateUrlHistory>http://ccandcs.com/Apps/iPhoneBrowser/</UpdateUrlHistory>
+    <BootstrapperUrlHistory>
+    </BootstrapperUrlHistory>
+    <ApplicationRevision>4</ApplicationRevision>
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
+</Project>
