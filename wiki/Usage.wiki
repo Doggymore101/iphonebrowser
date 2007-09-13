@@ -16,10 +16,10 @@ Make sure you have at least V7.3.1 of iTunes installed.  If you still get errors
 You can use it with or without jailbreaking your phone, but if you don't jailbreak, you won't get very far! A locked iPhone basically has a small area of folders called a sandbox to work with.  Go here to find out about jailbreaking your phone: http://www.modmyiphone.com/wiki/index.php/Main_Page
 
 == Automatic Preview ==
-If the file you selected is a text-based file, the text of the file will automatically be shown in the lower right preview area.  Sometimes special characters are not shown properly, but it gives you an idea of what data is in the file.  If you select a picture file, that preview is automatically loaded in the same area.  The Apple formatted PNG files do not currently show in the preview. 
+If the file you selected is a text-based file, the text of the file will automatically be shown in the lower right preview area.  Sometimes special characters are not shown properly, but it gives you an idea of what data is in the file.  If you select a picture file, that preview is automatically loaded in the same area.  The Apple formatted PNG files do not currently show in the preview. Selecting audio files will play audio. Files are only previewed if < 10MB.
 
 == Drag and Drop ==
-You can drag and drop files into the file window to upload them to the selected folder  in the tree on the left.  You can drop multiple files or folders as well.  If there is an existing file with the same name in the directory, it will be overwritten on your phone, but a backup copy is made automatically first.
+You can drag and drop files into the file window to upload them to the selected folder in the tree on the left.  You can drop multiple files or folders as well.  If there is an existing file with the same name in the directory, it will be overwritten on your phone, but a backup copy is made automatically first.
 
 == Save As ==
 This menu item will prompt you to save the file in a location of your choosing.  The file is downloaded off of your phone and stored with whatever filename and location you choose.  
@@ -44,4 +44,3 @@ Select View Backups to open a windows explorer window of the folder where backup
 
 = Props =
 Thanks to the Manzana.dll folks (http://code.google.com/p/manzana/) for building a dll.  I simply built a GUI around it.
-
