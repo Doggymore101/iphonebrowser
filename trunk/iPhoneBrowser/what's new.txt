@@ -1,3 +1,7 @@
+v1.31	9/14/2007	Pete Wilson
+- Correct major bug when drag/drop multiple directories
+
+
 v1.3	9/13/2007	Pete Wilson
 - Fixed Audio Preview of second file, Fixed minimize/resize of window
 - improved image preview to shrink if too large
