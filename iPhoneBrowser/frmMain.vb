@@ -468,8 +468,6 @@ Public Class frmMain
                 copyToPhone(dirpath, dPath)
             Next
 
-            selectSpecificPath(destinationOnPhone) ' fix up tree view
-
             bReturn = True
         End If
 
@@ -715,18 +713,21 @@ ErrorHandler:
 
     Private Sub lstFiles_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lstFiles.DragDrop
         Dim sFiles() As String
-        Dim i As Integer
+        Dim i As Integer, initFolder As String
 
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             ' Assign the files to an array.
             sFiles = e.Data.GetData(DataFormats.FileDrop)
 
+            initFolder = getSelectedFolder()
             ' Loop through the array 
             For i = 0 To sFiles.Length - 1
                 'copy the file to the phone
-                copyToPhone(sFiles(i), getSelectedFolder)
+                copyToPhone(sFiles(i), initFolder)
             Next
             StatusNormal("")
+
+            selectSpecificPath(initFolder) ' fix up tree view
 
             'refresh the list view
             loadFiles()
