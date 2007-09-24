@@ -1,3 +1,10 @@
+v1.40	9/16/2007	Pete Wilson
+- Re-arranged locations and added new locations for Third-Party Applications and SummerBoard
+- File right-click menu handles multiple selections
+- Add option for delete confirmation
+- Handles deletion of multiple files and folders with contents - all backed up
+- Preview iPhone PNGs
+
 v1.31	9/14/2007	Pete Wilson
 - Correct major bug when drag/drop multiple directories
 
