@@ -3,7 +3,9 @@ v1.40	9/16/2007	Pete Wilson
 - File right-click menu handles multiple selections
 - Add option for delete confirmation
 - Handles deletion of multiple files and folders with contents - all backed up
-- Preview iPhone PNGs
+- Preview iPhone PNGs and convert to/from iPhone PNGs
+- NOTE: conversion does not recompute CRCs or compute correct Zlib checksums
+- NOTE: conversion does not remote premultiplied alpha if present
 
 v1.31	9/14/2007	Pete Wilson
 - Correct major bug when drag/drop multiple directories

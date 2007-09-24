@@ -5,7 +5,10 @@ Partial Class frmMain
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        My.Settings.ConfirmDeletions = ConfirmDeletionsToolStripMenuItem.Checked
+        With My.Settings
+            .ConfirmDeletions = ConfirmDeletionsToolStripMenuItem.Checked
+            .ConvertPNGs = bConvertPNGs
+        End With
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
         End If
@@ -38,6 +41,10 @@ Partial Class frmMain
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConfirmDeletionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConvertPNGsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.PictureBackgroundToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.BlackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.GrayToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.WhiteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItemView = New System.Windows.Forms.ToolStripDropDownButton
         Me.ToolStripMenuItemDetails = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItemLargeIcons = New System.Windows.Forms.ToolStripMenuItem
@@ -238,7 +245,7 @@ Partial Class frmMain
         '
         'OptionsToolStripMenuItem
         '
-        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfirmDeletionsToolStripMenuItem, Me.ConvertPNGsToolStripMenuItem})
+        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfirmDeletionsToolStripMenuItem, Me.ConvertPNGsToolStripMenuItem, Me.PictureBackgroundToolStripMenuItem})
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
         Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.OptionsToolStripMenuItem.Text = "&Options"
@@ -249,7 +256,7 @@ Partial Class frmMain
         Me.ConfirmDeletionsToolStripMenuItem.CheckOnClick = True
         Me.ConfirmDeletionsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ConfirmDeletionsToolStripMenuItem.Name = "ConfirmDeletionsToolStripMenuItem"
-        Me.ConfirmDeletionsToolStripMenuItem.Size = New System.Drawing.Size(169, 22)
+        Me.ConfirmDeletionsToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
         Me.ConfirmDeletionsToolStripMenuItem.Text = "Confirm Deletions"
         '
         'ConvertPNGsToolStripMenuItem
@@ -258,8 +265,36 @@ Partial Class frmMain
         Me.ConvertPNGsToolStripMenuItem.CheckOnClick = True
         Me.ConvertPNGsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ConvertPNGsToolStripMenuItem.Name = "ConvertPNGsToolStripMenuItem"
-        Me.ConvertPNGsToolStripMenuItem.Size = New System.Drawing.Size(169, 22)
+        Me.ConvertPNGsToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
         Me.ConvertPNGsToolStripMenuItem.Text = "Convert PNGs"
+        '
+        'PictureBackgroundToolStripMenuItem
+        '
+        Me.PictureBackgroundToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BlackToolStripMenuItem, Me.GrayToolStripMenuItem, Me.WhiteToolStripMenuItem})
+        Me.PictureBackgroundToolStripMenuItem.Name = "PictureBackgroundToolStripMenuItem"
+        Me.PictureBackgroundToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.PictureBackgroundToolStripMenuItem.Text = "Picture Background"
+        '
+        'BlackToolStripMenuItem
+        '
+        Me.BlackToolStripMenuItem.CheckOnClick = True
+        Me.BlackToolStripMenuItem.Name = "BlackToolStripMenuItem"
+        Me.BlackToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
+        Me.BlackToolStripMenuItem.Text = "Black"
+        '
+        'GrayToolStripMenuItem
+        '
+        Me.GrayToolStripMenuItem.CheckOnClick = True
+        Me.GrayToolStripMenuItem.Name = "GrayToolStripMenuItem"
+        Me.GrayToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.GrayToolStripMenuItem.Text = "Gray"
+        '
+        'WhiteToolStripMenuItem
+        '
+        Me.WhiteToolStripMenuItem.CheckOnClick = True
+        Me.WhiteToolStripMenuItem.Name = "WhiteToolStripMenuItem"
+        Me.WhiteToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
+        Me.WhiteToolStripMenuItem.Text = "White"
         '
         'ToolStripMenuItemView
         '
@@ -704,6 +739,7 @@ Partial Class frmMain
         '
         'picFileDetails
         '
+        Me.picFileDetails.BackColor = System.Drawing.SystemColors.Control
         Me.picFileDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.picFileDetails.ImageLocation = ""
         Me.picFileDetails.Location = New System.Drawing.Point(3, 16)
@@ -874,5 +910,9 @@ Partial Class frmMain
     Friend WithEvents WeDictDictionariesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ConvertPNGsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents folderBrowserDialog As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents PictureBackgroundToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents BlackToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents GrayToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents WhiteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

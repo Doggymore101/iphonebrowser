@@ -48,6 +48,9 @@ namespace SCW_iPhonePNG
             get {
                 return crc;
             }
+            set {
+                crc = value;
+            }
         }
 
         protected static UInt32 ReadUInt32BE(BinaryReader br) {
@@ -58,6 +61,10 @@ namespace SCW_iPhonePNG
         protected static void WriteUInt32BE(BinaryWriter bw, UInt32 ui) {
             Int32 w = IPAddress.HostToNetworkOrder((Int32)ui);
             bw.Write((UInt32)w);
+        }
+
+        public PNGChunk(string pSig) {
+            signature = ASCIIEncoding.ASCII.GetBytes(pSig);
         }
 
         public PNGChunk(BinaryReader br) {
@@ -167,11 +174,8 @@ namespace SCW_iPhonePNG
             return returnImage;
         }
 
-        public static List<PNGChunk> ReadPNGChunks(string fileName) {
+        public static List<PNGChunk> ReadPNG(BinaryReader br) {
             List<PNGChunk> chunks = new List<PNGChunk>();
-
-            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            BinaryReader br = new BinaryReader(fs);
 
             foreach (byte b in PNGSignature) {
                 byte testb = br.ReadByte();
@@ -186,20 +190,70 @@ namespace SCW_iPhonePNG
                 chunks.Add(c1);
             } while (c1.Signature != "IEND");
 
+            return chunks;
+        }
+
+        public static List<PNGChunk> ReadPNG(string fileName) {
+            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            BinaryReader br = new BinaryReader(fs);
+
+            List<PNGChunk> chunks = ReadPNG(br);
+
             br.Close();
             fs.Close();
 
             return chunks;
         }
 
+        public static void WritePNG(PNGChunk[] chunks, BinaryWriter bw) {
+            bw.Write(PNGSignature);
+            foreach (PNGChunk c in chunks) {
+                c.Write(bw);
+            }
+        }
+
         public static void Save(Image src, string dFile) {
-            if (src is Bitmap) {
+            if ((src is Bitmap) && (src.RawFormat.Guid == ImageFormat.Png.Guid)) {
                 Bitmap srcB = (Bitmap)src;
+
+                // TODO should we premultiply by alpha???
 
                 if (srcB.PixelFormat == PixelFormat.Format32bppArgb || srcB.PixelFormat == PixelFormat.Format24bppRgb)
                     SwapRandB(srcB, srcB.PixelFormat == PixelFormat.Format32bppArgb);
 
-                lots to do here!
+                MemoryStream ms = new MemoryStream();
+                srcB.Save(ms, ImageFormat.Png);
+                srcB.Save("debug.png", ImageFormat.Png);
+
+                ms.Seek(0, SeekOrigin.Begin);
+                BinaryReader br = new BinaryReader(ms);
+                List<PNGChunk> chunks = ReadPNG(br);
+                br.Close();
+                ms.Close();
+
+                // add the iPhone chunk
+                PNGChunk iPhoneChunk = new PNGChunk("CgBI");
+                iPhoneChunk.Data = new byte[] { 0x30, 0x0, 0x20, 0x06 }; // guess?
+                iPhoneChunk.CRC = 0x179e8065;
+                chunks.Insert(0, iPhoneChunk);
+
+                // fix IDAT chunks
+                foreach (PNGChunk c in chunks) {
+                    if (c.Signature == "IDAT") {
+                        byte[] orig = c.Data;
+                        byte[] newd = new byte[orig.Length - 6];
+                        Array.Copy(orig, 2, newd, 0, orig.Length - 6); // drop zlib header/checksum
+                        c.Data = newd;
+                    }
+                }
+
+                FileStream fs = new FileStream(dFile, FileMode.Create, FileAccess.Write);
+                BinaryWriter bw = new BinaryWriter(fs);
+
+                WritePNG(chunks.ToArray(), bw);
+
+                bw.Close();
+                fs.Close();
             }
             else
                 src.Save(dFile);
@@ -216,13 +270,13 @@ namespace SCW_iPhonePNG
             IntPtr ptr = bmpData.Scan0;
 
             // Declare an array to hold the bytes of the bitmap.
-            // This code is specific to a bitmap with 24 bits per pixels.
-            int bytes = newi.Width * newi.Height * 4;
+            // This code is specific to a bitmap with 32 bits per pixels.
+            int bytes = newi.Width * newi.Height * (hasAlpha ? 4 : 3);
             byte[] rgbValues = new byte[bytes];
 
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-            int skipFactor = hasAlpha ? 3 : 4;
+            int skipFactor = hasAlpha ? 4 : 3;
 
             // Swap the red & blue
                 for (int counter = 0; counter < rgbValues.Length; counter += skipFactor) {
@@ -244,7 +298,7 @@ namespace SCW_iPhonePNG
             List<PNGChunk> chunks = null;
 
             try {
-                chunks = ReadPNGChunks(fileName);
+                chunks = ReadPNG(fileName);
             }
             catch { // not a PNG file - let .Net handle it
                 IsPNG = false;
@@ -277,14 +331,16 @@ namespace SCW_iPhonePNG
 
                 MemoryStream stdPNG = new MemoryStream();
                 BinaryWriter bw = new BinaryWriter(stdPNG);
-                bw.Write(PNGSignature);
 
-                // skip chunk 0 - it was the Apple specific chunk
-                for (int i = 1; i < chunks.Count; ++i) {
-                    chunks[i].Write(bw);
-                }
+                // delete chunk 0 - it was the Apple specific chunk
+                chunks.RemoveAt(0);
+                WritePNG(chunks.ToArray(), bw);
 
+                stdPNG.Seek(0, SeekOrigin.Begin);
                 Bitmap newi = new Bitmap(stdPNG);
+
+                bw.Close();
+                stdPNG.Close();
 
                 // Swap the red & blue if color & 8 bpp
                 if (hdrChunk.HasColor && hdrChunk.BitDepth == 8) {
