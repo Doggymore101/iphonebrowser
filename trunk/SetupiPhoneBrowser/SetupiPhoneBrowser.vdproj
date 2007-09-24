@@ -51,6 +51,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_782B78397B6D44E2A4440EC3038F5B53"
+        "OwnerKey" = "8:_9579264826FE4FF6821B1CD0190F4A54"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9579264826FE4FF6821B1CD0190F4A54"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -83,6 +89,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_61AEF02CB6FFAD62C80DEFB57D427B56"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_782B78397B6D44E2A4440EC3038F5B53"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -326,6 +338,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_782B78397B6D44E2A4440EC3038F5B53"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SCW_iPhonePNG, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_782B78397B6D44E2A4440EC3038F5B53"
+                    {
+                    "Name" = "8:SCW_iPhonePNG.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:SCW_iPhonePNG.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_254997F48F3C4AB3A9D32B0C40755247"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CAC2BD1648B6F7312F1154252C1ECC49"
             {
             "SourcePath" = "8:QTOControl.dll"
@@ -443,14 +486,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:iPhoneBrowser"
-        "ProductCode" = "8:{069C356A-9767-40AB-93BD-9C1B777ED60A}"
-        "PackageCode" = "8:{BEA10C7A-96E8-44E2-BBA8-6DFCFA051F83}"
+        "ProductCode" = "8:{ABAA2247-78BF-456B-BBE4-64E0397A8977}"
+        "PackageCode" = "8:{5997A4E5-7907-409C-9E8C-3068CC1683C8}"
         "UpgradeCode" = "8:{7730D6E3-91A8-4099-8656-E1BC399407AC}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.4.0"
+        "ProductVersion" = "8:1.4.1"
         "Manufacturer" = "8:Cranium Consulting and Custom Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

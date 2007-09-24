@@ -1,4 +1,4 @@
-v1.40	9/16/2007	Pete Wilson
+v1.40	9/24/2007	Pete Wilson
 - Re-arranged locations and added new locations for Third-Party Applications and SummerBoard
 - File right-click menu handles multiple selections
 - Added option for delete confirmation
