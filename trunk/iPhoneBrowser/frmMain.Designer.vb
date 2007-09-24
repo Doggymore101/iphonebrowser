@@ -35,6 +35,8 @@ Partial Class frmMain
         Me.ToolStripMenuItemFile = New System.Windows.Forms.ToolStripDropDownButton
         Me.ToolStripMenuItemCleanUp = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItemViewBackups = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
+        Me.menuSaveSummerboardTheme = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
         Me.ToolStripMenuItemExit = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton
@@ -202,7 +204,7 @@ Partial Class frmMain
         'ToolStripMenuItemFile
         '
         Me.ToolStripMenuItemFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripMenuItemFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItemCleanUp, Me.ToolStripMenuItemViewBackups, Me.ToolStripSeparator3, Me.ToolStripMenuItemExit})
+        Me.ToolStripMenuItemFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItemCleanUp, Me.ToolStripMenuItemViewBackups, Me.ToolStripSeparator7, Me.menuSaveSummerboardTheme, Me.ToolStripSeparator3, Me.ToolStripMenuItemExit})
         Me.ToolStripMenuItemFile.Image = CType(resources.GetObject("ToolStripMenuItemFile.Image"), System.Drawing.Image)
         Me.ToolStripMenuItemFile.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile"
@@ -213,24 +215,35 @@ Partial Class frmMain
         '
         Me.ToolStripMenuItemCleanUp.Enabled = False
         Me.ToolStripMenuItemCleanUp.Name = "ToolStripMenuItemCleanUp"
-        Me.ToolStripMenuItemCleanUp.Size = New System.Drawing.Size(189, 22)
+        Me.ToolStripMenuItemCleanUp.Size = New System.Drawing.Size(213, 22)
         Me.ToolStripMenuItemCleanUp.Text = "&Clean Up Backup Files"
         '
         'ToolStripMenuItemViewBackups
         '
         Me.ToolStripMenuItemViewBackups.Name = "ToolStripMenuItemViewBackups"
-        Me.ToolStripMenuItemViewBackups.Size = New System.Drawing.Size(189, 22)
+        Me.ToolStripMenuItemViewBackups.Size = New System.Drawing.Size(213, 22)
         Me.ToolStripMenuItemViewBackups.Text = "&View Backup Files"
+        '
+        'ToolStripSeparator7
+        '
+        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(210, 6)
+        '
+        'menuSaveSummerboardTheme
+        '
+        Me.menuSaveSummerboardTheme.Name = "menuSaveSummerboardTheme"
+        Me.menuSaveSummerboardTheme.Size = New System.Drawing.Size(213, 22)
+        Me.menuSaveSummerboardTheme.Text = "&Save Summerboard Theme"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(186, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(210, 6)
         '
         'ToolStripMenuItemExit
         '
         Me.ToolStripMenuItemExit.Name = "ToolStripMenuItemExit"
-        Me.ToolStripMenuItemExit.Size = New System.Drawing.Size(189, 22)
+        Me.ToolStripMenuItemExit.Size = New System.Drawing.Size(213, 22)
         Me.ToolStripMenuItemExit.Text = "E&xit"
         '
         'ToolStripDropDownButton1
@@ -247,7 +260,7 @@ Partial Class frmMain
         '
         Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfirmDeletionsToolStripMenuItem, Me.ConvertPNGsToolStripMenuItem, Me.PictureBackgroundToolStripMenuItem})
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
-        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
         Me.OptionsToolStripMenuItem.Text = "&Options"
         '
         'ConfirmDeletionsToolStripMenuItem
@@ -286,7 +299,7 @@ Partial Class frmMain
         '
         Me.GrayToolStripMenuItem.CheckOnClick = True
         Me.GrayToolStripMenuItem.Name = "GrayToolStripMenuItem"
-        Me.GrayToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.GrayToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
         Me.GrayToolStripMenuItem.Text = "Gray"
         '
         'WhiteToolStripMenuItem
@@ -793,6 +806,7 @@ Partial Class frmMain
         '
         'folderBrowserDialog
         '
+        Me.folderBrowserDialog.Description = "Select the destination folder for saving"
         Me.folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer
         '
         'frmMain
@@ -914,5 +928,7 @@ Partial Class frmMain
     Friend WithEvents BlackToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents GrayToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents WhiteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents menuSaveSummerboardTheme As System.Windows.Forms.ToolStripMenuItem
 
 End Class

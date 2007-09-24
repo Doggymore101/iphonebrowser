@@ -223,7 +223,7 @@ namespace SCW_iPhonePNG
 
                 MemoryStream ms = new MemoryStream();
                 srcB.Save(ms, ImageFormat.Png);
-                srcB.Save("debug.png", ImageFormat.Png);
+                //srcB.Save("debug.png", ImageFormat.Png);
 
                 ms.Seek(0, SeekOrigin.Begin);
                 BinaryReader br = new BinaryReader(ms);

@@ -89,6 +89,18 @@ Namespace My
                 Me("ConvertPNGs") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property SummerboardPath() As String
+            Get
+                Return CType(Me("SummerboardPath"),String)
+            End Get
+            Set
+                Me("SummerboardPath") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -79,7 +79,12 @@ namespace DecodePNG
                 string fp = openFileDialog1.FileName;
                 Text = Path.GetFileName(fp) + " - DecodePNG";
 
-                DoDecodePNG(fp);
+                try {
+                    DoDecodePNG(fp);
+                }
+                catch {
+                    MessageBox.Show(fp + " is not a PNG file");
+                }
             }
         }
     }
