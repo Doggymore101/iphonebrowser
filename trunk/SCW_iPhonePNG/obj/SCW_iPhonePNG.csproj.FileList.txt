@@ -1,0 +1,10 @@
+obj\Debug\ResolveAssemblyReference.cache
+bin\Debug\SCW_iPhonePNG.dll
+bin\Debug\SCW_iPhonePNG.pdb
+obj\Debug\SCW_iPhonePNG.dll
+obj\Debug\SCW_iPhonePNG.pdb
+bin\Release\SCW_iPhonePNG.dll
+bin\Release\SCW_iPhonePNG.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\SCW_iPhonePNG.dll
+obj\Release\SCW_iPhonePNG.pdb

@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "iPhoneBrowser", "iPhoneBrowser\iPhoneBrowser.vbproj", "{2184372E-AFEE-4E2E-8AA9-8FF6385E9875}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupiPhoneBrowser", "SetupiPhoneBrowser\SetupiPhoneBrowser.vdproj", "{16BC3B13-A5A3-4CDC-84DB-5E1552FAE27B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayApplePNG", "DisplayApplePNG\DisplayApplePNG.csproj", "{C1E22B86-7BD7-4D66-BACE-4A7B1324C040}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecodePNG", "DecodePNG\DecodePNG.csproj", "{EE52D150-51CF-4967-BEC2-80C46D499256}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayApplePNG", "DisplayApplePNG\DisplayApplePNG.csproj", "{C1E22B86-7BD7-4D66-BACE-4A7B1324C040}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCW_iPhonePNG", "SCW_iPhonePNG\SCW_iPhonePNG.csproj", "{E85E88FC-5B38-424F-AA49-19CAF50F65F7}"
 EndProject
@@ -17,20 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2184372E-AFEE-4E2E-8AA9-8FF6385E9875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2184372E-AFEE-4E2E-8AA9-8FF6385E9875}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2184372E-AFEE-4E2E-8AA9-8FF6385E9875}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2184372E-AFEE-4E2E-8AA9-8FF6385E9875}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16BC3B13-A5A3-4CDC-84DB-5E1552FAE27B}.Debug|Any CPU.ActiveCfg = Debug
-		{16BC3B13-A5A3-4CDC-84DB-5E1552FAE27B}.Release|Any CPU.ActiveCfg = Release
-		{EE52D150-51CF-4967-BEC2-80C46D499256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE52D150-51CF-4967-BEC2-80C46D499256}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE52D150-51CF-4967-BEC2-80C46D499256}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE52D150-51CF-4967-BEC2-80C46D499256}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C1E22B86-7BD7-4D66-BACE-4A7B1324C040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1E22B86-7BD7-4D66-BACE-4A7B1324C040}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1E22B86-7BD7-4D66-BACE-4A7B1324C040}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1E22B86-7BD7-4D66-BACE-4A7B1324C040}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE52D150-51CF-4967-BEC2-80C46D499256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE52D150-51CF-4967-BEC2-80C46D499256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE52D150-51CF-4967-BEC2-80C46D499256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE52D150-51CF-4967-BEC2-80C46D499256}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E85E88FC-5B38-424F-AA49-19CAF50F65F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E85E88FC-5B38-424F-AA49-19CAF50F65F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E85E88FC-5B38-424F-AA49-19CAF50F65F7}.Release|Any CPU.ActiveCfg = Release|Any CPU

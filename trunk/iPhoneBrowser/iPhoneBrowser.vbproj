@@ -95,6 +95,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMain.resx">
@@ -130,6 +131,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="what%27s new.txt" />
+    <None Include="app.config" />
     <None Include="Resources\warning.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +143,12 @@
       <WrapperTool>aximp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SCW_iPhonePNG\SCW_iPhonePNG.csproj">
+      <Project>{E85E88FC-5B38-424F-AA49-19CAF50F65F7}</Project>
+      <Name>SCW_iPhonePNG</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
