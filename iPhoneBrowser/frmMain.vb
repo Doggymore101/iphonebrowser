@@ -323,24 +323,24 @@ Public Class frmMain
     Private Sub addFolders(ByVal sPath As String, ByRef selectedNode As TreeNode, Optional ByVal iDepth As Integer = 0)
         'This function is recursive to add all of the folders to the tree view
         ' you give it one folder and it will continue to drill down and add folders
-        Dim sFolder() As String, iFolder As Integer, newNode As TreeNode ', origNode As TreeNode
+        Dim sFolders() As String, newNode As TreeNode ', origNode As TreeNode
         Dim showStatus As Boolean
 
         'save the orignal node so we can move back to it
         'origNode = trvFolders.SelectedNode
 
         'get the data from the phone
-        sFolder = iPhoneInterface.GetDirectories(sPath)
+        sFolders = iPhoneInterface.GetDirectories(sPath)
 
         If Not tlbProgressBar.Visible Then ' update user
-            startStatus(sFolder.Length)
+            startStatus(sFolders.Length)
             showStatus = True
         End If
 
-        For iFolder = 0 To sFolder.Length - 1
+        For Each sFolder As String In sFolders
             'create the new node
-            newNode = New TreeNode(sFolder(iFolder))
-            newNode.Name = sPath & "/" & sFolder(iFolder)
+            newNode = New TreeNode(sFolder)
+            newNode.Name = sPath & "/" & sFolder
             newNode.ContextMenuStrip = menuRightClickFolders
 
             'Debug.Print(newNode.Name)
@@ -350,7 +350,7 @@ Public Class frmMain
             'now make the recursive call on this folder
             If iDepth < 1 Then
                 'trvFolders.SelectedNode = newNode
-                addFolders(sPath & "/" & sFolder(iFolder), newNode, iDepth + 1)
+                addFolders(sPath & "/" & sFolder, newNode, iDepth + 1)
                 'now go back to our original node
                 'trvFolders.SelectedNode = origNode
             End If
@@ -364,6 +364,22 @@ Public Class frmMain
             endStatus()
         End If
     End Sub
+
+    Private Function CopyFromPhoneMakePNG(ByVal sPhone As String, ByVal dComputer As String)
+        Dim tmpOnPC As String = getTempFilename(sPhone)
+        Dim ans As Boolean = copyFromPhone(sPhone, tmpOnPC)
+        If ans Then
+            Try
+                Dim cvtImage As Image = iPhonePNG.ImageFromFile(tmpOnPC)
+                cvtImage.Save(dComputer, ImageFormat.Png)
+            Catch
+                ans = copyFromPhone(sPhone, dComputer)
+            End Try
+        End If
+
+        Return ans
+    End Function
+
     Private Function CopyFromPhonePNG(ByVal sPhone As String, ByVal dComputer As String, ByVal fixPNG As Boolean)
         If fixPNG And LCase(sPhone).EndsWith(".png") Then
             Dim tmpOnPC As String = getTempFilename(sPhone)
@@ -1171,6 +1187,47 @@ ErrorHandler:
             End Select
         Else
             picFileDetails.BackColor = PictureBox.DefaultBackColor
+        End If
+    End Sub
+
+    Private Sub menuSaveSummerboardTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menuSaveSummerboardTheme.Click
+        Dim dFolder As String, sSaveAsFilename As String, sFileFromPhone As String
+        Dim sPath As String, sFolders() As String
+
+        If My.Settings.SummerboardPath <> "" Then
+            folderBrowserDialog.SelectedPath = My.Settings.SummerboardPath
+        End If
+
+        If folderBrowserDialog.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Me.Cursor = Cursors.WaitCursor
+            Application.DoEvents() ' update display
+
+            My.Settings.SummerboardPath = Path.GetDirectoryName(folderBrowserDialog.SelectedPath) ' save the parent
+
+            dFolder = folderBrowserDialog.SelectedPath & "\"
+            ' save wallpaper jpg as PNG (/var/root/Libary/LockBackground.jpg)
+            StatusNormal("Copy Wallpaper Image")
+            CopyFromPhoneMakePNG("/var/root/Library/LockBackground.jpg", dFolder & "Wallpaper.png")
+
+            ' save Dock Background (SBDockBG2.png -> Dock.png)
+            StatusNormal("Copy Dock Image")
+            CopyFromPhonePNG("/System/Library/CoreServices/SpringBoard.app/SBDockBG2.png", dFolder & "Dock.png", True)
+
+            ' save Icons for applications
+            dFolder = dFolder & "Icons\"
+            Directory.CreateDirectory(dFolder)
+            sPath = "/Applications/"
+            sFolders = iPhoneInterface.GetDirectories(sPath)
+            For Each sFolder As String In sFolders
+                If sFolder.EndsWith(".app") Then
+                    StatusNormal("Copy Icon for " + sFolder)
+                    sFileFromPhone = sPath & sFolder & "/" & "icon.png"
+                    sSaveAsFilename = dFolder & Microsoft.VisualBasic.Left(sFolder, sFolder.Length - 4) & ".png"
+                    CopyFromPhonePNG(sFileFromPhone, sSaveAsFilename, True)
+                End If
+            Next
+            StatusNormal("")
+            Me.Cursor = Cursors.Arrow
         End If
     End Sub
 End Class
