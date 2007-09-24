@@ -62,7 +62,7 @@ namespace DecodePNG
         void DoDecodePNG(string fp) {
             tbOut.Text = "";
 
-            List<PNGChunk> chunks = iPhonePNG.ReadPNGChunks(fp);
+            List<PNGChunk> chunks = iPhonePNG.ReadPNG(fp);
 
             foreach (PNGChunk c in chunks) {
                 wo(c.Signature + " Len(" + c.Length + ") [" + c.CRC.ToString("x") + "]");

@@ -429,7 +429,7 @@ Public Class frmMain
             Dim tmpOnPC As String = Path.GetTempFileName
             Try
                 Dim cvtImage As Image = iPhonePNG.ImageFromFile(sComputer)
-                cvtImage.Save(tmpOnPC, ImageFormat.Png)
+                iPhonePNG.Save(cvtImage, tmpOnPC)
             Catch
                 ans = False
             End Try
@@ -1147,6 +1147,31 @@ ErrorHandler:
 
     Private Sub ConvertPNGsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertPNGsToolStripMenuItem.Click
         bConvertPNGs = ConvertPNGsToolStripMenuItem.Checked
+    End Sub
+
+    Private Sub ColorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BlackToolStripMenuItem.Click, WhiteToolStripMenuItem.Click, GrayToolStripMenuItem.Click
+        Dim s As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
+        If s.Checked Then
+            Select Case s.Text
+                Case "Black"
+                    picFileDetails.BackColor = Color.Black
+                    GrayToolStripMenuItem.Checked = False
+                    WhiteToolStripMenuItem.Checked = False
+
+                Case "Gray"
+                    picFileDetails.BackColor = Color.Gray
+                    BlackToolStripMenuItem.Checked = False
+                    WhiteToolStripMenuItem.Checked = False
+
+                Case "White"
+                    picFileDetails.BackColor = Color.White
+                    BlackToolStripMenuItem.Checked = False
+                    GrayToolStripMenuItem.Checked = False
+
+            End Select
+        Else
+            picFileDetails.BackColor = PictureBox.DefaultBackColor
+        End If
     End Sub
 End Class
 
