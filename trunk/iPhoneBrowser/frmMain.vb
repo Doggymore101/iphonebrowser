@@ -30,7 +30,8 @@ Public Class frmMain
     Private wasQTpreview As Boolean = False
     Private QTpreviewFile As String
     Private prevSelectedFile As String = ""
-    Private bConvertPNGs As Boolean
+    Private bConvertToiPhonePNG As Boolean, bConvertToPNG As Boolean
+    Private bShowPreview As Boolean, bIgnoreThumbsFile As Boolean
 
     Private lstFilesSortOrder As SortOrder
 
@@ -380,8 +381,8 @@ Public Class frmMain
         Return ans
     End Function
 
-    Private Function CopyFromPhonePNG(ByVal sPhone As String, ByVal dComputer As String, ByVal fixPNG As Boolean)
-        If fixPNG And LCase(sPhone).EndsWith(".png") Then
+    Private Function CopyFromPhonePNG(ByVal sPhone As String, ByVal dComputer As String)
+        If bConvertToPNG And LCase(sPhone).EndsWith(".png") Then
             Dim tmpOnPC As String = getTempFilename(sPhone)
             Dim ans As Boolean = copyFromPhone(sPhone, tmpOnPC)
             If ans Then
@@ -391,6 +392,7 @@ Public Class frmMain
                 Catch
                     ans = copyFromPhone(sPhone, dComputer)
                 End Try
+                Kill(tmpOnPC)
             End If
 
             Return ans
@@ -438,7 +440,7 @@ Public Class frmMain
 
         copyFromPhone = bReturn
     End Function
-    Private Function copy1ToPhonePNG(ByVal sComputer As String, ByVal dPhone As String)
+    Private Function copy1ToPhonePNGAt(ByVal sComputer As String, ByVal dPhone As String, ByVal aBackupTime As Date)
         Dim ans As Boolean = True
 
         If LCase(sComputer).EndsWith(".png") Then
@@ -454,30 +456,34 @@ Public Class frmMain
                 If dPhone.EndsWith("/") Then
                     dPhone = dPhone & Path.GetFileName(sComputer)
                 End If
-                ans = copyToPhone(tmpOnPC, dPhone, False)
+                ans = copyToPhoneAt(tmpOnPC, dPhone, False, aBackupTime)
                 Kill(tmpOnPC)
             Else
-                ans = copyToPhone(sComputer, dPhone, False)
+                ans = copyToPhoneAt(sComputer, dPhone, False, aBackupTime)
             End If
         Else
-            ans = copyToPhone(sComputer, dPhone, False)
+            ans = copyToPhoneAt(sComputer, dPhone, False, aBackupTime)
         End If
 
         Return ans
     End Function
 
-    Private Function copy1ToPhone(ByVal sPC As String, ByVal dPhone As String)
+    Private Function copy1ToPhoneAt(ByVal sPC As String, ByVal dPhone As String, ByVal aBackupTime As Date)
         Dim iPhoneFileInterface As Manzana.iPhoneFile
         Dim sPath As String, sFile As String
         Dim fileTemp As FileStream
         Dim sBuffer(1023) As Byte, iDataBytes As Integer
+
+        If bIgnoreThumbsFile And Path.GetFileName(sPC) = "Thumbs.db" Then
+            Return True ' pretend copying was ok, but don't copy thumbs
+        End If
 
         'see if the destination file exists
         If iPhoneInterface.Exists(dPhone) Then
             'it exists, back it up before overwriting
             sPath = Microsoft.VisualBasic.Left(dPhone, InStrRev(dPhone, "/"))
             sFile = Mid(dPhone, InStrRev(dPhone, "/") + 1)
-            backupFileFromPhone(sPath, sFile)
+            backupFileFromPhoneAt(sPath, sFile, aBackupTime)
         End If
 
         'open a connection to the file and write it
@@ -500,6 +506,10 @@ Public Class frmMain
     End Function
 
     Private Function copyToPhone(ByVal sourceOnComputer As String, ByVal destinationOnPhone As String, ByVal fixPNG As Boolean) As Boolean
+        Return copyToPhoneAt(sourceOnComputer, destinationOnPhone, fixPNG, Now)
+    End Function
+
+    Private Function copyToPhoneAt(ByVal sourceOnComputer As String, ByVal destinationOnPhone As String, ByVal fixPNG As Boolean, ByVal aBackupTime As Date) As Boolean
         Dim bReturn As Boolean = False
         Dim sPath As String, sFile As String, dPath As String
 
@@ -518,9 +528,9 @@ Public Class frmMain
         'are we copying a file?
         If File.Exists(sourceOnComputer) Then
             If fixPNG Then
-                bReturn = copy1ToPhonePNG(sourceOnComputer, destinationOnPhone)
+                bReturn = copy1ToPhonePNGAt(sourceOnComputer, destinationOnPhone, aBackupTime)
             Else
-                bReturn = copy1ToPhone(sourceOnComputer, destinationOnPhone)
+                bReturn = copy1ToPhoneAt(sourceOnComputer, destinationOnPhone, aBackupTime)
             End If
         ElseIf Directory.Exists(sourceOnComputer) Then
             ' Create matching directory on phone
@@ -532,21 +542,22 @@ Public Class frmMain
 
             ' copy all files over recursively
             For Each filepath As String In Directory.GetFiles(sourceOnComputer)
-                copyToPhone(filepath, dPath, fixPNG)
+                Application.DoEvents() ' make sure screen updates
+                copyToPhoneAt(filepath, dPath, fixPNG, aBackupTime)
             Next
 
             ' copy all directories over recursively
             For Each dirpath As String In Directory.GetDirectories(sourceOnComputer)
-                copyToPhone(dirpath, dPath, fixPNG)
+                copyToPhoneAt(dirpath, dPath, fixPNG, aBackupTime)
             Next
 
             bReturn = True
         End If
 
-        copyToPhone = bReturn
+        copyToPhoneAt = bReturn
     End Function
 
-    Private Sub backupFileFromPhone(ByVal sSourcePath As String, ByVal sSourceFile As String)
+    Private Sub backupFileFromPhoneAt(ByVal sSourcePath As String, ByVal sSourceFile As String, ByVal aTime As Date)
         'copies a file from the phone and backs it up in the appropriate directory
         'grab the file then save it with an extra extension
         Dim sDestinationPath As String, sDestinationFile As String
@@ -554,38 +565,34 @@ Public Class frmMain
         'make sure it ends in a /
         If Not sSourcePath.EndsWith("/") Then sSourcePath = sSourcePath & "/"
 
-        sDestinationPath = APP_PATH & BACKUP_DIRECTORY & Replace(sSourcePath, "/", "\")
-        sDestinationFile = BACKUP_SUFFIX & Format(Now, "yyyyMMdd.HHmmss.") & sSourceFile
+        sDestinationPath = APP_PATH & BACKUP_DIRECTORY & Format(aTime, ".yyyyMMdd.HHmmss") & Replace(sSourcePath, "/", "\")
+        sDestinationFile = sSourceFile
 
         'Create the directory if it does not already exist
         If Not Directory.Exists(sDestinationPath) Then Directory.CreateDirectory(sDestinationPath)
 
-        'copy it into the backup directory
+        'copy file into the backup directory
         copyFromPhone(sSourcePath & sSourceFile, sDestinationPath & sDestinationFile)
 
         StatusNormal("Backed up as '" & sDestinationFile & "'.")
     End Sub
 
-    Private Sub BackupFiles(ByVal sPath As String)
-        For Each sFile As String In iPhoneInterface.GetFiles(sPath)
-            backupFileFromPhone(sPath, sFile)
-        Next
+    Private Sub backupFileFromPhone(ByVal sSourcePath As String, ByVal sSourceFile As String)
+        backupFileFromPhoneAt(sSourcePath, sSourceFile, Now)
     End Sub
 
-    Private Sub BackupSubDirs(ByVal sPath As String)
+    Private Sub BackupDirectoryAt(ByVal sPath As String, ByVal aTime As Date)
+        For Each sFile As String In iPhoneInterface.GetFiles(sPath)
+            backupFileFromPhoneAt(sPath, sFile, aTime)
+        Next
         For Each sDir As String In iPhoneInterface.GetDirectories(sPath)
-            BackupDirectory(sDir)
+            BackupDirectoryAt(sPath & "/" & sDir, aTime)
         Next
     End Sub
 
     Private Sub BackupDirectory(ByVal sPath As String)
-        BackupFiles(sPath)
-        BackupSubDirs(sPath)
+        BackupDirectoryAt(sPath, Now)
     End Sub
-
-    Private Function createDirectoryOnPhone(ByVal sNewDirectoryOnPhone As String) As Boolean
-        Return iPhoneInterface.CreateDirectory(sNewDirectoryOnPhone)
-    End Function
 
     Private Function delFromPhone(ByVal sourceOnPhone As String) As Boolean
         Dim sPath As String, sFile As String
@@ -754,8 +761,14 @@ Public Class frmMain
             My.Settings.Save()
         End If
         ConfirmDeletionsToolStripMenuItem.Checked = My.Settings.ConfirmDeletions
-        bConvertPNGs = My.Settings.ConvertPNGs
-        ConvertPNGsToolStripMenuItem.Checked = bConvertPNGs
+        bConvertToiPhonePNG = My.Settings.PCToiPhonePNG
+        bConvertToPNG = My.Settings.iPhoneToPCPNG
+        bShowPreview = My.Settings.ShowPreviews
+        bIgnoreThumbsFile = My.Settings.IgnoreThumbsFile
+        IPhoneToPCToolStripMenuItem.Checked = bConvertToPNG
+        PCToIPhoneToolStripMenuItem.Checked = bConvertToiPhonePNG
+        ShowPreviewsToolStripMenuItem.Checked = bShowPreview
+        IgnoreThumbsdbToolStripMenuItem.Checked = bIgnoreThumbsFile
 
         'setup the event handlers
         'myLog.WriteEntry("Loading iPhoneBrowser: frmMain_Load, compeleted loading variables and resizing forms, setting up event handlers")
@@ -805,7 +818,7 @@ ErrorHandler:
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             initFolder = getSelectedPath()
             For Each s As String In e.Data.GetData(DataFormats.FileDrop)
-                copyToPhone(s, initFolder, bConvertPNGs)
+                copyToPhone(s, initFolder, bConvertToiPhonePNG)
             Next
             StatusNormal("")
 
@@ -841,8 +854,8 @@ ErrorHandler:
             wasQTpreview = False
         End If
 
-        'only do this if something is selected
-        If lstFiles.SelectedItems.Count > 0 Then
+        'only do this if something is selected and we want a preview
+        If lstFiles.SelectedItems.Count > 0 And bShowPreview Then
             'get the name and full path of the file selected
             sFile = getSelectedFilename()
 
@@ -932,7 +945,7 @@ ErrorHandler:
                 sFileFromPhone = sFolder & sItem.Text
 
                 StatusNormal("Saving " & sItem.Text & "...")
-                CopyFromPhonePNG(sFileFromPhone, sSaveAsFilename, bConvertPNGs)
+                CopyFromPhonePNG(sFileFromPhone, sSaveAsFilename)
             End If
         Else
             Dim dFolder As String
@@ -946,7 +959,7 @@ ErrorHandler:
                     sFileFromPhone = sFolder & sItem.Text
 
                     StatusNormal("Saving " & sItem.Text & "...")
-                    CopyFromPhonePNG(sFileFromPhone, sSaveAsFilename, bConvertPNGs)
+                    CopyFromPhonePNG(sFileFromPhone, sSaveAsFilename)
                 Next
             End If
         End If
@@ -957,9 +970,10 @@ ErrorHandler:
 
         If lstFiles.SelectedItems.Count > 0 Then
             sSourcePath = getSelectedPath()
+            Dim aTime As Date = Now
 
             For Each sItem As ListViewItem In lstFiles.SelectedItems
-                backupFileFromPhone(sSourcePath, sItem.Text)
+                backupFileFromPhoneAt(sSourcePath, sItem.Text, aTime)
             Next
         End If
 
@@ -978,7 +992,7 @@ ErrorHandler:
                 'replace the selected file with the source one
                 sFileToPhone = getSelectedFilename()
                 'this function also makes a backup
-                copyToPhone(sSourceFilename, sFileToPhone, bConvertPNGs)
+                copyToPhone(sSourceFilename, sFileToPhone, bConvertToiPhonePNG)
                 'refresh the list view
                 loadFiles()
             End If
@@ -1031,7 +1045,7 @@ ErrorHandler:
     End Sub
 
     Private Sub ToolStripMenuItemViewBackups_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemViewBackups.Click
-        Shell("explorer """ & BACKUP_DIRECTORY & """", AppWinStyle.NormalFocus)
+        Shell("explorer """ & APP_PATH & """", AppWinStyle.NormalFocus)
     End Sub
 
     Private Sub toolStripGoTo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -1040,7 +1054,7 @@ ErrorHandler:
         toolStripGoTo7.Click, toolStripGoTo6.Click, toolStripGoTo5.Click, toolStripGoTo4.Click, _
         toolStripGoTo18.Click, toolStripGoTo17.Click, toolStripGoTo16.Click, toolStripGoTo15.Click, _
         toolStripGoTo14.Click, toolStripGoTo13.Click, toolStripGoTo12.Click, toolStripGoTo11.Click, _
-        toolStripGoTo10.Click, ToolStripMenuItem2.Click, TTRToolStripMenuItem.Click, NESROMSToolStripMenuItem.Click, ISwitcherThemesToolStripMenuItem.Click, InstallerPackageSourcesToolStripMenuItem.Click, FrotzGamesToolStripMenuItem.Click, EBooksToolStripMenuItem.Click, DockSwapDocksToolStripMenuItem.Click
+        toolStripGoTo10.Click, ToolStripMenuItem2.Click, TTRToolStripMenuItem.Click, NESROMSToolStripMenuItem.Click, ISwitcherThemesToolStripMenuItem.Click, InstallerPackageSourcesToolStripMenuItem.Click, FrotzGamesToolStripMenuItem.Click, EBooksToolStripMenuItem.Click, DockSwapDocksToolStripMenuItem.Click, ToolStripMenuItem5.Click, ToolStripMenuItem6.Click
 
         Dim sPath As String, ts As ToolStripMenuItem
 
@@ -1077,7 +1091,7 @@ ErrorHandler:
 
         If bValid Then
             'lets create the directory
-            If createDirectoryOnPhone(sPath) Then
+            If iPhoneInterface.CreateDirectory(sPath) Then
                 'it created successfully
                 selectSpecificPath(sPath)
             Else
@@ -1099,9 +1113,8 @@ ErrorHandler:
             End If
         End If
 
-
         If tNode.Nodes.Count > 0 Then
-            If MsgBox("Are you absolutely sure you wish to delete this folder (" & sPath & ")?  This cannot be undone." & vbCrLf & vbCrLf & "[For your safety, all contents will be backed up.]", MsgBoxStyle.YesNo, "Are you Sure?") = MsgBoxResult.No Then
+            If MsgBox("Are you absolutely sure you wish to delete this folder (" & sPath & ")?" & vbCrLf & vbCrLf & "This cannot be (easily) undone." & vbCrLf & vbCrLf & "[For your safety, all contents will be backed up.]", MsgBoxStyle.YesNo, "Are you Sure?") = MsgBoxResult.No Then
                 Exit Sub
             End If
         End If
@@ -1161,10 +1174,6 @@ ErrorHandler:
         End If
     End Sub
 
-    Private Sub ConvertPNGsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertPNGsToolStripMenuItem.Click
-        bConvertPNGs = ConvertPNGsToolStripMenuItem.Checked
-    End Sub
-
     Private Sub ColorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BlackToolStripMenuItem.Click, WhiteToolStripMenuItem.Click, GrayToolStripMenuItem.Click
         Dim s As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         If s.Checked Then
@@ -1190,7 +1199,7 @@ ErrorHandler:
         End If
     End Sub
 
-    Private Sub menuSaveSummerboardTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menuSaveSummerboardTheme.Click
+    Private Sub menuSaveSummerboardTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AsSummerboardFolderToolStripMenuItem.Click
         Dim dFolder As String, sSaveAsFilename As String, sFileFromPhone As String
         Dim sPath As String, sFolders() As String
 
@@ -1211,9 +1220,14 @@ ErrorHandler:
 
             ' save Dock Background (SBDockBG2.png -> Dock.png)
             StatusNormal("Copy Dock Image")
-            CopyFromPhonePNG("/System/Library/CoreServices/SpringBoard.app/SBDockBG2.png", dFolder & "Dock.png", True)
+            CopyFromPhonePNG("/System/Library/CoreServices/SpringBoard.app/SBDockBG2.png", dFolder & "Dock.png")
 
             ' save Icons for applications
+
+            Dim appFolders() As String = {"MobileCal", "MobileMail", "MobileMusicPlayer", "MobileNotes", "MobilePhone", "MobileSafari", "MobileSMS", "MobileTimer", "Preferences"}
+            Dim appNames() As String = {"Calendar", "Mail", "iPod", "Notes", "Phone", "Safari", "Text", "Clock", "Settings"}
+            Dim newIconName As String
+
             dFolder = dFolder & "Icons\"
             Directory.CreateDirectory(dFolder)
             sPath = "/Applications/"
@@ -1221,14 +1235,242 @@ ErrorHandler:
             For Each sFolder As String In sFolders
                 If sFolder.EndsWith(".app") Then
                     StatusNormal("Copy Icon for " + sFolder)
-                    sFileFromPhone = sPath & sFolder & "/" & "icon.png"
-                    sSaveAsFilename = dFolder & Microsoft.VisualBasic.Left(sFolder, sFolder.Length - 4) & ".png"
-                    CopyFromPhonePNG(sFileFromPhone, sSaveAsFilename, True)
+                    If sFolder = "MobileSlideShow.app" Then
+                        Dim iNames() As String = {"icon-Photos.png", "icon-Camera.png"}
+                        For Each sIcon As String In (iNames)
+                            sFileFromPhone = sPath & sFolder & "/" & sIcon
+                            sSaveAsFilename = dFolder & Mid(sIcon, 6, 6) & ".png"
+                            CopyFromPhonePNG(sFileFromPhone, sSaveAsFilename)
+                        Next
+                    Else
+                        sFileFromPhone = sPath & sFolder & "/icon.png"
+                        newIconName = Microsoft.VisualBasic.Left(sFolder, sFolder.Length - 4)
+                        Dim nii As Integer = Array.IndexOf(appFolders, newIconName)
+                        If nii >= 0 Then
+                            newIconName = appNames(nii)
+                        End If
+                        sSaveAsFilename = dFolder & newIconName & ".png"
+                        CopyFromPhonePNG(sFileFromPhone, sSaveAsFilename)
+                    End If
                 End If
             Next
             StatusNormal("")
             Me.Cursor = Cursors.Arrow
         End If
+    End Sub
+
+    Private Sub NeedDir(ByVal aDir As String)
+        If Not Directory.Exists(aDir) Then
+            Directory.CreateDirectory(aDir)
+        End If
+    End Sub
+
+    Private Sub SaveCustomizeToFolder(ByVal frmOptions As frmCustomizeOptions, ByVal destPath As String)
+        Dim sb As String = "/System/Library/CoreServices/SpringBoard.app/"
+        With frmOptions
+            Dim themeName As String = "\" & .txtThemeName.Text
+            Dim catName As String = "\" & .txtCategory.Text
+            NeedDir(destPath)
+            destPath = destPath & "\"
+            If .chkDock.Checked Then
+                Dim destDock As String = destPath & "DockSwap" & catName
+                NeedDir(destDock)
+                CopyFromPhonePNG(sb & "SBDockBG2.png", destDock & themeName & ".png")
+            End If
+
+            destPath = destPath & "Customize"
+            NeedDir(destPath)
+            destPath = destPath & "\"
+
+            If .chkCarrier.Checked Then
+                Dim destCarrier As String = destPath & "CarrierImages" & catName
+                NeedDir(destCarrier)
+                Dim curCarrier As String = "_CARRIER_" & .cbCarriers.SelectedItem & ".png"
+
+                CopyFromPhonePNG(sb & "FSO" & curCarrier, destCarrier & themeName & ".png")
+                CopyFromPhonePNG(sb & "Default" & curCarrier, destCarrier & themeName & "-1.png")
+            End If
+
+            Dim sTypes() As String = {"FSO_", "Default_"}
+
+            If .chkBars.Checked Then
+                Dim destBars As String = destPath & "BarsImages" & catName
+                NeedDir(destBars)
+                destBars = destBars & themeName
+
+                ' Default_[0-5]_Bars.png -> ThemeName.png - ThemeName-4.png
+                ' FSO_[0-5]_Bars.png -> themeName-5.png - themeName-11.png
+                For j2 As Integer = 0 To 1
+                    For j1 As Integer = 0 To 5
+                        Dim destNum As String = ".png"
+                        If j1 <> 0 Or j2 <> 0 Then
+                            destNum = "-" & (j1 + 6 * j2).ToString() & destNum
+                        End If
+                        CopyFromPhonePNG(sb & sTypes(j2) & j1.ToString() & "_Bars.png", destBars & destNum)
+                    Next
+                Next
+            End If
+
+            If .chkWiFi.Checked Then
+                Dim destBars As String = destPath & "WiFiImages" & catName
+                NeedDir(destBars)
+                destBars = destBars & themeName
+
+                ' Default_[0-5]_Bars.png -> ThemeName.png - ThemeName-4.png
+                ' FSO_[0-5]_Bars.png -> themeName-5.png - themeName-11.png
+                For j2 As Integer = 0 To 1
+                    For j1 As Integer = 0 To 3
+                        Dim destNum As String = ".png"
+                        If j1 <> 0 Or j2 <> 0 Then
+                            destNum = "-" & (j1 + 6 * j2).ToString() & destNum
+                        End If
+                        CopyFromPhonePNG(sb & sTypes(j2) & j1.ToString() & "_AirPort.png", destBars & destNum)
+                    Next
+                Next
+            End If
+
+            If .chkBadge.Checked Then
+                Dim dest As String = destPath & "BadgeImages" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG(sb & "SBBadgeBG.png", dest & themeName & ".png")
+            End If
+
+            If .chkBattery.Checked Then
+                Dim dest As String = destPath & "BatteryImages" & catName
+                NeedDir(dest)
+                ' 17 is used as default
+                CopyFromPhonePNG(sb & "BatteryBG_17.png", dest & themeName & ".png")
+
+                For j1 As Integer = 1 To 16
+                    CopyFromPhonePNG(sb & "BatteryBG_" & j1.ToString() & ".png", dest & themeName & "-" & j1.ToString() & ".png")
+                Next
+            End If
+
+            If .chkSound.Checked Then
+                Dim dest As String = destPath & "SoundImages" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG(sb & "ring.png", dest & themeName & ".png")
+                CopyFromPhonePNG(sb & "mute.png", dest & themeName & "-1.png")
+                CopyFromPhonePNG(sb & "silent.png", dest & themeName & "-2.png")
+                CopyFromPhonePNG(sb & "speaker.png", dest & themeName & "-3.png")
+            End If
+
+            If .chkBalloons.Checked Then
+                Dim dest As String = destPath & "Chat1Images" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG("/Applications/MobileSMS.app/Balloon_1.png", dest & themeName & ".png")
+
+                dest = destPath & "Chat2Images" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG("/Applications/MobileSMS.app/Balloon_2.png", dest & themeName & ".png")
+            End If
+            If .chkKeypad.Checked Then
+                Dim dest As String = destPath & "DialerImages" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG("/Applications/MobilePhone.app/BarDialer_Sel.png", dest & themeName & ".png")
+            End If
+
+            If .chkMainSlider.Checked Then
+                Dim dest As String = destPath & "MainSliderImages" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG("/System/Library/Frameworks/TelephonyUI.Framework/bottombarknobgrey.png", dest & themeName & ".png")
+            End If
+            If .chkPowerSlider.Checked Then
+                Dim dest As String = destPath & "PowerSliderImages" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG("/System/Library/Frameworks/TelephonyUI.Framework/bottombarknobred.png", dest & themeName & ".png")
+            End If
+            If .chkCallSlider.Checked Then
+                Dim dest As String = destPath & "CallSliderImages" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG("/System/Library/Frameworks/TelephonyUI.Framework/bottombarknobgreen.png", dest & themeName & ".png")
+            End If
+            If .chkHiMask.Checked Then
+                Dim dest As String = destPath & "MaskSliderImages" & catName
+                NeedDir(dest)
+                CopyFromPhonePNG("/System/Library/Frameworks/TelephonyUI.Framework/bottombarlocktextmask.png", dest & themeName & ".png")
+            End If
+
+            If .cbSounds.CheckedItems.Count > 0 Then
+                Dim dest As String = destPath & "AudioFiles" & catName
+                NeedDir(dest)
+
+                Dim sndNameArray() As String = {"Unlock", "Lock", "Received", "Sent", "Voicemail", "Alarm", _
+                    "BeepBeep", "LowPower", "Mail", "NewMail", "Photo", "SMSReceived"}
+                Dim sndArray() As String = {"unlock", "lock", "ReceivedMessage", "SentMessage", "Voicemail", "alarm", _
+                    "beep-beep", "low_power", "mail-sent", "New-mail", "photoShutter", "sms-received"}
+
+                For Each cb As String In .cbSounds.CheckedItems
+                    Dim j1 As Integer = Array.IndexOf(sndNameArray, Microsoft.VisualBasic.Left(cb, Len(cb) - 6))
+                    CopyFromPhonePNG("/System/Library/Audio/UISounds/" & sndArray(j1) & ".caf", dest & themeName & "_" & sndNameArray(j1) & ".aif")
+                Next
+            End If
+        End With
+    End Sub
+
+    Private Sub AsCustomizeFoldersToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AsCustomizeFoldersToolStripMenuItem.Click
+        Dim frmOptions As frmCustomizeOptions = New frmCustomizeOptions()
+        If frmOptions.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If frmOptions.HasChecked() Then
+                folderBrowserDialog.SelectedPath = My.Settings.CustomizePath
+                If folderBrowserDialog.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    My.Settings.CustomizePath = folderBrowserDialog.SelectedPath
+                    Me.Cursor = Cursors.WaitCursor
+                    Application.DoEvents() ' show cursor
+                    SaveCustomizeToFolder(frmOptions, folderBrowserDialog.SelectedPath)
+                    Me.Cursor = Cursors.Arrow
+                End If
+            End If
+        End If
+        frmOptions.Dispose()
+    End Sub
+
+    Private Sub IPhoneToPCToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles IPhoneToPCToolStripMenuItem.Click
+        bConvertToPNG = IPhoneToPCToolStripMenuItem.Checked
+    End Sub
+
+    Private Sub PCToIPhoneToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PCToIPhoneToolStripMenuItem.Click
+        bConvertToiPhonePNG = PCToIPhoneToolStripMenuItem.Checked
+    End Sub
+
+    Private Sub ShowPreviewsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShowPreviewsToolStripMenuItem.Click
+        bShowPreview = ShowPreviewsToolStripMenuItem.Checked
+    End Sub
+
+    Private Sub DoSaveFolderIn(ByVal sPath As String, ByVal dPath As String)
+        NeedDir(dPath)
+        dPath = dPath & "\"
+
+        ' save the files
+        Dim phFiles() As String = iPhoneInterface.GetFiles(sPath)
+        sPath = sPath & "/"
+        For Each phF As String In phFiles
+            copyFromPhone(sPath & phF, dPath & Path.GetFileName(phF))
+        Next
+
+        Dim phDirs() As String = iPhoneInterface.GetDirectories(sPath)
+        For Each phD As String In phDirs
+            DoSaveFolderIn(sPath & phD, dPath & phD)
+        Next
+    End Sub
+
+    Private Sub ToolStripMenuItemSaveFolderIn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemSaveFolderIn.Click
+        folderBrowserDialog.SelectedPath = My.Settings.SaveFolderPath
+        If folderBrowserDialog.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Me.Cursor = Cursors.WaitCursor
+            Dim dPath As String = folderBrowserDialog.SelectedPath
+            My.Settings.SaveFolderPath = dPath
+            Dim sPath As String = getSelectedFolder()
+            dPath = dPath & "\" & Path.GetFileName(sPath)
+            DoSaveFolderIn(sPath, dPath)
+            Me.Cursor = Cursors.Arrow
+        End If
+    End Sub
+
+    Private Sub BackupFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BackupFolderToolStripMenuItem.Click
+        Me.Cursor = Cursors.WaitCursor
+        BackupDirectory(getSelectedFolder())
+        Me.Cursor = Cursors.Arrow
     End Sub
 End Class
 
