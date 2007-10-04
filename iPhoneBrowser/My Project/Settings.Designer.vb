@@ -80,18 +80,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
-        Public Property ConvertPNGs() As Boolean
-            Get
-                Return CType(Me("ConvertPNGs"),Boolean)
-            End Get
-            Set
-                Me("ConvertPNGs") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SummerboardPath() As String
             Get
@@ -99,6 +87,78 @@ Namespace My
             End Get
             Set
                 Me("SummerboardPath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property PCToiPhonePNG() As Boolean
+            Get
+                Return CType(Me("PCToiPhonePNG"),Boolean)
+            End Get
+            Set
+                Me("PCToiPhonePNG") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property iPhoneToPCPNG() As Boolean
+            Get
+                Return CType(Me("iPhoneToPCPNG"),Boolean)
+            End Get
+            Set
+                Me("iPhoneToPCPNG") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property CustomizePath() As String
+            Get
+                Return CType(Me("CustomizePath"),String)
+            End Get
+            Set
+                Me("CustomizePath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property ShowPreviews() As Boolean
+            Get
+                Return CType(Me("ShowPreviews"),Boolean)
+            End Get
+            Set
+                Me("ShowPreviews") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property SaveFolderPath() As String
+            Get
+                Return CType(Me("SaveFolderPath"),String)
+            End Get
+            Set
+                Me("SaveFolderPath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property IgnoreThumbsFile() As Boolean
+            Get
+                Return CType(Me("IgnoreThumbsFile"),Boolean)
+            End Get
+            Set
+                Me("IgnoreThumbsFile") = value
             End Set
         End Property
     End Class
