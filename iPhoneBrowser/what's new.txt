@@ -1,3 +1,32 @@
+Future Versions	??/??/2008	Pete Wilson
+- conversion to standard PNG creates correct CRC
+- conversion to iPhone PNG (does not premultiply alpha)
+- purge BACKUPS folders of duplicate files
+- restores files or folders from previous versions
+- modify grouping when sorting
+- convert binary plists to text and back
+- edit plists
+
+v1.50	1/7/2008 Pete Wilson
+- Confirm deletion option disables confirmation for folders without sub-folders as well as files
+- added option to ignore .DS_Store files
+- fixed some file list synch bugs
+- moved backup folders to custom UserAppDataPath (Local Settings\Application Data\Cranium\iPhoneBrowser)
+- moved temp files to custom UserAppDataPath
+- now only creates one backup folder per run unless a filename conflict occurs
+- improved many display refresh issues - collapsing nodes should work correctly now
+- added options to rename files and folders
+- added conversion of illegal Windows filenames in both directions
+- added grouping to file list view
+- added better control over auto preview and limited auto preview to 100kb
+- improved event handling when right-clicking file
+- added user settable bookmarks
+- improved performance of file copies from/to iphone for large files
+- reduced tree icons to 16x16 to decrease tree space for deep hierarchies
+- improved progress bar update/display process for copying files
+- added F5 to refresh current tree node and children manually
+- improved search for iTunesMobileDevice.DLL to use US location if localized location doesn't work
+
 v1.40	10/03/2007	Pete Wilson
 - Re-arranged locations and added new locations for Third-Party Applications and SummerBoard
 - File right-click menu handles multiple selections
@@ -11,7 +40,7 @@ v1.40	10/03/2007	Pete Wilson
 - Added some more third party app folder locations
 - Added commands to Save or Backup Folders
 - Changed backup scheme to use BACKUPS.date.time to make restores easier
-- added option to skip Thumbs.db files
+- added option to ignore Thumbs.db files
 
 v1.31	9/14/2007	Pete Wilson
 - Correct major bug when drag/drop multiple directories

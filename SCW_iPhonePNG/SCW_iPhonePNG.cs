@@ -194,13 +194,18 @@ namespace SCW_iPhonePNG
         }
 
         public static List<PNGChunk> ReadPNG(string fileName) {
-            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            BinaryReader br = new BinaryReader(fs);
-
-            List<PNGChunk> chunks = ReadPNG(br);
-
-            br.Close();
-            fs.Close();
+            List<PNGChunk> chunks;
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read)) {
+                using (BinaryReader br = new BinaryReader(fs)) {
+                    try {
+                        chunks = ReadPNG(br);
+                    }
+                    finally {
+                        br.Close();
+                        fs.Close(); // already done by BinaryReader
+                    }
+                }
+            }
 
             return chunks;
         }
