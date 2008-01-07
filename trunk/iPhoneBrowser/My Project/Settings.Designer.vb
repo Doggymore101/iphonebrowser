@@ -161,6 +161,52 @@ Namespace My
                 Me("IgnoreThumbsFile") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property IgnoreDSStoreFile() As Boolean
+            Get
+                Return CType(Me("IgnoreDSStoreFile"),Boolean)
+            End Get
+            Set
+                Me("IgnoreDSStoreFile") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ShowGroups() As Boolean
+            Get
+                Return CType(Me("ShowGroups"),Boolean)
+            End Get
+            Set
+                Me("ShowGroups") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property FavNames() As Global.System.Collections.Specialized.StringCollection
+            Get
+                Return CType(Me("FavNames"),Global.System.Collections.Specialized.StringCollection)
+            End Get
+            Set
+                Me("FavNames") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property FavPaths() As Global.System.Collections.Specialized.StringCollection
+            Get
+                Return CType(Me("FavPaths"),Global.System.Collections.Specialized.StringCollection)
+            End Get
+            Set
+                Me("FavPaths") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

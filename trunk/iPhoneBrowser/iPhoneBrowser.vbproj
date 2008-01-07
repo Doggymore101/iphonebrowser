@@ -16,7 +16,7 @@
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\iPhoneBrowser.ico</ApplicationIcon>
     <PublishUrl>publish/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -73,6 +73,12 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmAddFavorite.Designer.vb">
+      <DependentUpon>frmAddFavorite.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddFavorite.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCustomizeOptions.Designer.vb">
       <DependentUpon>frmCustomizeOptions.vb</DependentUpon>
     </Compile>
@@ -84,6 +90,12 @@
     </Compile>
     <Compile Include="frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOrganizeFavorites.Designer.vb">
+      <DependentUpon>frmOrganizeFavorites.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOrganizeFavorites.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -104,6 +116,10 @@
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmAddFavorite.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmAddFavorite.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCustomizeOptions.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmCustomizeOptions.vb</DependentUpon>
@@ -111,6 +127,10 @@
     <EmbeddedResource Include="frmMain.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOrganizeFavorites.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmOrganizeFavorites.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -140,6 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="Resources\Folder.ico" />
+    <Content Include="Resources\folderopen.ico" />
+    <Content Include="Resources\iPhoneBrowser.ico" />
     <Content Include="what%27s new.txt" />
     <None Include="app.config" />
     <None Include="Resources\warning.ico" />
