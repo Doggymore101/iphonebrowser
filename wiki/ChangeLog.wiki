@@ -17,6 +17,10 @@ Future Versions	??/??/2008	Pete Wilson
   * convert binary plists to text and back
   * edit plists
 
+v1.51   1/9/2008 Pete Wilson
+  * fixed bug in JIT load of folder tree for folders with one child
+  * added two level progress bars to better show operations
+  
 v1.50	1/7/2008 Pete Wilson
   * Confirm deletion option disables confirmation for folders without sub-folders as well as files
   * added option to ignore .DS_Store files
@@ -24,8 +28,7 @@ v1.50	1/7/2008 Pete Wilson
   * moved backup folders to custom UserAppDataPath (Local Settings\Application Data\Cranium\iPhoneBrowser)
   * moved temp files to custom UserAppDataPath
   * now only creates one backup folder per run unless a filename conflict occurs
-  * improved many display refresh issues
-  * collapsing nodes should work correctly now
+  * improved many display refresh issues - collapsing nodes should work correctly now
   * added options to rename files and folders
   * added conversion of illegal Windows filenames in both directions
   * added grouping to file list view
@@ -43,7 +46,7 @@ v1.40	10/03/2007	Pete Wilson
   * File right-click menu handles multiple selections
   * Added option for delete confirmation
   * Added option to set preview background color (not remembered)
-  * Handles deletion of multiple files and folders with contents backed up
+  * Handles deletion of multiple files and folders with contents - all backed up
   * Preview iPhone PNGs and convert from iPhone PNGs to stock
   * NOTE: conversion does not recompute CRCs or compute correct Zlib checksums
   * NOTE: conversion does not remove premultiplied alpha if present
@@ -68,17 +71,17 @@ v1.3	9/13/2007	Pete Wilson
   * improved context menu handling
   * replaced some alerts with status updates
   * added warning icon and beep to status warnings
-  * added drag and drop of directories to the iPhone
-  * add eBooks and apps easily
+  * added drag and drop of directories to the iPhone   * add eBooks and apps easily
 
 V1.2	8/19/2007	Kevin Hightower
-  * Added 'Go To Location' feature that automatically selects common locations
-  * Added preview of audio files using quicktime plugin
-  * Added creation and deletion of folders (empty ones only)
-  * Corrected and optimized UI for speed and clarity
+-Added 'Go To Location' feature that automatically selects common locations
+-Added preview of audio files using quicktime plugin
+-Added creation and deletion of folders (empty ones only)
+-Corrected and optimized UI for speed and clarity
 
 V1.1	8/7/2007 	Kevin Hightower
   * Added some loggin during startup and extra support for older machines
 
 V1.0 	8/5/2007 	Kevin Hightower
   * Initial release
+  
