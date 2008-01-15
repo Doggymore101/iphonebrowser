@@ -17,6 +17,10 @@ Future Versions	??/??/2008	Pete Wilson
   * convert binary plists to text and back
   * edit plists
 
+v1.52   1/14/2008 Pete Wilson
+  * fixed Camera Roll Goto Location menu option
+  * moved temp preview files to Windows temp folder
+
 v1.51   1/9/2008 Pete Wilson
   * fixed bug in JIT load of folder tree for folders with one child
   * added two level progress bars to better show operations
