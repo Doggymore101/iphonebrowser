@@ -17,6 +17,7 @@ Public Class frmMain
     Const IMAGE_FILE_DATABASE As Integer = 6
     Const IMAGE_FILE_RINGTONE As Integer = 7
     Const BACKUP_DIRECTORY As String = "BACKUPS"
+    Const MAX_PROG_DEPTH As Integer = 1
 
     Private FILE_TEMPORARY_VIEWER As String = "iPhone.temp"
     Private APP_PATH As String = ""
@@ -36,6 +37,8 @@ Public Class frmMain
     Private bShowPreview As Boolean, bIgnoreThumbsFile As Boolean, bIgnoreDSStoreFile As Boolean
     Private favNames As Specialized.StringCollection, favPaths As Specialized.StringCollection
     Private IsCollapsing As Boolean
+    Private ProgressBars(MAX_PROG_DEPTH) As ToolStripProgressBar
+    Private ProgressDepth As Integer
 
     Private lstFilesSortOrder As SortOrder
 
@@ -113,11 +116,11 @@ Public Class frmMain
         If bConnectionChanged Then
             bConnectionChanged = False
 
-            'changed the enable/disable ofthe form elements
             trvFolders.Enabled = bNowConnected
             lstFiles.Enabled = bNowConnected
             txtFileDetails.Enabled = bNowConnected
             mnuGoTo.Enabled = bNowConnected
+            mnuFavorites.Enabled = bNowConnected
             ToolStripMenuItemNewFolder.Enabled = bNowConnected
             ToolStripMenuItemDeleteFolder.Enabled = bNowConnected
 
@@ -139,19 +142,40 @@ Public Class frmMain
     End Sub
 
     Private Sub startStatus(ByVal iMax As Integer)
-        tlbProgressBar.Value = 0
-        tlbProgressBar.Maximum = iMax + 1
-        tlbProgressBar.Visible = True
+        ProgressDepth = ProgressDepth + 1
+        If ProgressDepth <= MAX_PROG_DEPTH Then
+            If ProgressDepth = 0 Then ' first bar - turn all on
+                For j1 As Integer = 0 To MAX_PROG_DEPTH
+                    ProgressBars(j1).Visible = True
+                    ProgressBars(j1).Value = 0
+                Next
+            End If
+            ProgressBars(ProgressDepth).Maximum = iMax + 1
+        End If
     End Sub
     Private Sub endStatus()
-        tlbProgressBar.Value = tlbProgressBar.Maximum
-        tlbStatusStrip.Refresh()
-        tlbProgressBar.Visible = False
+        If ProgressDepth <= MAX_PROG_DEPTH Then
+            With ProgressBars(ProgressDepth)
+                .Value = 0
+            End With
+            If ProgressDepth = 0 Then ' first bar - turn all off
+                For j1 As Integer = 0 To MAX_PROG_DEPTH
+                    ProgressBars(j1).Visible = False
+                Next
+            End If
+        End If
+        If ProgressDepth >= 0 Then
+            ProgressDepth = ProgressDepth - 1
+        End If
     End Sub
-    Private Sub incrementStatus(Optional ByVal iMax As Integer = 1)
-        If tlbProgressBar.Value < tlbProgressBar.Maximum Then
-            tlbProgressBar.PerformStep()
-            tlbStatusStrip.Refresh()
+    Private Sub incrementStatus()
+        If ProgressDepth <= MAX_PROG_DEPTH Then
+            With ProgressBars(ProgressDepth)
+                If .Value < .Maximum Then
+                    .PerformStep()
+                    tlbStatusStrip.Refresh()
+                End If
+            End With
         End If
     End Sub
     Private Sub refreshChildFolders(ByVal forceRefresh As Boolean)
@@ -172,10 +196,10 @@ Public Class frmMain
             trvFolders.SuspendLayout()
 
             'we need to go through all the children and refresh them
-            StatusNormal("Refreshing folders...")
+            StatusNormal("Refreshing folders for " & rootNode.Name & "...")
             startStatus(rootNode.Nodes.Count)
             iTemp = 0
-            While iTemp < rootNode.Nodes.Count - 1
+            While iTemp < rootNode.Nodes.Count
                 incrementStatus()
 
                 tmpNode = rootNode.Nodes(iTemp)
@@ -193,6 +217,7 @@ Public Class frmMain
                 iTemp = iTemp + 1
             End While
             endStatus()
+            StatusNormal("")
             rootNode.Tag = True
             trvFolders.ResumeLayout()
             Me.Cursor = Cursors.Arrow
@@ -233,8 +258,8 @@ Public Class frmMain
             lstFilesSortOrder = SortOrder.None
 
             lstFiles.BeginUpdate()
-            StatusNormal("Loading Files...")
             iPhonePath = nodeiPhonePath(trvFolders.SelectedNode)
+            StatusNormal("Loading Files for " & iPhonePath & "...")
             'now get the files from the iphone
             sFiles = iPhoneInterface.GetFiles(iPhonePath)
 
@@ -331,18 +356,24 @@ Public Class frmMain
         Me.Cursor = Cursors.WaitCursor
         trvFolders.SuspendLayout()
 
+        startStatus(3)
         trvFolders.Nodes.Clear()
         rootNode = New TreeNode(STRING_ROOT)
         rootNode.ContextMenuStrip = menuRightClickFolders
+        rootNode.Name = "/"
         trvFolders.Nodes.Add(rootNode)
-        trvFolders.SelectedNode = rootNode
+        incrementStatus()
 
         addFolders("", rootNode)
+        incrementStatus()
 
         rootNode.Expand()
+        trvFolders.SelectedNode = rootNode
+        incrementStatus()
 
         trvFolders.ResumeLayout()
         Me.Cursor = Cursors.Arrow
+        endStatus()
     End Sub
     Private Sub addFoldersBeneath(ByRef aNode As TreeNode)
         addFolders(nodeiPhonePath(aNode), aNode)
@@ -351,15 +382,15 @@ Public Class frmMain
         'This function is recursive to add one level of folders to the tree view
         ' you give it one folder and will drill down and add one level of folders
         Dim sFolders() As String, newNode As TreeNode
-        Dim showStatus As Boolean
+
+        If sPath = "/" Then ' handle root special case
+            sPath = ""
+        End If
 
         'get the data from the phone
         sFolders = iPhoneInterface.GetDirectories(sPath)
 
-        If Not tlbProgressBar.Visible Then ' update user
-            startStatus(sFolders.Length)
-            showStatus = True
-        End If
+        startStatus(sFolders.Length)
 
         selectedNode.Nodes.Clear() ' remove any existing nodes
 
@@ -376,14 +407,10 @@ Public Class frmMain
                 addFolders(sPath & "/" & sFolder, newNode, iDepth + 1)
             End If
 
-            If showStatus Then
-                incrementStatus()
-            End If
+            incrementStatus()
         Next
         selectedNode.Tag = False
-        If showStatus Then
-            endStatus()
-        End If
+        endStatus()
     End Sub
 
     Private Function CopyFromPhoneMakePNG(ByVal sPhone As String, ByVal dComputer As String)
@@ -711,7 +738,16 @@ Public Class frmMain
         'returns the currently selected folder
         Return getSelectedFolder() & "/"
     End Function
-
+    ' courtesy Greg Martin
+    Private Function CountStr(ByVal InStr As String, ByVal MatchString As String) As Integer
+        Try
+            Dim SourceString As String = InStr
+            Dim StringExpr As New System.Text.RegularExpressions.Regex(MatchString)
+            Return CStr(StringExpr.Matches(SourceString).Count)
+        Catch
+            Return -1
+        End Try
+    End Function
     Private Function selectSpecificPath(ByVal sPathOnPhone As String) As Boolean
         'selects a specifc path in the tree view
         Dim sTemp As String, iNode As Integer, tn() As TreeNode, bReturn As Boolean = False
@@ -725,24 +761,23 @@ Public Class frmMain
         'first, lets try to find it without expanding
         tn = trvFolders.Nodes.Find(sPathOnPhone, True)
         If tn.Length = 0 Then ' we couldn't find it
-            'select the root first
-            tn = trvFolders.Nodes.Find("", True)
-            If tn.Length > 0 Then
-                trvFolders.SelectedNode = tn(0)
-            End If
+            startStatus(CountStr(sPathOnPhone, "/"))
 
-            'go through and select each node
+            'select the root first
+            tn = trvFolders.Nodes.Find("/", True)
+
+            'go through and load each node
             iNode = 2
             Do While InStr(iNode, sPathOnPhone, "/") > 0
                 'pull out the full path to the next node
                 sTemp = Microsoft.VisualBasic.Left(sPathOnPhone, InStr(iNode, sPathOnPhone, "/") - 1)
                 iNode = InStr(iNode, sPathOnPhone, "/") + 1
 
-                'select the one we found
                 tn = trvFolders.Nodes.Find(sTemp, True)
                 If tn.Length > 0 Then
-                    trvFolders.SelectedNode = tn(0)
+                    refreshChildFolders(tn(0), False)
                 End If
+                incrementStatus()
             Loop
 
             'now it should definitely be available
@@ -760,7 +795,7 @@ Public Class frmMain
                 ' update files display with our partial location
                 loadFiles()
             End If
-
+            endStatus()
         Else
             'we found it first try
             bSupressFiles = False
@@ -779,16 +814,21 @@ Public Class frmMain
     'SYSTEM CREATED EVENTS
 
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'On Error GoTo ErrorHandler
+        On Error GoTo ErrorHandler
+
+        ProgressBars(0) = tlbProgress0
+        tlbProgress0.Visible = False
+        ProgressBars(1) = tlbProgressBar
+        tlbProgressBar.Visible = False
+        ProgressDepth = -1
 
         iPhoneInterface = New iPhone
 
         APP_PATH = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\Cranium\iPhoneBrowser\"
         SetBackupPath(Now)
 
-        FILE_TEMPORARY_VIEWER = APP_PATH & FILE_TEMPORARY_VIEWER
+        FILE_TEMPORARY_VIEWER = Path.GetTempPath & FILE_TEMPORARY_VIEWER
 
-        tlbProgressBar.Visible = False
         Me.Text = "iPhoneBrowser (v" & Application.ProductVersion & ")"
 
         ' initialize the file list groups
@@ -888,13 +928,15 @@ ErrorHandler:
     End Sub
 
     Private Sub lstFiles_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lstFiles.DragDrop
-        Dim initFolder As String
-
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            initFolder = getSelectedPath()
+            Dim initFolder As String = getSelectedPath()
+            Dim drops() As String = e.Data.GetData(DataFormats.FileDrop)
+            startStatus(drops.Length)
             For Each s As String In e.Data.GetData(DataFormats.FileDrop)
                 copyToPhone(s, initFolder, bConvertToiPhonePNG)
+                incrementStatus()
             Next
+            endStatus()
             StatusNormal("")
 
             selectSpecificPath(initFolder) ' fix up tree view
@@ -925,7 +967,8 @@ ErrorHandler:
     End Function
     Private Function getTempFilename(ByVal sFile As String) As String
         'grab the extension
-        Dim sTemp As String = Mid(sFile, InStrRev(sFile, "/") + 1) 'so we skip over the files without extensions but inside folders with extensions
+        Dim sTemp As String = Mid(sFile, InStrRev(sFile, "/") + 1)
+        'so we skip over the files without extensions but inside folders with extensions
         If InStr(sTemp, ".") > 0 Then
             sTemp = Mid(sFile, InStrRev(sFile, "."))
         Else
@@ -961,7 +1004,7 @@ ErrorHandler:
     Private Sub ShowPreview(ByVal sFile As String)
         Dim sr As StreamReader, picOK As Boolean
 
-        StatusNormal("Loading file...")
+        StatusNormal("Loading file " & sFile)
 
         Dim tmpOnPC As String = getTempFilename(sFile)
 
@@ -1191,24 +1234,24 @@ ErrorHandler:
         toolStripGoTo7.Click, toolStripGoTo6.Click, toolStripGoTo5.Click, toolStripGoTo4.Click, _
         toolStripGoTo18.Click, toolStripGoTo17.Click, toolStripGoTo16.Click, toolStripGoTo15.Click, _
         toolStripGoTo14.Click, toolStripGoTo13.Click, toolStripGoTo12.Click, toolStripGoTo11.Click, _
-        toolStripGoTo10.Click, ToolStripMenuItem2.Click, TTRToolStripMenuItem.Click, NESROMSToolStripMenuItem.Click, ISwitcherThemesToolStripMenuItem.Click, InstallerPackageSourcesToolStripMenuItem.Click, FrotzGamesToolStripMenuItem.Click, EBooksToolStripMenuItem.Click, DockSwapDocksToolStripMenuItem.Click, ToolStripMenuItem5.Click, ToolStripMenuItem6.Click, cmdGBAROMs.Click
+        toolStripGoTo10.Click, ToolStripMenuItem2.Click, TTRToolStripMenuItem.Click, NESROMSToolStripMenuItem.Click, ISwitcherThemesToolStripMenuItem.Click, InstallerPackageSourcesToolStripMenuItem.Click, FrotzGamesToolStripMenuItem.Click, EBooksToolStripMenuItem.Click, DockSwapDocksToolStripMenuItem.Click, ToolStripMenuItem5.Click, ToolStripMenuItem6.Click, cmdGBAROMs.Click, CameraRollToolStripMenuItem.Click
 
         Dim sPath As String, ts As ToolStripMenuItem
-
-        Application.DoEvents() ' allow display refresh
 
         ts = sender
         sPath = ts.Tag()
 
         If Not selectSpecificPath(sPath) Then
             If iPhoneInterface.IsJailbreak Then
-                If MsgBox("Do you want to create " & sPath & "?", MsgBoxStyle.YesNo, "Create Special Folder") = MsgBoxResult.Yes Then
-                    If iPhoneInterface.CreateDirectory(sPath) Then
-                        If Not selectSpecificPath(sPath) Then
-                            MsgBox("Error: The program could not find the path '" & sPath & "' on your iPhone.  Creation appeared to be successful", MsgBoxStyle.Critical)
+                If Not iPhoneInterface.Exists(sPath) Then
+                    If MsgBox("Do you want to create " & sPath & "?", MsgBoxStyle.YesNo, "Create Special Folder") = MsgBoxResult.Yes Then
+                        If iPhoneInterface.CreateDirectory(sPath) Then
+                            If Not selectSpecificPath(sPath) Then
+                                MsgBox("Error: The program could not find the path '" & sPath & "' on your iPhone.  Creation appeared to be successful", MsgBoxStyle.Critical)
+                            End If
+                        Else
+                            MsgBox("Error: The program could not create the path '" & sPath & "' on your iPhone.  Have you successfully used jailbreak?", MsgBoxStyle.Critical)
                         End If
-                    Else
-                        MsgBox("Error: The program could not create the path '" & sPath & "' on your iPhone.  Have you successfully used jailbreak?", MsgBoxStyle.Critical)
                     End If
                 End If
             Else
