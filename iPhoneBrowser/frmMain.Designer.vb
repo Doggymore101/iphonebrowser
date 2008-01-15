@@ -37,6 +37,7 @@ Partial Class frmMain
         Me.imgFilesSmall = New System.Windows.Forms.ImageList(Me.components)
         Me.tlbStatusStrip = New System.Windows.Forms.StatusStrip
         Me.tlbStatusLabel = New System.Windows.Forms.ToolStripStatusLabel
+        Me.tlbProgress0 = New System.Windows.Forms.ToolStripProgressBar
         Me.tlbProgressBar = New System.Windows.Forms.ToolStripProgressBar
         Me.toolStrip = New System.Windows.Forms.ToolStrip
         Me.ToolStripMenuItemFile = New System.Windows.Forms.ToolStripDropDownButton
@@ -206,9 +207,10 @@ Partial Class frmMain
         '
         'tlbStatusStrip
         '
-        Me.tlbStatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tlbStatusLabel, Me.tlbProgressBar})
+        Me.tlbStatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tlbStatusLabel, Me.tlbProgress0, Me.tlbProgressBar})
         Me.tlbStatusStrip.Location = New System.Drawing.Point(0, 575)
         Me.tlbStatusStrip.Name = "tlbStatusStrip"
+        Me.tlbStatusStrip.ShowItemToolTips = True
         Me.tlbStatusStrip.Size = New System.Drawing.Size(747, 22)
         Me.tlbStatusStrip.TabIndex = 3
         Me.tlbStatusStrip.Text = "StatusStrip1"
@@ -219,23 +221,37 @@ Partial Class frmMain
         Me.tlbStatusLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken
         Me.tlbStatusLabel.Image = Global.iPhoneBrowser.My.Resources.Resources.warning
         Me.tlbStatusLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.tlbStatusLabel.MergeAction = System.Windows.Forms.MergeAction.MatchOnly
         Me.tlbStatusLabel.Name = "tlbStatusLabel"
-        Me.tlbStatusLabel.Size = New System.Drawing.Size(522, 17)
+        Me.tlbStatusLabel.Size = New System.Drawing.Size(568, 17)
         Me.tlbStatusLabel.Spring = True
         Me.tlbStatusLabel.Text = "Please plug in your iPhone via USB.  If it is already plugged in, disconnect and " & _
             "reconnect it."
         Me.tlbStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.tlbStatusLabel.ToolTipText = "This section displays the current status."
         '
+        'tlbProgress0
+        '
+        Me.tlbProgress0.AutoSize = False
+        Me.tlbProgress0.BackColor = System.Drawing.SystemColors.Desktop
+        Me.tlbProgress0.Margin = New System.Windows.Forms.Padding(0, 4, 4, 4)
+        Me.tlbProgress0.MergeAction = System.Windows.Forms.MergeAction.MatchOnly
+        Me.tlbProgress0.Name = "tlbProgress0"
+        Me.tlbProgress0.Size = New System.Drawing.Size(75, 14)
+        Me.tlbProgress0.Step = 1
+        Me.tlbProgress0.ToolTipText = "Progress 0"
+        '
         'tlbProgressBar
         '
         Me.tlbProgressBar.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.tlbProgressBar.AutoSize = False
         Me.tlbProgressBar.Margin = New System.Windows.Forms.Padding(0, 4, 10, 4)
+        Me.tlbProgressBar.MergeAction = System.Windows.Forms.MergeAction.MatchOnly
+        Me.tlbProgressBar.MergeIndex = 2
         Me.tlbProgressBar.Name = "tlbProgressBar"
-        Me.tlbProgressBar.Size = New System.Drawing.Size(200, 14)
+        Me.tlbProgressBar.Size = New System.Drawing.Size(75, 14)
         Me.tlbProgressBar.Step = 1
-        Me.tlbProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.tlbProgressBar.ToolTipText = "Progress 1"
         '
         'toolStrip
         '
@@ -755,6 +771,7 @@ Partial Class frmMain
         '
         Me.mnuFavorites.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.mnuFavorites.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddToFavoritesToolStripMenuItem, Me.OrganizeFavoritesToolStripMenuItem, Me.ToolStripMenuItem7})
+        Me.mnuFavorites.Enabled = False
         Me.mnuFavorites.Image = CType(resources.GetObject("mnuFavorites.Image"), System.Drawing.Image)
         Me.mnuFavorites.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.mnuFavorites.Name = "mnuFavorites"
@@ -1246,5 +1263,6 @@ Partial Class frmMain
     Friend WithEvents cmdShowGroups As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmdGBAROMs As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CameraRollToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tlbProgress0 As System.Windows.Forms.ToolStripProgressBar
 
 End Class
