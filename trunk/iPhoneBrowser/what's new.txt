@@ -6,6 +6,12 @@ Future Versions	??/??/2008	Pete Wilson
   * modify grouping when sorting
   * convert binary plists to text and back
   * edit plists
+  
+v1.60   2/19/2008 Pete Wilson
+  * fixed Location menu to try both /var/root and /var/mobile
+  * modified Theme creation to use home dir based on /var/mobile/Media existance
+  * fixed Delete Folder to work when afc2 not setup
+  * modified startup to detect connected iPhone better
 
 v1.52   1/14/2008 Pete Wilson
   * fixed Camera Roll Goto Location menu option

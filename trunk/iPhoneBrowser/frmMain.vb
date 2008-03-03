@@ -39,6 +39,7 @@ Public Class frmMain
     Private IsCollapsing As Boolean
     Private ProgressBars(MAX_PROG_DEPTH) As ToolStripProgressBar
     Private ProgressDepth As Integer
+    Private tildeDir As String
 
     Private lstFilesSortOrder As SortOrder
 
@@ -131,6 +132,9 @@ Public Class frmMain
 
                 If iPhoneInterface.IsJailbreak Then
                     StatusNormal("iPhone is connected and jailbroken")
+                    If iPhoneInterface.Exists("/var/mobile/Media/DCIM") Then
+                        tildeDir = "/var/mobile"
+                    End If
                 Else
                     StatusWarning("iPhone is connected, not jailbroken")
                 End If
@@ -822,8 +826,6 @@ Public Class frmMain
         tlbProgressBar.Visible = False
         ProgressDepth = -1
 
-        iPhoneInterface = New iPhone
-
         APP_PATH = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\Cranium\iPhoneBrowser\"
         SetBackupPath(Now)
 
@@ -870,6 +872,10 @@ Public Class frmMain
         menuSetTooltips(mnuGoTo)
         menuSetTooltips(mnuStdApps)
         menuSetTooltips(mnuThirdPartyApps)
+
+        tildeDir = "/var/root"
+
+        iPhoneInterface = New iPhone
 
         'setup the event handlers
         AddHandler iPhoneInterface.Connect, AddressOf iPhoneConnected_EventHandler
@@ -1236,26 +1242,32 @@ ErrorHandler:
         toolStripGoTo14.Click, toolStripGoTo13.Click, toolStripGoTo12.Click, toolStripGoTo11.Click, _
         toolStripGoTo10.Click, ToolStripMenuItem2.Click, TTRToolStripMenuItem.Click, NESROMSToolStripMenuItem.Click, ISwitcherThemesToolStripMenuItem.Click, InstallerPackageSourcesToolStripMenuItem.Click, FrotzGamesToolStripMenuItem.Click, EBooksToolStripMenuItem.Click, DockSwapDocksToolStripMenuItem.Click, ToolStripMenuItem5.Click, ToolStripMenuItem6.Click, cmdGBAROMs.Click, CameraRollToolStripMenuItem.Click
 
-        Dim sPath As String, ts As ToolStripMenuItem
+        Dim sPath As String, ts As ToolStripMenuItem, try2 As Boolean = False
 
         ts = sender
         sPath = ts.Tag()
+        try2 = Microsoft.VisualBasic.Left(sPath, 10) = "/var/root/"
 
         If Not selectSpecificPath(sPath) Then
-            If iPhoneInterface.IsJailbreak Then
-                If Not iPhoneInterface.Exists(sPath) Then
-                    If MsgBox("Do you want to create " & sPath & "?", MsgBoxStyle.YesNo, "Create Special Folder") = MsgBoxResult.Yes Then
-                        If iPhoneInterface.CreateDirectory(sPath) Then
-                            If Not selectSpecificPath(sPath) Then
-                                MsgBox("Error: The program could not find the path '" & sPath & "' on your iPhone.  Creation appeared to be successful", MsgBoxStyle.Critical)
+            If try2 Then
+                sPath = "/var/mobile" & Mid(sPath, 10)
+            End If
+            If Not selectSpecificPath(sPath) Then
+                If iPhoneInterface.IsJailbreak Then
+                    If Not iPhoneInterface.Exists(sPath) Then
+                        If MsgBox("Do you want to create " & sPath & "?", MsgBoxStyle.YesNo, "Create Special Folder") = MsgBoxResult.Yes Then
+                            If iPhoneInterface.CreateDirectory(sPath) Then
+                                If Not selectSpecificPath(sPath) Then
+                                    MsgBox("Error: The program could not find the path '" & sPath & "' on your iPhone.  Creation appeared to be successful", MsgBoxStyle.Critical)
+                                End If
+                            Else
+                                MsgBox("Error: The program could not create the path '" & sPath & "' on your iPhone.  Have you successfully used jailbreak?", MsgBoxStyle.Critical)
                             End If
-                        Else
-                            MsgBox("Error: The program could not create the path '" & sPath & "' on your iPhone.  Have you successfully used jailbreak?", MsgBoxStyle.Critical)
                         End If
                     End If
+                Else
+                    MsgBox("Error: The program could not find the path '" & sPath & "' on your iPhone.  Have you successfully used jailbreak?", MsgBoxStyle.Critical)
                 End If
-            Else
-                MsgBox("Error: The program could not find the path '" & sPath & "' on your iPhone.  Have you successfully used jailbreak?", MsgBoxStyle.Critical)
             End If
         End If
     End Sub
@@ -1323,9 +1335,12 @@ ErrorHandler:
         Else
             ' select the parent path
             Dim sNewFolder As String = Microsoft.VisualBasic.Left(sPath, InStrRev(sPath, "/") - 1)
+            If sNewFolder = "" Then
+                sNewFolder = "/"
+            End If
+            trvFolders.Nodes.Remove(findNode(0)) ' delete the selected node
+
             selectSpecificPath(sNewFolder)
-            'delete the selected node
-            trvFolders.Nodes.Remove(findNode(0))
         End If
     End Sub
 
@@ -1414,9 +1429,9 @@ ErrorHandler:
             My.Settings.SummerboardPath = Path.GetDirectoryName(folderBrowserDialog.SelectedPath) ' save the parent
 
             dFolder = folderBrowserDialog.SelectedPath & "\"
-            ' save wallpaper jpg as PNG (/var/root/Libary/LockBackground.jpg)
+            ' save wallpaper jpg as PNG (~/Library/LockBackground.jpg)
             StatusNormal("Copy Wallpaper Image")
-            CopyFromPhoneMakePNG("/var/root/Library/LockBackground.jpg", dFolder & "Wallpaper.png")
+            CopyFromPhoneMakePNG(tildeDir + "/Library/LockBackground.jpg", dFolder & "Wallpaper.png")
 
             ' save Dock Background (SBDockBG2.png -> Dock.png)
             StatusNormal("Copy Dock Image")
