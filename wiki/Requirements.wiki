@@ -1,6 +1,4 @@
 #labels Featured,Phase-Deploy
-#Progam Requirements
-
 = Program Requirements =
 
   * Microsoft .Net Framework 1.1
