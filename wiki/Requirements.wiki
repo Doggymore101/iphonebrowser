@@ -1,0 +1,12 @@
+#labels Featured,Phase-Deploy
+#Progam Requirements
+
+= Program Requirements =
+
+  * Microsoft .Net Framework 1.1
+  * afc2 service installed on phone (otherwise iPhoneBrowser will not show all files)
+  * Recent version of iTunes installed
+
+= Notes =
+  * May not work well on non-US versions of Windows XP
+  * Has problems on Vista
