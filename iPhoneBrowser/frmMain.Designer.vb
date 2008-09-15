@@ -152,6 +152,7 @@ Partial Class frmMain
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator
         Me.ToolStripMenuItemDeleteFolder = New System.Windows.Forms.ToolStripMenuItem
         Me.folderBrowserDialog = New System.Windows.Forms.FolderBrowserDialog
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.tlbStatusStrip.SuspendLayout()
         Me.toolStrip.SuspendLayout()
         Me.menuRightClickFiles.SuspendLayout()
@@ -505,7 +506,7 @@ Partial Class frmMain
         'mnuGoTo
         '
         Me.mnuGoTo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.mnuGoTo.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripGoTo1, Me.toolStripGoTo2, Me.ToolStripSeparator5, Me.toolStripGoTo3, Me.ToolStripMenuItem2, Me.ToolStripSeparator4, Me.mnuStdApps, Me.mnuThirdPartyApps, Me.ToolStripSeparator6, Me.CameraRollToolStripMenuItem, Me.toolStripGoTo19})
+        Me.mnuGoTo.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripGoTo1, Me.toolStripGoTo2, Me.ToolStripSeparator5, Me.toolStripGoTo3, Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.ToolStripSeparator4, Me.mnuStdApps, Me.mnuThirdPartyApps, Me.ToolStripSeparator6, Me.CameraRollToolStripMenuItem, Me.toolStripGoTo19})
         Me.mnuGoTo.Enabled = False
         Me.mnuGoTo.Image = CType(resources.GetObject("mnuGoTo.Image"), System.Drawing.Image)
         Me.mnuGoTo.ImageTransparentColor = System.Drawing.Color.Magenta
@@ -544,7 +545,7 @@ Partial Class frmMain
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
         Me.ToolStripMenuItem2.Size = New System.Drawing.Size(244, 22)
-        Me.ToolStripMenuItem2.Tag = "/var/root/Library/Summerboard/Themes"
+        Me.ToolStripMenuItem2.Tag = "/var/mobile/Library/Summerboard/Themes"
         Me.ToolStripMenuItem2.Text = "SummerBoard &Themes"
         '
         'ToolStripSeparator4
@@ -675,77 +676,77 @@ Partial Class frmMain
         '
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
         Me.ToolStripMenuItem5.Size = New System.Drawing.Size(218, 22)
-        Me.ToolStripMenuItem5.Tag = "/var/root/Library/Customize"
+        Me.ToolStripMenuItem5.Tag = "/var/mobile/Library/Customize"
         Me.ToolStripMenuItem5.Text = "&Customize Files"
         '
         'DockSwapDocksToolStripMenuItem
         '
         Me.DockSwapDocksToolStripMenuItem.Name = "DockSwapDocksToolStripMenuItem"
         Me.DockSwapDocksToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
-        Me.DockSwapDocksToolStripMenuItem.Tag = "/var/root/Library/DockSwap"
+        Me.DockSwapDocksToolStripMenuItem.Tag = "/var/mobile/Library/DockSwap"
         Me.DockSwapDocksToolStripMenuItem.Text = "&DockSwap/Customize Docks"
         '
         'EBooksToolStripMenuItem
         '
         Me.EBooksToolStripMenuItem.Name = "EBooksToolStripMenuItem"
         Me.EBooksToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
-        Me.EBooksToolStripMenuItem.Tag = "/var/root/Media/EBooks"
+        Me.EBooksToolStripMenuItem.Tag = "/var/mobile/Media/EBooks"
         Me.EBooksToolStripMenuItem.Text = "E&Books"
         '
         'FrotzGamesToolStripMenuItem
         '
         Me.FrotzGamesToolStripMenuItem.Name = "FrotzGamesToolStripMenuItem"
         Me.FrotzGamesToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
-        Me.FrotzGamesToolStripMenuItem.Tag = "/var/root/Media/Frotz/Games"
+        Me.FrotzGamesToolStripMenuItem.Tag = "/var/mobile/Media/Frotz/Games"
         Me.FrotzGamesToolStripMenuItem.Text = "&Frotz Games"
         '
         'cmdGBAROMs
         '
         Me.cmdGBAROMs.Name = "cmdGBAROMs"
         Me.cmdGBAROMs.Size = New System.Drawing.Size(218, 22)
-        Me.cmdGBAROMs.Tag = "/var/root/Media/ROMs/GBA"
+        Me.cmdGBAROMs.Tag = "/var/mobile/Media/ROMs/GBA"
         Me.cmdGBAROMs.Text = "&GBA ROMs"
         '
         'ToolStripMenuItem6
         '
         Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
         Me.ToolStripMenuItem6.Size = New System.Drawing.Size(218, 22)
-        Me.ToolStripMenuItem6.Tag = "/var/root/Library/iFlashCards"
+        Me.ToolStripMenuItem6.Tag = "/var/mobile/Library/iFlashCards"
         Me.ToolStripMenuItem6.Text = "iFlashCards"
         '
         'InstallerPackageSourcesToolStripMenuItem
         '
         Me.InstallerPackageSourcesToolStripMenuItem.Name = "InstallerPackageSourcesToolStripMenuItem"
         Me.InstallerPackageSourcesToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
-        Me.InstallerPackageSourcesToolStripMenuItem.Tag = "/var/root/Library/Installer"
+        Me.InstallerPackageSourcesToolStripMenuItem.Tag = "/var/mobile/Library/Installer"
         Me.InstallerPackageSourcesToolStripMenuItem.Text = "&Installer Package Sources"
         '
         'ISwitcherThemesToolStripMenuItem
         '
         Me.ISwitcherThemesToolStripMenuItem.Name = "ISwitcherThemesToolStripMenuItem"
         Me.ISwitcherThemesToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
-        Me.ISwitcherThemesToolStripMenuItem.Tag = "/var/root/Media/Themes"
+        Me.ISwitcherThemesToolStripMenuItem.Tag = "/var/mobile/Media/Themes"
         Me.ISwitcherThemesToolStripMenuItem.Text = "i&Switcher Themes"
         '
         'NESROMSToolStripMenuItem
         '
         Me.NESROMSToolStripMenuItem.Name = "NESROMSToolStripMenuItem"
         Me.NESROMSToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
-        Me.NESROMSToolStripMenuItem.Tag = "/var/root/Media/ROMs/NES"
+        Me.NESROMSToolStripMenuItem.Tag = "/var/mobile/Media/ROMs/NES"
         Me.NESROMSToolStripMenuItem.Text = "&NES ROMS"
         '
         'TTRToolStripMenuItem
         '
         Me.TTRToolStripMenuItem.Name = "TTRToolStripMenuItem"
         Me.TTRToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
-        Me.TTRToolStripMenuItem.Tag = "/var/root/Media/TTR"
+        Me.TTRToolStripMenuItem.Tag = "/var/mobile/Media/TTR"
         Me.TTRToolStripMenuItem.Text = "&TTR"
         '
         'WeDictDictionariesToolStripMenuItem
         '
         Me.WeDictDictionariesToolStripMenuItem.Name = "WeDictDictionariesToolStripMenuItem"
         Me.WeDictDictionariesToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
-        Me.WeDictDictionariesToolStripMenuItem.Tag = "/var/root/Libary/weDict"
+        Me.WeDictDictionariesToolStripMenuItem.Tag = "/var/mobile/Libary/weDict"
         Me.WeDictDictionariesToolStripMenuItem.Text = "&weDict Dictionaries"
         '
         'ToolStripSeparator6
@@ -757,7 +758,7 @@ Partial Class frmMain
         '
         Me.CameraRollToolStripMenuItem.Name = "CameraRollToolStripMenuItem"
         Me.CameraRollToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
-        Me.CameraRollToolStripMenuItem.Tag = "/var/root/Media/DCIM"
+        Me.CameraRollToolStripMenuItem.Tag = "/var/mobile/Media/DCIM"
         Me.CameraRollToolStripMenuItem.Text = "Camera Roll  (DCIM)"
         '
         'toolStripGoTo19
@@ -1107,6 +1108,13 @@ Partial Class frmMain
         Me.folderBrowserDialog.Description = "Select the destination folder for saving"
         Me.folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer
         '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(244, 22)
+        Me.ToolStripMenuItem1.Tag = "/Library/Themes"
+        Me.ToolStripMenuItem1.Text = "WinterBoard Themes"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1264,5 +1272,6 @@ Partial Class frmMain
     Friend WithEvents cmdGBAROMs As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CameraRollToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tlbProgress0 As System.Windows.Forms.ToolStripProgressBar
+    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
 
 End Class

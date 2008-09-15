@@ -6,7 +6,26 @@ Future Versions	??/??/2008	Pete Wilson
   * modify grouping when sorting
   * convert binary plists to text and back
   * edit plists
+  * Make file backups optional
+  * Modify delete confirmation to have backup checkbox and All buttons
   
+v1.81   9/11/08 Pete Wilson
+  * improved UI response during large file copies
+  * added handling for >2GB file sizes
+  * another change to work with iTunes 8.x - thanks to bozhenov and iFunbox.dev
+  
+v1.80   9/11/08 Pete Wilson
+  * detect symbolic links to directories and handle properly
+  * change to work with iTunes 8.x - may not work with iTunes 7.x
+
+v1.70   7/30/08 Pete Wilson
+  * attempt to compile for proper 64-bit operation
+  * Try /var/mobile first, then /var/root
+  
+v1.61   3/10/2008 Pete Wilson
+  * improved already connected iPhone detection again by improving Manzana construction
+  * handled Unix chars in filenames better
+
 v1.60   2/19/2008 Pete Wilson
   * fixed Location menu to try both /var/root and /var/mobile
   * modified Theme creation to use home dir based on /var/mobile/Media existance
