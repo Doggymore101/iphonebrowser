@@ -19,9 +19,11 @@ Future Versions	??/??/2008	Pete Wilson
   * Make file backups optional
   * Modify delete confirmation to have backup checkbox and All buttons
   
-v1.81   9/11/08 Pete Wilson
+v1.81   9/15/08 Pete Wilson
   * improved UI response during large file copies
   * added handling for >2GB file sizes
+  * another change to work with iTunes 8.x - thanks to bozhenov and iFunbox.dev
+  * forked Manzana to distribute changes
   
 v1.80   9/11/08 Pete Wilson
   * detect symbolic links to directories and handle properly
@@ -114,4 +116,3 @@ V1.1	8/7/2007 	Kevin Hightower
 
 V1.0 	8/5/2007 	Kevin Hightower
   * Initial release
-  
