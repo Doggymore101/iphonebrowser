@@ -194,7 +194,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Manzana\trunk\Manzana\Manzana.csproj">
+    <ProjectReference Include="..\Manzana\Manzana.csproj">
       <Project>{8C260F85-65AC-40A6-85BF-D89C49052F64}</Project>
       <Name>Manzana</Name>
     </ProjectReference>
