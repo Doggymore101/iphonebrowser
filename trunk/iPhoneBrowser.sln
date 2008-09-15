@@ -14,11 +14,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayApplePNG", "DisplayA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCW_iPhonePNG", "SCW_iPhonePNG\SCW_iPhonePNG.csproj", "{E85E88FC-5B38-424F-AA49-19CAF50F65F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manzana", "..\Manzana\trunk\Manzana\Manzana.csproj", "{8C260F85-65AC-40A6-85BF-D89C49052F64}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCW_PList", "SCW_PList\SCW_PList.csproj", "{19985C08-95DD-498C-AFE3-B357288F5258}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTunesDLLDebug", "iTunesDLLDebug\iTunesDLLDebug.csproj", "{0FF2F5D8-560C-4846-B5F0-832BFCE08540}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manzana", "Manzana\Manzana.csproj", "{8C260F85-65AC-40A6-85BF-D89C49052F64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,14 +66,6 @@ Global
 		{E85E88FC-5B38-424F-AA49-19CAF50F65F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E85E88FC-5B38-424F-AA49-19CAF50F65F7}.Release|x86.ActiveCfg = Release|x86
 		{E85E88FC-5B38-424F-AA49-19CAF50F65F7}.Release|x86.Build.0 = Release|x86
-		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Debug|x86.ActiveCfg = Debug|x86
-		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Debug|x86.Build.0 = Debug|x86
-		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Release|x86.ActiveCfg = Release|x86
-		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Release|x86.Build.0 = Release|x86
 		{19985C08-95DD-498C-AFE3-B357288F5258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19985C08-95DD-498C-AFE3-B357288F5258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19985C08-95DD-498C-AFE3-B357288F5258}.Debug|x86.ActiveCfg = Debug|x86
@@ -90,6 +82,14 @@ Global
 		{0FF2F5D8-560C-4846-B5F0-832BFCE08540}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0FF2F5D8-560C-4846-B5F0-832BFCE08540}.Release|x86.ActiveCfg = Release|x86
 		{0FF2F5D8-560C-4846-B5F0-832BFCE08540}.Release|x86.Build.0 = Release|x86
+		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Debug|x86.ActiveCfg = Debug|x86
+		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Debug|x86.Build.0 = Debug|x86
+		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Release|x86.ActiveCfg = Release|x86
+		{8C260F85-65AC-40A6-85BF-D89C49052F64}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
