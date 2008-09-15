@@ -132,11 +132,11 @@ Public Class frmMain
 
                 If iPhoneInterface.IsJailbreak Then
                     StatusNormal("iPhone is connected and jailbroken")
-                    If iPhoneInterface.Exists("/var/mobile/Media/DCIM") Then
-                        tildeDir = "/var/mobile"
+                    If iPhoneInterface.Exists("/var/root/Media/DCIM") Then
+                        tildeDir = "/var/root"
                     End If
                 Else
-                    StatusWarning("iPhone is connected, not jailbroken")
+                    StatusWarning("iPhone is connected, not jailbroken (no afc2 service found)")
                 End If
             Else
                 StatusWarning("iPhone is NOT connected, please check your connections!")
@@ -173,6 +173,7 @@ Public Class frmMain
         End If
     End Sub
     Private Sub incrementStatus()
+        Application.DoEvents() ' ensure UI continues when doing long processes
         If ProgressDepth <= MAX_PROG_DEPTH Then
             With ProgressBars(ProgressDepth)
                 If .Value < .Maximum Then
@@ -229,7 +230,7 @@ Public Class frmMain
         End If
     End Sub
     Private Function fileSizeAsString(ByVal sFilePath As String) As String
-        Dim iFileSize As Integer = iPhoneInterface.FileSize(sFilePath)
+        Dim iFileSize As ULong = iPhoneInterface.FileSize(sFilePath)
         'make it look pretty
         If iFileSize > 10240000 Then
             Return Format(iFileSize / 1024000, "0.##") & " mb"
@@ -304,7 +305,8 @@ Public Class frmMain
     Private Function getImageIndexForFile(ByVal sFilename As String) As Integer
         Dim iReturn As Integer = IMAGE_FILE_UNKNOWN
 
-        sFilename = Path.GetFileName(LCase(sFilename))
+        Dim lastSlash As Integer = Strings.InStrRev(sFilename, "\") + 1
+        sFilename = Mid(LCase(sFilename), lastSlash)
         Dim sExt As String = Mid(sFilename, InStr(sFilename, ".") + 1)
 
         Select Case sExt
@@ -753,6 +755,10 @@ Public Class frmMain
         End Try
     End Function
     Private Function selectSpecificPath(ByVal sPathOnPhone As String) As Boolean
+        Return selectSpecificPath(sPathOnPhone, False)
+    End Function
+    Private Function selectSpecificPath(ByVal sPathOnPhone As String, ByVal forceRefresh As Boolean) As Boolean
+
         'selects a specifc path in the tree view
         Dim sTemp As String, iNode As Integer, tn() As TreeNode, bReturn As Boolean = False
 
@@ -779,7 +785,7 @@ Public Class frmMain
 
                 tn = trvFolders.Nodes.Find(sTemp, True)
                 If tn.Length > 0 Then
-                    refreshChildFolders(tn(0), False)
+                    refreshChildFolders(tn(0), forceRefresh)
                 End If
                 incrementStatus()
             Loop
@@ -873,13 +879,9 @@ Public Class frmMain
         menuSetTooltips(mnuStdApps)
         menuSetTooltips(mnuThirdPartyApps)
 
-        tildeDir = "/var/root"
+        tildeDir = "/var/mobile"
 
-        iPhoneInterface = New iPhone
-
-        'setup the event handlers
-        AddHandler iPhoneInterface.Connect, AddressOf iPhoneConnected_EventHandler
-        AddHandler iPhoneInterface.Disconnect, AddressOf iPhoneDisconnected_EventHandler
+        iPhoneInterface = New iPhone(AddressOf iPhoneConnected_EventHandler, AddressOf iPhoneDisconnected_EventHandler)
 
         Exit Sub
 
@@ -1070,7 +1072,7 @@ ErrorHandler:
         If lstFiles.SelectedItems.Count > 0 Then
             Dim sFile As String = getSelectedFilename()
 
-            If prevSelectedFile = sFile Then ' make sure we changed selections (handles multi-selecte better)
+            If prevSelectedFile = sFile Then ' make sure we changed selections (handles multi-select better)
                 Exit Sub
             End If
             prevSelectedFile = sFile
@@ -1240,17 +1242,17 @@ ErrorHandler:
         toolStripGoTo7.Click, toolStripGoTo6.Click, toolStripGoTo5.Click, toolStripGoTo4.Click, _
         toolStripGoTo18.Click, toolStripGoTo17.Click, toolStripGoTo16.Click, toolStripGoTo15.Click, _
         toolStripGoTo14.Click, toolStripGoTo13.Click, toolStripGoTo12.Click, toolStripGoTo11.Click, _
-        toolStripGoTo10.Click, ToolStripMenuItem2.Click, TTRToolStripMenuItem.Click, NESROMSToolStripMenuItem.Click, ISwitcherThemesToolStripMenuItem.Click, InstallerPackageSourcesToolStripMenuItem.Click, FrotzGamesToolStripMenuItem.Click, EBooksToolStripMenuItem.Click, DockSwapDocksToolStripMenuItem.Click, ToolStripMenuItem5.Click, ToolStripMenuItem6.Click, cmdGBAROMs.Click, CameraRollToolStripMenuItem.Click
+        toolStripGoTo10.Click, ToolStripMenuItem2.Click, TTRToolStripMenuItem.Click, NESROMSToolStripMenuItem.Click, ISwitcherThemesToolStripMenuItem.Click, InstallerPackageSourcesToolStripMenuItem.Click, FrotzGamesToolStripMenuItem.Click, EBooksToolStripMenuItem.Click, DockSwapDocksToolStripMenuItem.Click, ToolStripMenuItem5.Click, ToolStripMenuItem6.Click, cmdGBAROMs.Click, CameraRollToolStripMenuItem.Click, ToolStripMenuItem1.Click
 
         Dim sPath As String, ts As ToolStripMenuItem, try2 As Boolean = False
 
         ts = sender
         sPath = ts.Tag()
-        try2 = Microsoft.VisualBasic.Left(sPath, 10) = "/var/root/"
+        try2 = Microsoft.VisualBasic.Left(sPath, 10) = "/var/mobile/"
 
         If Not selectSpecificPath(sPath) Then
             If try2 Then
-                sPath = "/var/mobile" & Mid(sPath, 10)
+                sPath = "/var/root" & Mid(sPath, 10)
             End If
             If Not selectSpecificPath(sPath) Then
                 If iPhoneInterface.IsJailbreak Then
@@ -1284,9 +1286,9 @@ ErrorHandler:
             ' user canceled
         ElseIf sNewFolder = "NewFolder" Then
             MsgBox("You didn't change the default name, I am pretty sure you don't want a 'NewFolder' folder name...", MsgBoxStyle.Information, "Canceled")
-        ElseIf InStr(sNewFolder, " ") > 0 Or InStr(sNewFolder, "/") > 0 Or InStr(sNewFolder, "\") > 0 Or _
+        ElseIf InStr(sNewFolder, "/") > 0 Or InStr(sNewFolder, "\") > 0 Or _
                 InStr(sNewFolder, "*") > 0 Or InStr(sNewFolder, "?") > 0 Or InStr(sNewFolder, "[") > 0 Or InStr(sNewFolder, "]") > 0 Then
-            MsgBox("No spaces, slashes or other special characters are allowed in the folder name.", MsgBoxStyle.Information, "Canceled")
+            MsgBox("No slashes or other special characters are allowed in the folder name.", MsgBoxStyle.Information, "Canceled")
         ElseIf iPhoneInterface.Exists(sPath) Then
             MsgBox("The path '" & sPath & "' already exists.", MsgBoxStyle.Information, "Canceled")
         Else
@@ -1297,7 +1299,7 @@ ErrorHandler:
             'lets create the directory
             If iPhoneInterface.CreateDirectory(sPath) Then
                 'it created successfully
-                selectSpecificPath(sPath)
+                selectSpecificPath(sPath, True)
             Else
                 'it failed
                 MsgBox("The path '" & sPath & "' failed to create due to an unknown interface failure.", MsgBoxStyle.Information, "Canceled")
