@@ -34,14 +34,17 @@ Public Class frmMain
     Private QTpreviewFile As String
     Private prevSelectedFile As String = ""
     Private bConvertToiPhonePNG As Boolean, bConvertToPNG As Boolean
+    Private bConfirmDeletions As Boolean, bDontBackupEver As Boolean, bDontBackupRun As Boolean
     Private bShowPreview As Boolean, bIgnoreThumbsFile As Boolean, bIgnoreDSStoreFile As Boolean
+    Private bShowGroups As Boolean
     Private favNames As Specialized.StringCollection, favPaths As Specialized.StringCollection
     Private IsCollapsing As Boolean
     Private ProgressBars(MAX_PROG_DEPTH) As ToolStripProgressBar
     Private ProgressDepth As Integer
     Private tildeDir As String
 
-    Private lstFilesSortOrder As SortOrder
+    Private lstFilesSortOrder As SortOrder, lstFilesGroupOrder As SortOrder
+    Private lstFilesSortCol As Integer
 
     ' import some functions
     Public Enum MessageBeepType
@@ -85,7 +88,7 @@ Public Class frmMain
 
     Public Sub iPhoneConnected_Details() Handles Me.iPhoneConnected
         If Not bNowConnected Then
-            txtSerial = iPhoneInterface.Device.serial
+            txtSerial = "" ' get serial of device somehow???
             If Me.InvokeRequired Then
                 Me.Invoke(New NoParmDel(AddressOf DelayedConnectionChange))
             Else
@@ -255,16 +258,21 @@ Public Class frmMain
         Dim lstTemp As ListViewItem
 
         If Not bSupressFiles Then
+            Application.UseWaitCursor = True
             'loads the files into the list view based on the current directory
+            iPhonePath = nodeiPhonePath(trvFolders.SelectedNode)
+            StatusNormal("Loading Files for " & iPhonePath & "...")
+            Application.DoEvents()
 
             'first clear out any files that may be there
             lstFiles.Items.Clear()
             lstFiles.ListViewItemSorter = Nothing
             lstFilesSortOrder = SortOrder.None
+            lstFilesGroupOrder = SortOrder.None
+            lstFilesSortCol = -1 ' not being sorted
+            lstFiles.ShowGroups = True ' bug in Windows - must add items when true
 
             lstFiles.BeginUpdate()
-            iPhonePath = nodeiPhonePath(trvFolders.SelectedNode)
-            StatusNormal("Loading Files for " & iPhonePath & "...")
             'now get the files from the iphone
             sFiles = iPhoneInterface.GetFiles(iPhonePath)
 
@@ -275,9 +283,7 @@ Public Class frmMain
 
                 lstTemp = New ListViewItem(sFile)
                 lstTemp.ImageIndex = getImageIndexForFile(sFile)
-                If lstFiles.ShowGroups Then
-                    lstTemp.Group = lstFiles.Groups(lstTemp.ImageIndex)
-                End If
+                lstTemp.Group = lstFiles.Groups(lstTemp.ImageIndex)
 
                 ' add the file size
                 lstTemp.SubItems.Add(fileSizeAsString(iPhonePath & "/" & sFile))
@@ -291,10 +297,12 @@ Public Class frmMain
             endStatus()
             StatusNormal("")
 
+            lstFiles.ShowGroups = bShowGroups
             lstFiles.EndUpdate()
 
             ClearPreview()
             grpFiles.Text = "Files on your iPhone in the '" & nodeiPhonePath(trvFolders.SelectedNode) & "' Directory"
+            Application.UseWaitCursor = False
         End If
     End Sub
     ''' <summary>
@@ -305,9 +313,8 @@ Public Class frmMain
     Private Function getImageIndexForFile(ByVal sFilename As String) As Integer
         Dim iReturn As Integer = IMAGE_FILE_UNKNOWN
 
-        Dim lastSlash As Integer = Strings.InStrRev(sFilename, "\") + 1
-        sFilename = Mid(LCase(sFilename), lastSlash)
-        Dim sExt As String = Mid(sFilename, InStr(sFilename, ".") + 1)
+        sFilename = Mid(LCase(sFilename), Strings.InStrRev(sFilename, "\") + 1)
+        Dim sExt As String = Mid(sFilename, Strings.InStrRev(sFilename, ".") + 1)
 
         Select Case sExt
             Case "png", "jpg", "jpeg", "gif"
@@ -359,8 +366,8 @@ Public Class frmMain
     Private Sub refreshFolders()
         Dim rootNode As TreeNode
 
-        Me.Cursor = Cursors.WaitCursor
-        trvFolders.SuspendLayout()
+        Application.UseWaitCursor = True
+        trvFolders.BeginUpdate()
 
         startStatus(3)
         trvFolders.Nodes.Clear()
@@ -377,9 +384,11 @@ Public Class frmMain
         trvFolders.SelectedNode = rootNode
         incrementStatus()
 
-        trvFolders.ResumeLayout()
-        Me.Cursor = Cursors.Arrow
+        trvFolders.Sort()
+        trvFolders.EndUpdate()
         endStatus()
+
+        Application.UseWaitCursor = False
     End Sub
     Private Sub addFoldersBeneath(ByRef aNode As TreeNode)
         addFolders(nodeiPhonePath(aNode), aNode)
@@ -473,22 +482,27 @@ Public Class frmMain
         If iPhoneInterface.Exists(sourceOnPhone) Then
             startStatus(iPhoneInterface.FileSize(sourceOnPhone) / sBuffer.Length) 'show our progress bar
 
-            'open a connection to the file and read it
-            iPhoneFileInterface = iPhoneFile.OpenRead(iPhoneInterface, sourceOnPhone)
+            Try
+                'open a connection to the file and read it
+                iPhoneFileInterface = iPhoneFile.OpenRead(iPhoneInterface, sourceOnPhone)
 
-            fileTemp = File.OpenWrite(destinationOnComputer)
-            iDataBytes = iPhoneFileInterface.Read(sBuffer, 0, sBuffer.Length)
-            While iDataBytes > 0
-                fileTemp.Write(sBuffer, 0, iDataBytes)
+                fileTemp = File.OpenWrite(destinationOnComputer)
                 iDataBytes = iPhoneFileInterface.Read(sBuffer, 0, sBuffer.Length)
-                incrementStatus() 'increment our progressbar
-            End While
-            endStatus() 'fill our progressbar
+                While iDataBytes > 0
+                    fileTemp.Write(sBuffer, 0, iDataBytes)
+                    iDataBytes = iPhoneFileInterface.Read(sBuffer, 0, sBuffer.Length)
+                    incrementStatus() 'increment our progressbar
+                End While
 
-            iPhoneFileInterface.Close()
-            fileTemp.Close()
+                iPhoneFileInterface.Close()
+                fileTemp.Close()
 
-            bReturn = True
+                bReturn = True
+            Catch Ex As Exception
+                bReturn = False
+            Finally
+                endStatus()
+            End Try
         End If
 
         copyFromPhone = bReturn
@@ -540,7 +554,9 @@ Public Class frmMain
             'it exists, back it up before overwriting
             sPath = Microsoft.VisualBasic.Left(dPhone, InStrRev(dPhone, "/"))
             sFile = Mid(dPhone, InStrRev(dPhone, "/") + 1)
-            backupFileFromPhoneAt(sPath, sFile, aBackupTime)
+            If Not bDontBackupRun Then
+                backupFileFromPhoneAt(sPath, sFile, aBackupTime)
+            End If
         End If
 
         'open a connection to the file and write it
@@ -680,7 +696,9 @@ Public Class frmMain
         If iPhoneInterface.Exists(sourceOnPhone) Then
             sPath = PhoneGetDirectoryName(sourceOnPhone)
             sFile = Path.GetFileName(sourceOnPhone)
-            backupFileFromPhone(sPath, sFile)
+            If Not bDontBackupRun Then
+                backupFileFromPhone(sPath, sFile)
+            End If
 
             iPhoneInterface.DeleteFile(sourceOnPhone)
 
@@ -851,22 +869,21 @@ Public Class frmMain
             My.Settings.CallUpgrade = False
             My.Settings.Save()
         End If
-        ConfirmDeletionsToolStripMenuItem.Checked = My.Settings.ConfirmDeletions
+        bConfirmDeletions = My.Settings.ConfirmDeletions
         bConvertToiPhonePNG = My.Settings.PCToiPhonePNG
         bConvertToPNG = My.Settings.iPhoneToPCPNG
         bShowPreview = My.Settings.ShowPreviews
         bIgnoreThumbsFile = My.Settings.IgnoreThumbsFile
         bIgnoreDSStoreFile = My.Settings.IgnoreDSStoreFile
-        IPhoneToPCToolStripMenuItem.Checked = bConvertToPNG
-        PCToIPhoneToolStripMenuItem.Checked = bConvertToiPhonePNG
-        ShowPreviewsToolStripMenuItem.Checked = bShowPreview
-        IgnoreThumbsdbToolStripMenuItem.Checked = bIgnoreThumbsFile
-        IgnoreDSStoreToolStripMenuItem.Checked = bIgnoreDSStoreFile
-        cmdShowGroups.Checked = My.Settings.ShowGroups
+        bDontBackupEver = My.Settings.DontBackupEver
+        bDontBackupRun = bDontBackupEver
+        bShowGroups = My.Settings.ShowGroups
+
         favNames = My.Settings.FavNames
         If favNames Is Nothing Then
             favNames = New Specialized.StringCollection()
         End If
+
         favPaths = My.Settings.FavPaths
         If favPaths Is Nothing Then
             favPaths = New Specialized.StringCollection()
@@ -1010,6 +1027,12 @@ ErrorHandler:
         txtFileDetails.Visible = True
     End Sub
     Private Sub ShowPreview(ByVal sFile As String)
+        ' don't preview links
+        If iPhoneInterface.IsLink(sFile) Then
+            StatusWarning("Unable to preview symbolic link: " & sFile)
+            Exit Sub
+        End If
+
         Dim sr As StreamReader, picOK As Boolean
 
         StatusNormal("Loading file " & sFile)
@@ -1157,12 +1180,14 @@ ErrorHandler:
         Dim sSourcePath As String
 
         If lstFiles.SelectedItems.Count > 0 Then
+            Application.UseWaitCursor = True
             sSourcePath = getSelectedPath()
             Dim aTime As Date = Now
 
             For Each sItem As ListViewItem In lstFiles.SelectedItems
                 backupFileFromPhoneAt(sSourcePath, sItem.Text, aTime)
             Next
+            Application.UseWaitCursor = False
         End If
 
     End Sub
@@ -1199,7 +1224,7 @@ ErrorHandler:
             For Each sItem As ListViewItem In lstFiles.SelectedItems
                 sDeleteFilename = sFolder & sItem.Text
                 okDel = True
-                If ConfirmDeletionsToolStripMenuItem.Checked Then
+                If bConfirmDeletions Then
                     'Make them confirm it
                     Dim ans As MsgBoxResult
                     ans = MsgBox("Are you sure you wish to delete the '" & sDeleteFilename & "' file? (A backup copy will automatically be created)", MsgBoxStyle.YesNoCancel, "Delete file?")
@@ -1314,7 +1339,7 @@ ErrorHandler:
         tNode = trvFolders.SelectedNode
 
         If lstFiles.Items.Count > 0 Or tNode.Nodes.Count > 0 Then
-            If ConfirmDeletionsToolStripMenuItem.Checked Then
+            If bConfirmDeletions Then
                 If MsgBox("Are you sure you want to remove " & sPath & "?" & vbCrLf & vbCrLf & "[For your safety, all contents will be backed up.]", MsgBoxStyle.YesNo, "Confirm Folder Deletion") = MsgBoxResult.No Then
                     Exit Sub
                 End If
@@ -1327,7 +1352,9 @@ ErrorHandler:
             End If
         End If
 
-        BackupDirectory(sPath)
+        If Not bDontBackupRun Then
+            BackupDirectory(sPath)
+        End If
         iPhoneInterface.DeleteDirectory(sPath, True)
 
         findNode = trvFolders.Nodes.Find(sPath, True)
@@ -1357,26 +1384,44 @@ ErrorHandler:
             End If
         End If
     End Sub
-
+    Private Sub sortLstFilesGroups()
+        Dim holder(lstFiles.Groups.Count - 1) As ListViewGroup
+        lstFiles.Groups.CopyTo(holder, 0)
+        Array.Sort(holder, New ListViewGroupSorter(lstFilesGroupOrder))
+        lstFiles.Groups.Clear()
+        lstFiles.Groups.AddRange(holder)
+    End Sub
     Private Sub lstFiles_ColumnClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lstFiles.ColumnClick
-        ' Set the ListViewItemSorter property to a new ListViewItemComparer 
-        ' object. Setting this property immediately sorts the 
-        ' ListView using the ListViewItemComparer object.
 
-        ' turn off grouping when sorting
-        If cmdShowGroups.Checked Then
-            cmdShowGroups_Click(sender, e)
-        End If
-        If lstFilesSortOrder = SortOrder.None Or lstFilesSortOrder = SortOrder.Descending Then
-            lstFilesSortOrder = SortOrder.Ascending
+        If bShowGroups And e.Column = 2 Then ' toggle group order
+            If lstFilesGroupOrder = SortOrder.None Or lstFilesGroupOrder = SortOrder.Descending Then
+                lstFilesGroupOrder = SortOrder.Ascending
+            Else
+                lstFilesGroupOrder = SortOrder.Descending
+            End If
+            sortLstFilesGroups()
+            lstFiles.Sort()
         Else
-            lstFilesSortOrder = SortOrder.Descending
+            If lstFilesSortOrder = SortOrder.None Or lstFilesSortOrder = SortOrder.Descending Or e.Column <> lstFilesSortCol Then
+                lstFilesSortOrder = SortOrder.Ascending
+            Else
+                lstFilesSortOrder = SortOrder.Descending
+            End If
+            lstFilesSortCol = e.Column
+
+            ' Set the ListViewItemSorter property to a new ListViewItemComparer 
+            ' object. Setting this property immediately sorts the 
+            ' ListView using the ListViewItemComparer object.
+            If lstFiles.Columns(e.Column).Text = "Size" Then
+                Me.lstFiles.ListViewItemSorter = New ListViewSizeComparer(e.Column, lstFilesSortOrder)
+            Else
+                Me.lstFiles.ListViewItemSorter = New ListViewStringComparer(e.Column, lstFilesSortOrder)
+            End If
         End If
-        If lstFiles.Columns(e.Column).Text = "Size" Then
-            Me.lstFiles.ListViewItemSorter = New ListViewSizeComparer(e.Column, lstFilesSortOrder)
-        Else
-            Me.lstFiles.ListViewItemSorter = New ListViewStringComparer(e.Column, lstFilesSortOrder)
-        End If
+
+        lstFiles.ShowGroups = False
+        lstFiles.ShowGroups = True
+        lstFiles.ShowGroups = bShowGroups
     End Sub
 
     Private Sub trvFolders_NodeMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles trvFolders.NodeMouseClick
@@ -1397,20 +1442,14 @@ ErrorHandler:
             Select Case s.Text
                 Case "Black"
                     picFileDetails.BackColor = Color.Black
-                    GrayToolStripMenuItem.Checked = False
-                    WhiteToolStripMenuItem.Checked = False
-
                 Case "Gray"
                     picFileDetails.BackColor = Color.Gray
-                    BlackToolStripMenuItem.Checked = False
-                    WhiteToolStripMenuItem.Checked = False
-
                 Case "White"
                     picFileDetails.BackColor = Color.White
-                    BlackToolStripMenuItem.Checked = False
-                    GrayToolStripMenuItem.Checked = False
-
             End Select
+            GrayToolStripMenuItem.Checked = (picFileDetails.BackColor = Color.Gray)
+            BlackToolStripMenuItem.Checked = (picFileDetails.BackColor = Color.Black)
+            WhiteToolStripMenuItem.Checked = (picFileDetails.BackColor = Color.White)
         Else
             picFileDetails.BackColor = PictureBox.DefaultBackColor
         End If
@@ -1701,9 +1740,9 @@ ErrorHandler:
     End Sub
 
     Private Sub BackupFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BackupFolderToolStripMenuItem.Click
-        Me.Cursor = Cursors.WaitCursor
+        Application.UseWaitCursor = True
         BackupDirectory(getSelectedFolder())
-        Me.Cursor = Cursors.Arrow
+        Application.UseWaitCursor = False
     End Sub
 
     Private Sub cmdRenameFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRenameFile.Click
@@ -1750,11 +1789,18 @@ ErrorHandler:
     End Sub
 
     Private Sub cmdShowGroups_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdShowGroups.Click
-        lstFiles.ShowGroups = Not lstFiles.ShowGroups
-        cmdShowGroups.Checked = lstFiles.ShowGroups
-        If lstFiles.ShowGroups Then
-            loadFiles()
+        ' work around massive .Net bugs with grouping and sorting in ListView
+        bShowGroups = Not bShowGroups
+        lstFiles.ShowGroups = bShowGroups
+        If bShowGroups And lstFilesSortCol = 2 Then ' we were sorted by groups, so sort the groups
+            lstFilesGroupOrder = lstFilesSortOrder
+            sortLstFilesGroups()
         End If
+        lstFiles.Sort()
+        lstFiles.ShowGroups = Not bShowGroups
+        lstFiles.Sort()
+        lstFiles.ShowGroups = bShowGroups
+        lstFiles.Sort()
     End Sub
     Private Sub cmdFavorite_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim anItem As ToolStripMenuItem = sender
@@ -1784,6 +1830,7 @@ ErrorHandler:
     Private Sub trvFolders_KeyUp(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles trvFolders.KeyUp
         If e.KeyCode = Keys.F5 Then
             addFoldersBeneath(trvFolders.SelectedNode)
+            trvFolders.Sort()
         End If
     End Sub
 
@@ -1822,6 +1869,44 @@ ErrorHandler:
             Next
         End If
         LoadFavoritesMenu()
+    End Sub
+
+    Private Sub OptionsToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptionsToolStripMenuItem.DropDownOpening
+        ConfirmDeletionsToolStripMenuItem.Checked = bConfirmDeletions
+        IPhoneToPCToolStripMenuItem.Checked = bConvertToPNG
+        PCToIPhoneToolStripMenuItem.Checked = bConvertToiPhonePNG
+        ShowPreviewsToolStripMenuItem.Checked = bShowPreview
+        IgnoreThumbsdbToolStripMenuItem.Checked = bIgnoreThumbsFile
+        IgnoreDSStoreToolStripMenuItem.Checked = bIgnoreDSStoreFile
+        DontBackupRunToolStripMenuItem.Checked = bDontBackupRun
+        DontBackupEverToolStripMenuItem.Enabled = bDontBackupRun Or bDontBackupEver
+        DontBackupEverToolStripMenuItem.Checked = bDontBackupEver
+    End Sub
+    Private Sub LoadOptionBooleans()
+        bConfirmDeletions = ConfirmDeletionsToolStripMenuItem.Checked
+        bConvertToPNG = IPhoneToPCToolStripMenuItem.Checked
+        bConvertToiPhonePNG = PCToIPhoneToolStripMenuItem.Checked
+        bShowPreview = ShowPreviewsToolStripMenuItem.Checked
+        bIgnoreThumbsFile = IgnoreThumbsdbToolStripMenuItem.Checked
+        bIgnoreDSStoreFile = IgnoreDSStoreToolStripMenuItem.Checked
+        bDontBackupRun = DontBackupRunToolStripMenuItem.Checked
+        bDontBackupEver = DontBackupEverToolStripMenuItem.Checked
+    End Sub
+    Private Sub OptionsToolStripMenuItem_DropDownClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptionsToolStripMenuItem.DropDownClosed
+        Dim mi As New MethodInvoker(AddressOf LoadOptionBooleans)
+        mi.BeginInvoke(Nothing, Nothing) ' must delay to give CheckOnClick time to be processed (.Net bug)
+    End Sub
+
+    Private Sub menuSaveSummerboardTheme_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menuSaveSummerboardTheme.DropDownOpening
+        AsSummerboardFolderToolStripMenuItem.Enabled = bNowConnected
+    End Sub
+
+    Private Sub ToolStripMenuItem4_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItem4.DropDownOpening
+        AsCustomizeFoldersToolStripMenuItem.Enabled = bNowConnected
+    End Sub
+
+    Private Sub mnuView_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuView.DropDownOpening
+        cmdShowGroups.Checked = bShowGroups
     End Sub
 End Class
 
@@ -1897,4 +1982,29 @@ Class ListViewSizeComparer
             Return CInt(ys - xs)
         End If
     End Function
+End Class
+
+Class ListViewGroupSorter
+    Implements IComparer
+
+    Private order As SortOrder
+
+    ' Stores the sort order.
+    Public Sub New(ByVal theOrder As SortOrder)
+        order = theOrder
+    End Sub 'New
+
+    ' Compares the groups by header value, using the saved sort
+    ' order to return the correct value.
+    Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
+        Implements IComparer.Compare
+        Dim result As Integer = String.Compare( _
+            CType(x, ListViewGroup).Header, _
+            CType(y, ListViewGroup).Header)
+        If order = SortOrder.Ascending Then
+            Return result
+        Else
+            Return -result
+        End If
+    End Function 'Compare
 End Class

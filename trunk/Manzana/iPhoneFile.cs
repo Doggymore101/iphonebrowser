@@ -44,7 +44,7 @@ namespace Manzana
 		private enum OpenMode {
 			None = 0,
 			Read = 2,
-			Write = 3,
+			Write = 3
 		}
 
 		#region Fields
@@ -242,8 +242,10 @@ namespace Manzana
 
 			full_path = phone.FullPath(phone.GetCurrentDirectory(), path);
 			ret = MobileDevice.AFCFileRefOpen(phone.AFCHandle, full_path, (int)mode, 0, out handle);
-			if (ret != 0)
+			if (ret != 0) {
+				phone.ReConnect();
 				throw new IOException("AFCFileRefOpen failed with error " + ret.ToString());
+			}
 
 			return new iPhoneFile(phone, handle, mode);
 		}

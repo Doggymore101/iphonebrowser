@@ -6,15 +6,16 @@ Partial Class frmMain
     '<System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         With My.Settings
-            .ConfirmDeletions = ConfirmDeletionsToolStripMenuItem.Checked
+            .ConfirmDeletions = bConfirmDeletions
             .PCToiPhonePNG = bConvertToiPhonePNG
             .iPhoneToPCPNG = bConvertToPNG
             .ShowPreviews = bShowPreview
             .IgnoreThumbsFile = bIgnoreThumbsFile
             .IgnoreDSStoreFile = bIgnoreDSStoreFile
+            .ShowGroups = bShowGroups
+            .DontBackupEver = bDontBackupEver
             .FavNames = favNames
             .FavPaths = favPaths
-            .ShowGroups = cmdShowGroups.Checked
         End With
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -55,8 +56,11 @@ Partial Class frmMain
         Me.mnuEdit = New System.Windows.Forms.ToolStripDropDownButton
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConfirmDeletionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DontBackupRunToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DontBackupEverToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.IgnoreThumbsdbToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.IgnoreDSStoreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator
         Me.ConvertPNGsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.IPhoneToPCToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.PCToIPhoneToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -78,6 +82,7 @@ Partial Class frmMain
         Me.toolStripGoTo2 = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
         Me.toolStripGoTo3 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
         Me.mnuStdApps = New System.Windows.Forms.ToolStripMenuItem
@@ -152,7 +157,6 @@ Partial Class frmMain
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator
         Me.ToolStripMenuItemDeleteFolder = New System.Windows.Forms.ToolStripMenuItem
         Me.folderBrowserDialog = New System.Windows.Forms.FolderBrowserDialog
-        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.tlbStatusStrip.SuspendLayout()
         Me.toolStrip.SuspendLayout()
         Me.menuRightClickFiles.SuspendLayout()
@@ -355,7 +359,7 @@ Partial Class frmMain
         '
         'OptionsToolStripMenuItem
         '
-        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfirmDeletionsToolStripMenuItem, Me.IgnoreThumbsdbToolStripMenuItem, Me.IgnoreDSStoreToolStripMenuItem, Me.ConvertPNGsToolStripMenuItem, Me.ToolStripSeparator8, Me.ShowPreviewsToolStripMenuItem, Me.PictureBackgroundToolStripMenuItem})
+        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfirmDeletionsToolStripMenuItem, Me.DontBackupRunToolStripMenuItem, Me.DontBackupEverToolStripMenuItem, Me.IgnoreThumbsdbToolStripMenuItem, Me.IgnoreDSStoreToolStripMenuItem, Me.ToolStripSeparator11, Me.ConvertPNGsToolStripMenuItem, Me.ToolStripSeparator8, Me.ShowPreviewsToolStripMenuItem, Me.PictureBackgroundToolStripMenuItem})
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
         Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
         Me.OptionsToolStripMenuItem.Text = "&Options"
@@ -366,8 +370,23 @@ Partial Class frmMain
         Me.ConfirmDeletionsToolStripMenuItem.CheckOnClick = True
         Me.ConfirmDeletionsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ConfirmDeletionsToolStripMenuItem.Name = "ConfirmDeletionsToolStripMenuItem"
-        Me.ConfirmDeletionsToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.ConfirmDeletionsToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
         Me.ConfirmDeletionsToolStripMenuItem.Text = "Confirm Deletions"
+        '
+        'DontBackupRunToolStripMenuItem
+        '
+        Me.DontBackupRunToolStripMenuItem.CheckOnClick = True
+        Me.DontBackupRunToolStripMenuItem.Name = "DontBackupRunToolStripMenuItem"
+        Me.DontBackupRunToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.DontBackupRunToolStripMenuItem.Text = "No Automatic Backup (this run)"
+        '
+        'DontBackupEverToolStripMenuItem
+        '
+        Me.DontBackupEverToolStripMenuItem.CheckOnClick = True
+        Me.DontBackupEverToolStripMenuItem.Enabled = False
+        Me.DontBackupEverToolStripMenuItem.Name = "DontBackupEverToolStripMenuItem"
+        Me.DontBackupEverToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.DontBackupEverToolStripMenuItem.Text = "No Automatic Backup (Startup default)"
         '
         'IgnoreThumbsdbToolStripMenuItem
         '
@@ -375,7 +394,7 @@ Partial Class frmMain
         Me.IgnoreThumbsdbToolStripMenuItem.CheckOnClick = True
         Me.IgnoreThumbsdbToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.IgnoreThumbsdbToolStripMenuItem.Name = "IgnoreThumbsdbToolStripMenuItem"
-        Me.IgnoreThumbsdbToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.IgnoreThumbsdbToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
         Me.IgnoreThumbsdbToolStripMenuItem.Text = "Ignore Thumbs.db"
         '
         'IgnoreDSStoreToolStripMenuItem
@@ -384,14 +403,19 @@ Partial Class frmMain
         Me.IgnoreDSStoreToolStripMenuItem.CheckOnClick = True
         Me.IgnoreDSStoreToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.IgnoreDSStoreToolStripMenuItem.Name = "IgnoreDSStoreToolStripMenuItem"
-        Me.IgnoreDSStoreToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.IgnoreDSStoreToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
         Me.IgnoreDSStoreToolStripMenuItem.Text = "Ignore .DS_Store"
+        '
+        'ToolStripSeparator11
+        '
+        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(267, 6)
         '
         'ConvertPNGsToolStripMenuItem
         '
         Me.ConvertPNGsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IPhoneToPCToolStripMenuItem, Me.PCToIPhoneToolStripMenuItem, Me.ConvertBothToolStripMenuItem})
         Me.ConvertPNGsToolStripMenuItem.Name = "ConvertPNGsToolStripMenuItem"
-        Me.ConvertPNGsToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.ConvertPNGsToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
         Me.ConvertPNGsToolStripMenuItem.Text = "Convert PNGs"
         '
         'IPhoneToPCToolStripMenuItem
@@ -421,7 +445,7 @@ Partial Class frmMain
         'ToolStripSeparator8
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        Me.ToolStripSeparator8.Size = New System.Drawing.Size(174, 6)
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(267, 6)
         '
         'ShowPreviewsToolStripMenuItem
         '
@@ -429,14 +453,14 @@ Partial Class frmMain
         Me.ShowPreviewsToolStripMenuItem.CheckOnClick = True
         Me.ShowPreviewsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ShowPreviewsToolStripMenuItem.Name = "ShowPreviewsToolStripMenuItem"
-        Me.ShowPreviewsToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.ShowPreviewsToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
         Me.ShowPreviewsToolStripMenuItem.Text = "Show Previews"
         '
         'PictureBackgroundToolStripMenuItem
         '
         Me.PictureBackgroundToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BlackToolStripMenuItem, Me.GrayToolStripMenuItem, Me.WhiteToolStripMenuItem})
         Me.PictureBackgroundToolStripMenuItem.Name = "PictureBackgroundToolStripMenuItem"
-        Me.PictureBackgroundToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.PictureBackgroundToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
         Me.PictureBackgroundToolStripMenuItem.Text = "Picture Background"
         '
         'BlackToolStripMenuItem
@@ -475,32 +499,31 @@ Partial Class frmMain
         Me.ToolStripMenuItemDetails.Checked = True
         Me.ToolStripMenuItemDetails.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ToolStripMenuItemDetails.Name = "ToolStripMenuItemDetails"
-        Me.ToolStripMenuItemDetails.Size = New System.Drawing.Size(148, 22)
+        Me.ToolStripMenuItemDetails.Size = New System.Drawing.Size(152, 22)
         Me.ToolStripMenuItemDetails.Text = "&Details"
         '
         'ToolStripMenuItemLargeIcons
         '
         Me.ToolStripMenuItemLargeIcons.Name = "ToolStripMenuItemLargeIcons"
-        Me.ToolStripMenuItemLargeIcons.Size = New System.Drawing.Size(148, 22)
+        Me.ToolStripMenuItemLargeIcons.Size = New System.Drawing.Size(152, 22)
         Me.ToolStripMenuItemLargeIcons.Text = "&Large Icons"
         '
         'cmdSmallIcons
         '
         Me.cmdSmallIcons.Name = "cmdSmallIcons"
-        Me.cmdSmallIcons.Size = New System.Drawing.Size(148, 22)
+        Me.cmdSmallIcons.Size = New System.Drawing.Size(152, 22)
         Me.cmdSmallIcons.Text = "&Small Icons"
         '
         'ToolStripMenuItem8
         '
         Me.ToolStripMenuItem8.Name = "ToolStripMenuItem8"
-        Me.ToolStripMenuItem8.Size = New System.Drawing.Size(145, 6)
+        Me.ToolStripMenuItem8.Size = New System.Drawing.Size(149, 6)
         '
         'cmdShowGroups
         '
         Me.cmdShowGroups.Checked = Global.iPhoneBrowser.My.MySettings.Default.ShowGroups
-        Me.cmdShowGroups.CheckOnClick = True
         Me.cmdShowGroups.Name = "cmdShowGroups"
-        Me.cmdShowGroups.Size = New System.Drawing.Size(148, 22)
+        Me.cmdShowGroups.Size = New System.Drawing.Size(152, 22)
         Me.cmdShowGroups.Text = "Show &Groups"
         '
         'mnuGoTo
@@ -540,6 +563,13 @@ Partial Class frmMain
         Me.toolStripGoTo3.Size = New System.Drawing.Size(244, 22)
         Me.toolStripGoTo3.Tag = "/System/Library/CoreServices/SpringBoard.app"
         Me.toolStripGoTo3.Text = "&Springboard Images and Settings"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(244, 22)
+        Me.ToolStripMenuItem1.Tag = "/Library/Themes"
+        Me.ToolStripMenuItem1.Text = "WinterBoard Themes"
         '
         'ToolStripMenuItem2
         '
@@ -1108,13 +1138,6 @@ Partial Class frmMain
         Me.folderBrowserDialog.Description = "Select the destination folder for saving"
         Me.folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer
         '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(244, 22)
-        Me.ToolStripMenuItem1.Tag = "/Library/Themes"
-        Me.ToolStripMenuItem1.Text = "WinterBoard Themes"
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1273,5 +1296,8 @@ Partial Class frmMain
     Friend WithEvents CameraRollToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tlbProgress0 As System.Windows.Forms.ToolStripProgressBar
     Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents DontBackupRunToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents DontBackupEverToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class
