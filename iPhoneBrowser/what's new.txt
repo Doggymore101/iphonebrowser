@@ -7,7 +7,16 @@ Future Versions	??/??/2008	Pete Wilson
   * convert binary plists to text and back
   * edit plists
   * Make file backups optional
-  * Modify delete confirmation to have backup checkbox and All buttons
+  * Modify delete confirmation to have backup checkbox and All button
+  
+v1.90  6/02/08 Pete Wilson
+  * Improved compatiblity with iTunes 8.2
+  * Handle file (symbolic link) errors a little better
+  * Fix multiple bugs in options saving and setting
+  * Add options to turn off automatic backup of removed and replaced files
+  * Add some additional wait cursors when busy
+  * worked around Windows bugs with grouping and sorting
+  * added sorting of groups and items when grouped
   
 v1.81   9/15/08 Pete Wilson
   * improved UI response during large file copies

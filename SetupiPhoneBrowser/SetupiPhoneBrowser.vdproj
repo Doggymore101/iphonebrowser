@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_48B4CA4CFC661881AB9CA2E13E2A1E03"
+        "OwnerKey" = "8:_A8D5381B6B3C45A78737FB81CB08D3FC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4EB1DC185F3ECD596F2FF299E702BB32"
         "OwnerKey" = "8:_DC06B572B695D5173DD26AEF33FF4000"
         "MsmSig" = "8:_UNDEFINED"
@@ -89,6 +95,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C79BB47B919EBBB41F78214B0EF4744D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_48B4CA4CFC661881AB9CA2E13E2A1E03"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -217,6 +229,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_48B4CA4CFC661881AB9CA2E13E2A1E03"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Manzana, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_48B4CA4CFC661881AB9CA2E13E2A1E03"
+                    {
+                    "Name" = "8:Manzana.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Manzana.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_254997F48F3C4AB3A9D32B0C40755247"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4EB1DC185F3ECD596F2FF299E702BB32"
@@ -480,14 +523,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:iPhoneBrowser"
-        "ProductCode" = "8:{E33EAB77-A36A-4FBF-BB15-2BBF74C7A796}"
-        "PackageCode" = "8:{318B61AA-19A9-4DA1-8ACC-8DF29F21D299}"
+        "ProductCode" = "8:{0172734C-7C83-47DF-A5C9-1B4B3ED87B65}"
+        "PackageCode" = "8:{ADB95411-E19B-4E57-B7D0-F98C133116F2}"
         "UpgradeCode" = "8:{7730D6E3-91A8-4099-8656-E1BC399407AC}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.8.1"
+        "ProductVersion" = "8:1.9.0"
         "Manufacturer" = "8:Cranium Consulting and Custom Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://modmyifone.com/forums"

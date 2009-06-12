@@ -64,6 +64,14 @@ namespace Manzana
 	/// <summary>
 	/// Structure describing the iPhone
 	/// </summary>
+	/// Just opaque block of memory - give a decent chunk
+	/// 
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+	public struct AMDevice {
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 255)]
+		internal byte[] unknown0;
+	}
+#if false
 	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
 	public struct AMDevice {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst=16)]
@@ -83,6 +91,7 @@ namespace Manzana
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst=8)]
 		internal byte[]		unknown5;		/* 97  + in iTunes 8.0, by iFunbox.dev */
 	}
+#endif
 
 	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
 	internal struct AMDeviceNotification {
@@ -180,7 +189,10 @@ namespace Manzana
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
 		public extern static int AMDeviceConnect(ref AMDevice device);
 
-		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		public extern static int AMDeviceDisconnect(ref AMDevice device);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
 		public extern static int AMDeviceIsPaired(ref AMDevice device);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
@@ -189,7 +201,10 @@ namespace Manzana
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
 		public extern static int AMDeviceStartSession(ref AMDevice device);
 
-		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		public extern static int AMDeviceStopSession(ref AMDevice device);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
 		public extern static int AMDeviceGetConnectionID(ref AMDevice device);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
@@ -242,11 +257,8 @@ namespace Manzana
 		public extern static int AMDeviceStartService(ref AMDevice device, byte[] service_name, ref IntPtr handle, IntPtr unknown);
 
 		public static int AFCConnectionOpen(IntPtr handle, uint io_timeout, ref afc_connection conn) {
-			IntPtr ptr;
-			int ret;
-
-			ptr = IntPtr.Zero;
-			ret = AFCConnectionOpen(handle, io_timeout, ref ptr);
+			IntPtr ptr = IntPtr.Zero;
+			int ret = AFCConnectionOpen(handle, io_timeout, ref ptr);
 			if ((ret == 0) && (ptr != IntPtr.Zero)) {
 				conn = (afc_connection)Marshal.PtrToStructure(ptr, conn.GetType());
 			}
@@ -254,6 +266,15 @@ namespace Manzana
 		}
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
 		public extern static int AFCConnectionOpen(IntPtr handle, uint io_timeout, ref IntPtr conn);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		public extern static int AFCConnectionIsValid(IntPtr conn);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		public extern static int AFCConnectionInvalidate(IntPtr conn);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		public extern static int AFCConnectionClose(IntPtr conn);
 
 		public static string AMDeviceCopyValue(ref AMDevice device, uint unknown, string name) {
 			IntPtr	result;
@@ -278,11 +299,14 @@ namespace Manzana
 		[DllImport(DLLPath, EntryPoint="AMDeviceCopyValue", CallingConvention=CallingConvention.Cdecl)]
 		public extern static IntPtr AMDeviceCopyValue_Int(ref AMDevice device, uint unknown, byte[] cfstring);
 
-		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCGetFileInfo(IntPtr conn, string path, ref IntPtr buffer, out uint length);
-
         [DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AFCFileInfoOpen(IntPtr conn, string path, ref IntPtr buffer, out uint length);
+        public extern static int AFCFileInfoOpen(IntPtr conn, string path, ref IntPtr dict);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		public extern static int AFCKeyValueRead(IntPtr dict, out string key, out string val);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		public extern static int AFCKeyValueClose(IntPtr dict);
 
         [DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
 		public extern static int AFCRemovePath(IntPtr conn, string path);

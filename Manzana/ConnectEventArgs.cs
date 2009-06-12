@@ -41,7 +41,7 @@ namespace Manzana
 	/// </summary>
 	public class ConnectEventArgs : EventArgs{
 		private NotificationMessage	message;
-		private AMDevice					device;
+		private AMDevice device;
  
 		internal ConnectEventArgs(AMDeviceNotificationCallbackInfo cbi) {
 			message = cbi.msg;
