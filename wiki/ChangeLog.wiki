@@ -16,7 +16,6 @@ Future Versions	??/??/2009	Pete Wilson
   * modify grouping when sorting
   * convert binary plists to text and back
   * edit plists
-  * Make file backups optional
   * Modify delete confirmation to have backup checkbox and All button
   
 v1.90  6/12/09 Pete Wilson
