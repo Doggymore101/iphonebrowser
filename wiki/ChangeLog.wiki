@@ -18,7 +18,7 @@ Future Versions	??/??/2009	Pete Wilson
   * edit plists
   * Modify delete confirmation to have backup checkbox and All button
   
-v1.90  6/12/09 Pete Wilson
+v1.90  6/12/09 Pete Wilson (follow me on twitter @NetMage)
   * Improved compatiblity with iTunes 8.2
   * Handle file (symbolic link) errors a little better
   * Fix multiple bugs in options saving and setting
