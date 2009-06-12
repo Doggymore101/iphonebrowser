@@ -1,4 +1,4 @@
-Future Versions	??/??/2008	Pete Wilson
+Future Versions	??/??/2009	Pete Wilson
   * conversion to standard PNG creates correct CRC
   * conversion to iPhone PNG (does not premultiply alpha)
   * purge BACKUPS folders of duplicate files
@@ -9,7 +9,7 @@ Future Versions	??/??/2008	Pete Wilson
   * Make file backups optional
   * Modify delete confirmation to have backup checkbox and All button
   
-v1.90  6/02/08 Pete Wilson
+v1.90  6/12/09 Pete Wilson
   * Improved compatiblity with iTunes 8.2
   * Handle file (symbolic link) errors a little better
   * Fix multiple bugs in options saving and setting
