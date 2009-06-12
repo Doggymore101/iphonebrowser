@@ -1,10 +1,11 @@
 #labels Featured,Phase-Deploy
 = Program Requirements =
-
-  * Microsoft .Net Framework 1.1
+  * Windows XP
+  * Microsoft .Net Framework 2.0
   * afc2 service installed on phone (otherwise iPhoneBrowser will not show all files)
-  * Recent version of iTunes installed
+    * This is normally installed as part of jailbreaking
+  * iTunes up to version 8.2 installed and started with iPhone attached at least once
 
 = Notes =
   * May not work well on non-US versions of Windows XP
-  * Has problems on Vista
+  * Has problems on Vista and Windows 7
