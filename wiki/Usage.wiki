@@ -1,5 +1,5 @@
+#summary iPhoneBrowser Usage and Guidelines
 #labels Featured,Phase-Deploy
-#iPhoneBrowser Usage and Guidelines
 
 = Introduction =
 
