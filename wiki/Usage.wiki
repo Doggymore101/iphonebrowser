@@ -25,8 +25,8 @@ You can drag and drop files into the file window to upload them to the selected 
 This menu item will prompt you to save the file in a location of your choosing.  The file is downloaded off of your phone and stored with whatever filename and location you choose.  
 PNG files will optionally be converted from Apple format to standard PNG format.
 
-== Backup File ==
-Backups are created with the same directory structure as on the phone, but in a folder named "BACKUPS.&lt;date&gt;.&lt;time&gt;".  This allows you to save multiple version of the same file, and allows you to manually restore to a previous version of the file. Select Backup File to create a backup of the file(s) currently selected on your iPhone.  Select View Backups to open a windows explorer window of the folder where backup folders are stored.
+== Backup Files ==
+Backups are created with the same directory structure as on the phone, but in a folder named "BACKUPS.(date).(time)".  This allows you to save multiple version of the same file, and allows you to manually restore to a previous version of the file. Select Backup File to create a backup of the file(s) currently selected on your iPhone.  Select View Backups to open a windows explorer window of the folder where backup folders are stored.
 
 Temporarily turn off backup files by enabling the No Automatic Backups (this run) option.
 Default to no backups by enabling the No Automatic Backups (Startup default) option. You must enable the (this run) option to access the (Startup default) option.
