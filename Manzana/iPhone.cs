@@ -50,7 +50,7 @@ namespace Manzana
 		private DeviceRestoreNotificationCallback	drn3;
 		private DeviceRestoreNotificationCallback	drn4;
 
-		internal AMDevice iPhoneHandle;
+		unsafe internal void* iPhoneHandle;
 		unsafe internal void* hAFC;
 		unsafe internal void* hService;
 		private bool		connected;
@@ -62,20 +62,20 @@ namespace Manzana
 		/// <summary>
 		/// Initializes a new iPhone object.
 		/// </summary>
-		private void doConstruction() {
+		unsafe private void doConstruction() {
 			dnc = new DeviceNotificationCallback(NotifyCallback);
 			drn1 = new DeviceRestoreNotificationCallback(DfuConnectCallback);
 			drn2 = new DeviceRestoreNotificationCallback(RecoveryConnectCallback);
 			drn3 = new DeviceRestoreNotificationCallback(DfuDisconnectCallback);
 			drn4 = new DeviceRestoreNotificationCallback(RecoveryDisconnectCallback);
 
-			AMDeviceNotification notification = new AMDeviceNotification();
-			int ret = MobileDevice.AMDeviceNotificationSubscribe(dnc, 0, 0, 0, ref notification);
+			void* notification;
+			int ret = MobileDevice.AMDeviceNotificationSubscribe(dnc, 0, 0, 0, out notification);
 			if (ret != 0) {
 				throw new Exception("AMDeviceNotificationSubscribe failed with error " + ret);
 			}
 
-			ret = MobileDevice.AMRestoreRegisterForDeviceNotifications(drn1, drn2, drn3, drn4, 0, IntPtr.Zero);
+			ret = MobileDevice.AMRestoreRegisterForDeviceNotifications(drn1, drn2, drn3, drn4, 0, null);
 			if (ret != 0) {
 				throw new Exception("AMRestoreRegisterForDeviceNotifications failed with error " + ret);
 			}
@@ -105,9 +105,9 @@ namespace Manzana
 		/// <summary>
 		/// Gets the current activation state of the phone
 		/// </summary>
-		public string ActivationState {
+		unsafe public string ActivationState {
 			get {
-				return MobileDevice.AMDeviceCopyValue(ref iPhoneHandle, 0, "ActivationState");
+				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, 0, "ActivationState");
 			}
 		}
 
@@ -123,9 +123,9 @@ namespace Manzana
 		/// <summary>
 		/// Returns the Device information about the connected iPhone
 		/// </summary>
-		public AMDevice Device {
+		unsafe public void* Device {
 			get {
-				return this.iPhoneHandle;
+				return iPhoneHandle;
 			}
 		}
 
@@ -134,7 +134,7 @@ namespace Manzana
 		/// </summary>
 		unsafe public void* AFCHandle {
 			get {
-				return this.hAFC;
+				return hAFC;
 			}
 		}
 
@@ -578,15 +578,15 @@ namespace Manzana
 		/// <returns>status from reopen</returns>
 		unsafe public void ReConnect() {
 			int ans = MobileDevice.AFCConnectionClose(hAFC);
-			ans = MobileDevice.AMDeviceStopSession(ref iPhoneHandle);
-			ans = MobileDevice.AMDeviceDisconnect(ref iPhoneHandle);
+			ans = MobileDevice.AMDeviceStopSession(iPhoneHandle);
+			ans = MobileDevice.AMDeviceDisconnect(iPhoneHandle);
 			ConnectToPhone();
 		}
 		#endregion // public Methods
 
 		#region Private Methods
 		unsafe private bool ConnectToPhone() {
-			if (MobileDevice.AMDeviceConnect(ref iPhoneHandle) == 1) {
+			if (MobileDevice.AMDeviceConnect(iPhoneHandle) == 1) {
 				//int connid;
 
 				throw new Exception("Phone in recovery mode, support not yet implemented");
@@ -594,20 +594,20 @@ namespace Manzana
 				//MobileDevice.AMRestoreModeDeviceCreate(0, connid, 0);
 				//return false;
 			}
-			if (MobileDevice.AMDeviceIsPaired(ref iPhoneHandle) == 0) {
+			if (MobileDevice.AMDeviceIsPaired(iPhoneHandle) == 0) {
 				return false;
 			}
-			int chk = MobileDevice.AMDeviceValidatePairing(ref iPhoneHandle);
+			int chk = MobileDevice.AMDeviceValidatePairing(iPhoneHandle);
 			if (chk != 0) {
 				return false;
 			}
 
-			if (MobileDevice.AMDeviceStartSession(ref iPhoneHandle) == 1) {
+			if (MobileDevice.AMDeviceStartSession(iPhoneHandle) == 1) {
 				return false;
 			}
 
-            if (MobileDevice.AMDeviceStartService(ref iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc2"), ref hService, null) != 0) {
-                if (MobileDevice.AMDeviceStartService(ref iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc"), ref hService, null) != 0) {
+            if (MobileDevice.AMDeviceStartService(iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc2"), ref hService, null) != 0) {
+                if (MobileDevice.AMDeviceStartService(iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc"), ref hService, null) != 0) {
                     return false;
                 }
             }
@@ -622,7 +622,7 @@ namespace Manzana
 			return true;
 		}
 
-		private void NotifyCallback(ref AMDeviceNotificationCallbackInfo callback) {
+		unsafe private void NotifyCallback(ref AMDeviceNotificationCallbackInfo callback) {
 			if (callback.msg == NotificationMessage.Connected) {
 				iPhoneHandle = callback.dev;
 				if (ConnectToPhone()) {
