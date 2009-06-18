@@ -107,7 +107,7 @@ namespace Manzana
 		/// <summary>
 		/// Gets or sets the position within the current stream
 		/// </summary>
-		public override long Position {
+		unsafe public override long Position {
 			get {
 				uint ret;
 				ret = 0;
@@ -124,7 +124,7 @@ namespace Manzana
 		/// Sets the length of this stream to the given value. 
 		/// </summary>
 		/// <param name="value">The new length of the stream.</param>
-		public override void SetLength(long value) {
+		unsafe public override void SetLength(long value) {
 			int ret;
 
 			ret = MobileDevice.AFCFileRefSetFileSize(phone.AFCHandle, handle, (uint)value);
@@ -136,7 +136,7 @@ namespace Manzana
 		/// Releases the unmanaged resources used by iPhoneFile
 		/// </summary>
 		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
-		protected override void Dispose(bool disposing) {
+		unsafe protected override void Dispose(bool disposing) {
 			if (disposing) {
 				if (handle != 0) {
 					MobileDevice.AFCFileRefClose(phone.AFCHandle, handle);
@@ -153,7 +153,7 @@ namespace Manzana
 		/// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
 		/// <param name="count">The maximum number of bytes to be read from the current stream.</param>
 		/// <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
-		public override int Read(byte[] buffer, int offset, int count) {
+		unsafe public override int Read(byte[] buffer, int offset, int count) {
 			if (!CanRead)
 				throw new NotImplementedException("Stream open for writing only");
 
@@ -181,7 +181,7 @@ namespace Manzana
 		/// <param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream.</param>
 		/// <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
 		/// <param name="count">The number of bytes to be written to the current stream.</param>
-		public override void Write(byte[] buffer, int offset, int count) {
+		unsafe public override void Write(byte[] buffer, int offset, int count) {
 			if (!CanWrite)
 				throw new NotImplementedException("Stream open for reading only");
 
@@ -203,7 +203,7 @@ namespace Manzana
 		/// <param name="offset">A byte offset relative to the <c>origin</c> parameter</param>
 		/// <param name="origin">A value of type <see cref="SeekOrigin"/> indicating the reference point used to obtain the new position</param>
 		/// <returns>The new position within the stream</returns>
-		public override long Seek(long offset, SeekOrigin origin) {
+		unsafe public override long Seek(long offset, SeekOrigin origin) {
 			int ret;
 
 			ret = MobileDevice.AFCFileRefSeek(phone.AFCHandle, handle, (uint)offset, 0);
@@ -214,7 +214,7 @@ namespace Manzana
 		/// <summary>
 		/// Clears all buffers for this stream and causes any buffered data to be written to the underlying device. 
 		/// </summary>
-		public override void Flush() {
+		unsafe public override void Flush() {
 			MobileDevice.AFCFlushData(phone.AFCHandle, handle);
 		}
 		#endregion	// Public Methods
@@ -227,7 +227,7 @@ namespace Manzana
 		/// <param name="path">The file to open</param>
 		/// <param name="openmode">A <see cref="FileAccess"/> value that specifies the operations that can be performed on the file</param>
 		/// <returns></returns>
-		public static iPhoneFile Open(iPhone phone, string path, FileAccess openmode) {
+		unsafe public static iPhoneFile Open(iPhone phone, string path, FileAccess openmode) {
 			OpenMode	mode;
 			int			ret;
 			long		handle;

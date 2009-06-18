@@ -279,6 +279,9 @@ Public Class frmMain
             'now go one by one and add it
             startStatus(sFiles.Length)
             For Each sFile As String In sFiles
+                If sFile = "." Or sFile = ".." Then
+                    Continue For
+                End If
                 incrementStatus()
 
                 lstTemp = New ListViewItem(sFile)
@@ -286,7 +289,13 @@ Public Class frmMain
                 lstTemp.Group = lstFiles.Groups(lstTemp.ImageIndex)
 
                 ' add the file size
-                lstTemp.SubItems.Add(fileSizeAsString(iPhonePath & "/" & sFile))
+                Dim fullPath As String
+                If Microsoft.VisualBasic.Right(iPhonePath, 1) <> "/" Then
+                    fullPath = iPhonePath & "/" & sFile
+                Else
+                    fullPath = iPhonePath & sFile
+                End If
+                lstTemp.SubItems.Add(fileSizeAsString(fullPath))
 
                 ' add the file type
                 lstTemp.SubItems.Add(getFiletype(lstTemp.ImageIndex))

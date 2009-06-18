@@ -213,10 +213,10 @@ Partial Class frmMain
         'tlbStatusStrip
         '
         Me.tlbStatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tlbStatusLabel, Me.tlbProgress0, Me.tlbProgressBar})
-        Me.tlbStatusStrip.Location = New System.Drawing.Point(0, 575)
+        Me.tlbStatusStrip.Location = New System.Drawing.Point(0, 421)
         Me.tlbStatusStrip.Name = "tlbStatusStrip"
         Me.tlbStatusStrip.ShowItemToolTips = True
-        Me.tlbStatusStrip.Size = New System.Drawing.Size(747, 22)
+        Me.tlbStatusStrip.Size = New System.Drawing.Size(728, 22)
         Me.tlbStatusStrip.TabIndex = 3
         Me.tlbStatusStrip.Text = "StatusStrip1"
         '
@@ -228,7 +228,7 @@ Partial Class frmMain
         Me.tlbStatusLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.tlbStatusLabel.MergeAction = System.Windows.Forms.MergeAction.MatchOnly
         Me.tlbStatusLabel.Name = "tlbStatusLabel"
-        Me.tlbStatusLabel.Size = New System.Drawing.Size(568, 17)
+        Me.tlbStatusLabel.Size = New System.Drawing.Size(549, 17)
         Me.tlbStatusLabel.Spring = True
         Me.tlbStatusLabel.Text = "Please plug in your iPhone via USB.  If it is already plugged in, disconnect and " & _
             "reconnect it."
@@ -265,7 +265,7 @@ Partial Class frmMain
         Me.toolStrip.Location = New System.Drawing.Point(0, 0)
         Me.toolStrip.Name = "toolStrip"
         Me.toolStrip.Padding = New System.Windows.Forms.Padding(0)
-        Me.toolStrip.Size = New System.Drawing.Size(747, 25)
+        Me.toolStrip.Size = New System.Drawing.Size(728, 25)
         Me.toolStrip.TabIndex = 4
         '
         'ToolStripMenuItemFile
@@ -275,76 +275,76 @@ Partial Class frmMain
         Me.ToolStripMenuItemFile.Image = CType(resources.GetObject("ToolStripMenuItemFile.Image"), System.Drawing.Image)
         Me.ToolStripMenuItemFile.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile"
-        Me.ToolStripMenuItemFile.Size = New System.Drawing.Size(66, 22)
+        Me.ToolStripMenuItemFile.Size = New System.Drawing.Size(72, 22)
         Me.ToolStripMenuItemFile.Text = "&Functions"
         '
         'ToolStripMenuItemCleanUp
         '
         Me.ToolStripMenuItemCleanUp.Enabled = False
         Me.ToolStripMenuItemCleanUp.Name = "ToolStripMenuItemCleanUp"
-        Me.ToolStripMenuItemCleanUp.Size = New System.Drawing.Size(189, 22)
+        Me.ToolStripMenuItemCleanUp.Size = New System.Drawing.Size(190, 22)
         Me.ToolStripMenuItemCleanUp.Text = "&Clean Up Backup Files"
         '
         'ToolStripMenuItemViewBackups
         '
         Me.ToolStripMenuItemViewBackups.Name = "ToolStripMenuItemViewBackups"
-        Me.ToolStripMenuItemViewBackups.Size = New System.Drawing.Size(189, 22)
+        Me.ToolStripMenuItemViewBackups.Size = New System.Drawing.Size(190, 22)
         Me.ToolStripMenuItemViewBackups.Text = "&View Backup Files"
         '
         'ToolStripSeparator7
         '
         Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(186, 6)
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(187, 6)
         '
         'menuSaveSummerboardTheme
         '
         Me.menuSaveSummerboardTheme.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AsSummerboardFolderToolStripMenuItem, Me.AsPXLPackageToolStripMenuItem})
         Me.menuSaveSummerboardTheme.Name = "menuSaveSummerboardTheme"
-        Me.menuSaveSummerboardTheme.Size = New System.Drawing.Size(189, 22)
+        Me.menuSaveSummerboardTheme.Size = New System.Drawing.Size(190, 22)
         Me.menuSaveSummerboardTheme.Text = "&Summerboard"
         '
         'AsSummerboardFolderToolStripMenuItem
         '
         Me.AsSummerboardFolderToolStripMenuItem.Name = "AsSummerboardFolderToolStripMenuItem"
-        Me.AsSummerboardFolderToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
+        Me.AsSummerboardFolderToolStripMenuItem.Size = New System.Drawing.Size(227, 22)
         Me.AsSummerboardFolderToolStripMenuItem.Text = "Save as Summerboard &Folder"
         '
         'AsPXLPackageToolStripMenuItem
         '
         Me.AsPXLPackageToolStripMenuItem.Enabled = False
         Me.AsPXLPackageToolStripMenuItem.Name = "AsPXLPackageToolStripMenuItem"
-        Me.AsPXLPackageToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
+        Me.AsPXLPackageToolStripMenuItem.Size = New System.Drawing.Size(227, 22)
         Me.AsPXLPackageToolStripMenuItem.Text = "Save as &PXL Package"
         '
         'ToolStripMenuItem4
         '
         Me.ToolStripMenuItem4.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AsCustomizeFoldersToolStripMenuItem, Me.AsPXLPackageToolStripMenuItem1})
         Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
-        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(189, 22)
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(190, 22)
         Me.ToolStripMenuItem4.Text = "&Customize"
         '
         'AsCustomizeFoldersToolStripMenuItem
         '
         Me.AsCustomizeFoldersToolStripMenuItem.Name = "AsCustomizeFoldersToolStripMenuItem"
-        Me.AsCustomizeFoldersToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
+        Me.AsCustomizeFoldersToolStripMenuItem.Size = New System.Drawing.Size(216, 22)
         Me.AsCustomizeFoldersToolStripMenuItem.Text = "Save as Customize &Folder..."
         '
         'AsPXLPackageToolStripMenuItem1
         '
         Me.AsPXLPackageToolStripMenuItem1.Enabled = False
         Me.AsPXLPackageToolStripMenuItem1.Name = "AsPXLPackageToolStripMenuItem1"
-        Me.AsPXLPackageToolStripMenuItem1.Size = New System.Drawing.Size(220, 22)
+        Me.AsPXLPackageToolStripMenuItem1.Size = New System.Drawing.Size(216, 22)
         Me.AsPXLPackageToolStripMenuItem1.Text = "Save as &PXL Package..."
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(186, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(187, 6)
         '
         'ToolStripMenuItemExit
         '
         Me.ToolStripMenuItemExit.Name = "ToolStripMenuItemExit"
-        Me.ToolStripMenuItemExit.Size = New System.Drawing.Size(189, 22)
+        Me.ToolStripMenuItemExit.Size = New System.Drawing.Size(190, 22)
         Me.ToolStripMenuItemExit.Text = "E&xit"
         '
         'mnuEdit
@@ -354,14 +354,14 @@ Partial Class frmMain
         Me.mnuEdit.Image = CType(resources.GetObject("mnuEdit.Image"), System.Drawing.Image)
         Me.mnuEdit.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.mnuEdit.Name = "mnuEdit"
-        Me.mnuEdit.Size = New System.Drawing.Size(38, 22)
+        Me.mnuEdit.Size = New System.Drawing.Size(40, 22)
         Me.mnuEdit.Text = "&Edit"
         '
         'OptionsToolStripMenuItem
         '
         Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfirmDeletionsToolStripMenuItem, Me.DontBackupRunToolStripMenuItem, Me.DontBackupEverToolStripMenuItem, Me.IgnoreThumbsdbToolStripMenuItem, Me.IgnoreDSStoreToolStripMenuItem, Me.ToolStripSeparator11, Me.ConvertPNGsToolStripMenuItem, Me.ToolStripSeparator8, Me.ShowPreviewsToolStripMenuItem, Me.PictureBackgroundToolStripMenuItem})
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
-        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
+        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(116, 22)
         Me.OptionsToolStripMenuItem.Text = "&Options"
         '
         'ConfirmDeletionsToolStripMenuItem
@@ -370,14 +370,14 @@ Partial Class frmMain
         Me.ConfirmDeletionsToolStripMenuItem.CheckOnClick = True
         Me.ConfirmDeletionsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ConfirmDeletionsToolStripMenuItem.Name = "ConfirmDeletionsToolStripMenuItem"
-        Me.ConfirmDeletionsToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.ConfirmDeletionsToolStripMenuItem.Size = New System.Drawing.Size(280, 22)
         Me.ConfirmDeletionsToolStripMenuItem.Text = "Confirm Deletions"
         '
         'DontBackupRunToolStripMenuItem
         '
         Me.DontBackupRunToolStripMenuItem.CheckOnClick = True
         Me.DontBackupRunToolStripMenuItem.Name = "DontBackupRunToolStripMenuItem"
-        Me.DontBackupRunToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.DontBackupRunToolStripMenuItem.Size = New System.Drawing.Size(280, 22)
         Me.DontBackupRunToolStripMenuItem.Text = "No Automatic Backup (this run)"
         '
         'DontBackupEverToolStripMenuItem
@@ -385,7 +385,7 @@ Partial Class frmMain
         Me.DontBackupEverToolStripMenuItem.CheckOnClick = True
         Me.DontBackupEverToolStripMenuItem.Enabled = False
         Me.DontBackupEverToolStripMenuItem.Name = "DontBackupEverToolStripMenuItem"
-        Me.DontBackupEverToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.DontBackupEverToolStripMenuItem.Size = New System.Drawing.Size(280, 22)
         Me.DontBackupEverToolStripMenuItem.Text = "No Automatic Backup (Startup default)"
         '
         'IgnoreThumbsdbToolStripMenuItem
@@ -394,7 +394,7 @@ Partial Class frmMain
         Me.IgnoreThumbsdbToolStripMenuItem.CheckOnClick = True
         Me.IgnoreThumbsdbToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.IgnoreThumbsdbToolStripMenuItem.Name = "IgnoreThumbsdbToolStripMenuItem"
-        Me.IgnoreThumbsdbToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.IgnoreThumbsdbToolStripMenuItem.Size = New System.Drawing.Size(280, 22)
         Me.IgnoreThumbsdbToolStripMenuItem.Text = "Ignore Thumbs.db"
         '
         'IgnoreDSStoreToolStripMenuItem
@@ -403,19 +403,19 @@ Partial Class frmMain
         Me.IgnoreDSStoreToolStripMenuItem.CheckOnClick = True
         Me.IgnoreDSStoreToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.IgnoreDSStoreToolStripMenuItem.Name = "IgnoreDSStoreToolStripMenuItem"
-        Me.IgnoreDSStoreToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.IgnoreDSStoreToolStripMenuItem.Size = New System.Drawing.Size(280, 22)
         Me.IgnoreDSStoreToolStripMenuItem.Text = "Ignore .DS_Store"
         '
         'ToolStripSeparator11
         '
         Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
-        Me.ToolStripSeparator11.Size = New System.Drawing.Size(267, 6)
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(277, 6)
         '
         'ConvertPNGsToolStripMenuItem
         '
         Me.ConvertPNGsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IPhoneToPCToolStripMenuItem, Me.PCToIPhoneToolStripMenuItem, Me.ConvertBothToolStripMenuItem})
         Me.ConvertPNGsToolStripMenuItem.Name = "ConvertPNGsToolStripMenuItem"
-        Me.ConvertPNGsToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.ConvertPNGsToolStripMenuItem.Size = New System.Drawing.Size(280, 22)
         Me.ConvertPNGsToolStripMenuItem.Text = "Convert PNGs"
         '
         'IPhoneToPCToolStripMenuItem
@@ -424,7 +424,7 @@ Partial Class frmMain
         Me.IPhoneToPCToolStripMenuItem.CheckOnClick = True
         Me.IPhoneToPCToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.IPhoneToPCToolStripMenuItem.Name = "IPhoneToPCToolStripMenuItem"
-        Me.IPhoneToPCToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.IPhoneToPCToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.IPhoneToPCToolStripMenuItem.Text = "iPhone to PC"
         '
         'PCToIPhoneToolStripMenuItem
@@ -432,20 +432,20 @@ Partial Class frmMain
         Me.PCToIPhoneToolStripMenuItem.CheckOnClick = True
         Me.PCToIPhoneToolStripMenuItem.Enabled = False
         Me.PCToIPhoneToolStripMenuItem.Name = "PCToIPhoneToolStripMenuItem"
-        Me.PCToIPhoneToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.PCToIPhoneToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.PCToIPhoneToolStripMenuItem.Text = "PC to iPhone"
         '
         'ConvertBothToolStripMenuItem
         '
         Me.ConvertBothToolStripMenuItem.Enabled = False
         Me.ConvertBothToolStripMenuItem.Name = "ConvertBothToolStripMenuItem"
-        Me.ConvertBothToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.ConvertBothToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.ConvertBothToolStripMenuItem.Text = "Convert Both"
         '
         'ToolStripSeparator8
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        Me.ToolStripSeparator8.Size = New System.Drawing.Size(267, 6)
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(277, 6)
         '
         'ShowPreviewsToolStripMenuItem
         '
@@ -453,35 +453,35 @@ Partial Class frmMain
         Me.ShowPreviewsToolStripMenuItem.CheckOnClick = True
         Me.ShowPreviewsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ShowPreviewsToolStripMenuItem.Name = "ShowPreviewsToolStripMenuItem"
-        Me.ShowPreviewsToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.ShowPreviewsToolStripMenuItem.Size = New System.Drawing.Size(280, 22)
         Me.ShowPreviewsToolStripMenuItem.Text = "Show Previews"
         '
         'PictureBackgroundToolStripMenuItem
         '
         Me.PictureBackgroundToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BlackToolStripMenuItem, Me.GrayToolStripMenuItem, Me.WhiteToolStripMenuItem})
         Me.PictureBackgroundToolStripMenuItem.Name = "PictureBackgroundToolStripMenuItem"
-        Me.PictureBackgroundToolStripMenuItem.Size = New System.Drawing.Size(270, 22)
+        Me.PictureBackgroundToolStripMenuItem.Size = New System.Drawing.Size(280, 22)
         Me.PictureBackgroundToolStripMenuItem.Text = "Picture Background"
         '
         'BlackToolStripMenuItem
         '
         Me.BlackToolStripMenuItem.CheckOnClick = True
         Me.BlackToolStripMenuItem.Name = "BlackToolStripMenuItem"
-        Me.BlackToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
+        Me.BlackToolStripMenuItem.Size = New System.Drawing.Size(105, 22)
         Me.BlackToolStripMenuItem.Text = "Black"
         '
         'GrayToolStripMenuItem
         '
         Me.GrayToolStripMenuItem.CheckOnClick = True
         Me.GrayToolStripMenuItem.Name = "GrayToolStripMenuItem"
-        Me.GrayToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
+        Me.GrayToolStripMenuItem.Size = New System.Drawing.Size(105, 22)
         Me.GrayToolStripMenuItem.Text = "Gray"
         '
         'WhiteToolStripMenuItem
         '
         Me.WhiteToolStripMenuItem.CheckOnClick = True
         Me.WhiteToolStripMenuItem.Name = "WhiteToolStripMenuItem"
-        Me.WhiteToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
+        Me.WhiteToolStripMenuItem.Size = New System.Drawing.Size(105, 22)
         Me.WhiteToolStripMenuItem.Text = "White"
         '
         'mnuView
@@ -491,7 +491,7 @@ Partial Class frmMain
         Me.mnuView.Image = CType(resources.GetObject("mnuView.Image"), System.Drawing.Image)
         Me.mnuView.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.mnuView.Name = "mnuView"
-        Me.mnuView.Size = New System.Drawing.Size(42, 22)
+        Me.mnuView.Size = New System.Drawing.Size(45, 22)
         Me.mnuView.Text = "&View"
         '
         'ToolStripMenuItemDetails
@@ -499,31 +499,31 @@ Partial Class frmMain
         Me.ToolStripMenuItemDetails.Checked = True
         Me.ToolStripMenuItemDetails.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ToolStripMenuItemDetails.Name = "ToolStripMenuItemDetails"
-        Me.ToolStripMenuItemDetails.Size = New System.Drawing.Size(152, 22)
+        Me.ToolStripMenuItemDetails.Size = New System.Drawing.Size(144, 22)
         Me.ToolStripMenuItemDetails.Text = "&Details"
         '
         'ToolStripMenuItemLargeIcons
         '
         Me.ToolStripMenuItemLargeIcons.Name = "ToolStripMenuItemLargeIcons"
-        Me.ToolStripMenuItemLargeIcons.Size = New System.Drawing.Size(152, 22)
+        Me.ToolStripMenuItemLargeIcons.Size = New System.Drawing.Size(144, 22)
         Me.ToolStripMenuItemLargeIcons.Text = "&Large Icons"
         '
         'cmdSmallIcons
         '
         Me.cmdSmallIcons.Name = "cmdSmallIcons"
-        Me.cmdSmallIcons.Size = New System.Drawing.Size(152, 22)
+        Me.cmdSmallIcons.Size = New System.Drawing.Size(144, 22)
         Me.cmdSmallIcons.Text = "&Small Icons"
         '
         'ToolStripMenuItem8
         '
         Me.ToolStripMenuItem8.Name = "ToolStripMenuItem8"
-        Me.ToolStripMenuItem8.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripMenuItem8.Size = New System.Drawing.Size(141, 6)
         '
         'cmdShowGroups
         '
         Me.cmdShowGroups.Checked = Global.iPhoneBrowser.My.MySettings.Default.ShowGroups
         Me.cmdShowGroups.Name = "cmdShowGroups"
-        Me.cmdShowGroups.Size = New System.Drawing.Size(152, 22)
+        Me.cmdShowGroups.Size = New System.Drawing.Size(144, 22)
         Me.cmdShowGroups.Text = "Show &Groups"
         '
         'mnuGoTo
@@ -534,164 +534,164 @@ Partial Class frmMain
         Me.mnuGoTo.Image = CType(resources.GetObject("mnuGoTo.Image"), System.Drawing.Image)
         Me.mnuGoTo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.mnuGoTo.Name = "mnuGoTo"
-        Me.mnuGoTo.Size = New System.Drawing.Size(86, 22)
+        Me.mnuGoTo.Size = New System.Drawing.Size(95, 22)
         Me.mnuGoTo.Tag = "ar"
         Me.mnuGoTo.Text = "&Goto Location"
         '
         'toolStripGoTo1
         '
         Me.toolStripGoTo1.Name = "toolStripGoTo1"
-        Me.toolStripGoTo1.Size = New System.Drawing.Size(244, 22)
+        Me.toolStripGoTo1.Size = New System.Drawing.Size(248, 22)
         Me.toolStripGoTo1.Tag = "/Library/Ringtones"
         Me.toolStripGoTo1.Text = "&Ringtones"
         '
         'toolStripGoTo2
         '
         Me.toolStripGoTo2.Name = "toolStripGoTo2"
-        Me.toolStripGoTo2.Size = New System.Drawing.Size(244, 22)
+        Me.toolStripGoTo2.Size = New System.Drawing.Size(248, 22)
         Me.toolStripGoTo2.Tag = "/System/Library/Audio/UISounds"
         Me.toolStripGoTo2.Text = "&UI Sounds"
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(245, 6)
         '
         'toolStripGoTo3
         '
         Me.toolStripGoTo3.Name = "toolStripGoTo3"
-        Me.toolStripGoTo3.Size = New System.Drawing.Size(244, 22)
+        Me.toolStripGoTo3.Size = New System.Drawing.Size(248, 22)
         Me.toolStripGoTo3.Tag = "/System/Library/CoreServices/SpringBoard.app"
         Me.toolStripGoTo3.Text = "&Springboard Images and Settings"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(244, 22)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(248, 22)
         Me.ToolStripMenuItem1.Tag = "/Library/Themes"
         Me.ToolStripMenuItem1.Text = "WinterBoard Themes"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(244, 22)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(248, 22)
         Me.ToolStripMenuItem2.Tag = "/var/mobile/Library/Summerboard/Themes"
         Me.ToolStripMenuItem2.Text = "SummerBoard &Themes"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(245, 6)
         '
         'mnuStdApps
         '
         Me.mnuStdApps.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripGoTo4, Me.toolStripGoTo6, Me.toolStripGoTo13, Me.toolStripGoTo14, Me.toolStripGoTo8, Me.toolStripGoTo7, Me.toolStripGoTo5, Me.toolStripGoTo9, Me.toolStripGoTo10, Me.toolStripGoTo12, Me.toolStripGoTo15, Me.toolStripGoTo11, Me.toolStripGoTo16, Me.toolStripGoTo17, Me.toolStripGoTo18})
         Me.mnuStdApps.Name = "mnuStdApps"
-        Me.mnuStdApps.Size = New System.Drawing.Size(244, 22)
+        Me.mnuStdApps.Size = New System.Drawing.Size(248, 22)
         Me.mnuStdApps.Text = "Standard &Applications"
         '
         'toolStripGoTo4
         '
         Me.toolStripGoTo4.Name = "toolStripGoTo4"
-        Me.toolStripGoTo4.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo4.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo4.Tag = "/Applications/Calculator.app"
         Me.toolStripGoTo4.Text = "&Calculator Icon and Images"
         '
         'toolStripGoTo6
         '
         Me.toolStripGoTo6.Name = "toolStripGoTo6"
-        Me.toolStripGoTo6.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo6.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo6.Tag = "/Applications/MobileCal.app"
         Me.toolStripGoTo6.Text = "C&alendar Icon and Images"
         '
         'toolStripGoTo13
         '
         Me.toolStripGoTo13.Name = "toolStripGoTo13"
-        Me.toolStripGoTo13.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo13.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo13.Tag = "/Applications/MobileSlideShow.app"
         Me.toolStripGoTo13.Text = "Came&ra/Photos Icons and Images"
         '
         'toolStripGoTo14
         '
         Me.toolStripGoTo14.Name = "toolStripGoTo14"
-        Me.toolStripGoTo14.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo14.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo14.Tag = "/Applications/MobileTimer.app"
         Me.toolStripGoTo14.Text = "C&lock Icon and Images"
         '
         'toolStripGoTo8
         '
         Me.toolStripGoTo8.Name = "toolStripGoTo8"
-        Me.toolStripGoTo8.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo8.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo8.Tag = "/Applications/MobileMusicPlayer.app"
         Me.toolStripGoTo8.Text = "&iPod Icon and Images"
         '
         'toolStripGoTo7
         '
         Me.toolStripGoTo7.Name = "toolStripGoTo7"
-        Me.toolStripGoTo7.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo7.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo7.Tag = "/Applications/MobileMail.app"
         Me.toolStripGoTo7.Text = "Mai&l Icon and Images"
         '
         'toolStripGoTo5
         '
         Me.toolStripGoTo5.Name = "toolStripGoTo5"
-        Me.toolStripGoTo5.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo5.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo5.Tag = "/Applications/Maps.app"
         Me.toolStripGoTo5.Text = "&Maps Icon and Images"
         '
         'toolStripGoTo9
         '
         Me.toolStripGoTo9.Name = "toolStripGoTo9"
-        Me.toolStripGoTo9.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo9.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo9.Tag = "/Applications/MobileNotes.app"
         Me.toolStripGoTo9.Text = "&Notes Icon and Images"
         '
         'toolStripGoTo10
         '
         Me.toolStripGoTo10.Name = "toolStripGoTo10"
-        Me.toolStripGoTo10.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo10.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo10.Tag = "/Applications/MobilePhone.app"
         Me.toolStripGoTo10.Text = "&Phone Icon and Images"
         '
         'toolStripGoTo12
         '
         Me.toolStripGoTo12.Name = "toolStripGoTo12"
-        Me.toolStripGoTo12.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo12.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo12.Tag = "/Applications/MobileSafari.app"
         Me.toolStripGoTo12.Text = "Sa&fari Icon and Images"
         '
         'toolStripGoTo15
         '
         Me.toolStripGoTo15.Name = "toolStripGoTo15"
-        Me.toolStripGoTo15.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo15.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo15.Tag = "/Applications/Preferences.app"
         Me.toolStripGoTo15.Text = "Se&ttings Icon and Images"
         '
         'toolStripGoTo11
         '
         Me.toolStripGoTo11.Name = "toolStripGoTo11"
-        Me.toolStripGoTo11.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo11.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo11.Tag = "/Applications/MobileSMS.app"
         Me.toolStripGoTo11.Text = "&SMS Icon and Images"
         '
         'toolStripGoTo16
         '
         Me.toolStripGoTo16.Name = "toolStripGoTo16"
-        Me.toolStripGoTo16.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo16.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo16.Tag = "/Applications/Stocks.app"
         Me.toolStripGoTo16.Text = "Stoc&ks Icon and Images"
         '
         'toolStripGoTo17
         '
         Me.toolStripGoTo17.Name = "toolStripGoTo17"
-        Me.toolStripGoTo17.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo17.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo17.Tag = "/Applications/Weather.app"
         Me.toolStripGoTo17.Text = "&Weather Icon and Images"
         '
         'toolStripGoTo18
         '
         Me.toolStripGoTo18.Name = "toolStripGoTo18"
-        Me.toolStripGoTo18.Size = New System.Drawing.Size(247, 22)
+        Me.toolStripGoTo18.Size = New System.Drawing.Size(252, 22)
         Me.toolStripGoTo18.Tag = "/Applications/YouTube.app"
         Me.toolStripGoTo18.Text = "&YouTube Icon and Images"
         '
@@ -699,102 +699,102 @@ Partial Class frmMain
         '
         Me.mnuThirdPartyApps.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem5, Me.DockSwapDocksToolStripMenuItem, Me.EBooksToolStripMenuItem, Me.FrotzGamesToolStripMenuItem, Me.cmdGBAROMs, Me.ToolStripMenuItem6, Me.InstallerPackageSourcesToolStripMenuItem, Me.ISwitcherThemesToolStripMenuItem, Me.NESROMSToolStripMenuItem, Me.TTRToolStripMenuItem, Me.WeDictDictionariesToolStripMenuItem})
         Me.mnuThirdPartyApps.Name = "mnuThirdPartyApps"
-        Me.mnuThirdPartyApps.Size = New System.Drawing.Size(244, 22)
+        Me.mnuThirdPartyApps.Size = New System.Drawing.Size(248, 22)
         Me.mnuThirdPartyApps.Text = "Third-&Party Applications"
         '
         'ToolStripMenuItem5
         '
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
-        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(218, 22)
+        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(225, 22)
         Me.ToolStripMenuItem5.Tag = "/var/mobile/Library/Customize"
         Me.ToolStripMenuItem5.Text = "&Customize Files"
         '
         'DockSwapDocksToolStripMenuItem
         '
         Me.DockSwapDocksToolStripMenuItem.Name = "DockSwapDocksToolStripMenuItem"
-        Me.DockSwapDocksToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
+        Me.DockSwapDocksToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.DockSwapDocksToolStripMenuItem.Tag = "/var/mobile/Library/DockSwap"
         Me.DockSwapDocksToolStripMenuItem.Text = "&DockSwap/Customize Docks"
         '
         'EBooksToolStripMenuItem
         '
         Me.EBooksToolStripMenuItem.Name = "EBooksToolStripMenuItem"
-        Me.EBooksToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
+        Me.EBooksToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.EBooksToolStripMenuItem.Tag = "/var/mobile/Media/EBooks"
         Me.EBooksToolStripMenuItem.Text = "E&Books"
         '
         'FrotzGamesToolStripMenuItem
         '
         Me.FrotzGamesToolStripMenuItem.Name = "FrotzGamesToolStripMenuItem"
-        Me.FrotzGamesToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
+        Me.FrotzGamesToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.FrotzGamesToolStripMenuItem.Tag = "/var/mobile/Media/Frotz/Games"
         Me.FrotzGamesToolStripMenuItem.Text = "&Frotz Games"
         '
         'cmdGBAROMs
         '
         Me.cmdGBAROMs.Name = "cmdGBAROMs"
-        Me.cmdGBAROMs.Size = New System.Drawing.Size(218, 22)
+        Me.cmdGBAROMs.Size = New System.Drawing.Size(225, 22)
         Me.cmdGBAROMs.Tag = "/var/mobile/Media/ROMs/GBA"
         Me.cmdGBAROMs.Text = "&GBA ROMs"
         '
         'ToolStripMenuItem6
         '
         Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
-        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(218, 22)
+        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(225, 22)
         Me.ToolStripMenuItem6.Tag = "/var/mobile/Library/iFlashCards"
         Me.ToolStripMenuItem6.Text = "iFlashCards"
         '
         'InstallerPackageSourcesToolStripMenuItem
         '
         Me.InstallerPackageSourcesToolStripMenuItem.Name = "InstallerPackageSourcesToolStripMenuItem"
-        Me.InstallerPackageSourcesToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
+        Me.InstallerPackageSourcesToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.InstallerPackageSourcesToolStripMenuItem.Tag = "/var/mobile/Library/Installer"
         Me.InstallerPackageSourcesToolStripMenuItem.Text = "&Installer Package Sources"
         '
         'ISwitcherThemesToolStripMenuItem
         '
         Me.ISwitcherThemesToolStripMenuItem.Name = "ISwitcherThemesToolStripMenuItem"
-        Me.ISwitcherThemesToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
+        Me.ISwitcherThemesToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.ISwitcherThemesToolStripMenuItem.Tag = "/var/mobile/Media/Themes"
         Me.ISwitcherThemesToolStripMenuItem.Text = "i&Switcher Themes"
         '
         'NESROMSToolStripMenuItem
         '
         Me.NESROMSToolStripMenuItem.Name = "NESROMSToolStripMenuItem"
-        Me.NESROMSToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
+        Me.NESROMSToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.NESROMSToolStripMenuItem.Tag = "/var/mobile/Media/ROMs/NES"
         Me.NESROMSToolStripMenuItem.Text = "&NES ROMS"
         '
         'TTRToolStripMenuItem
         '
         Me.TTRToolStripMenuItem.Name = "TTRToolStripMenuItem"
-        Me.TTRToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
+        Me.TTRToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.TTRToolStripMenuItem.Tag = "/var/mobile/Media/TTR"
         Me.TTRToolStripMenuItem.Text = "&TTR"
         '
         'WeDictDictionariesToolStripMenuItem
         '
         Me.WeDictDictionariesToolStripMenuItem.Name = "WeDictDictionariesToolStripMenuItem"
-        Me.WeDictDictionariesToolStripMenuItem.Size = New System.Drawing.Size(218, 22)
+        Me.WeDictDictionariesToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.WeDictDictionariesToolStripMenuItem.Tag = "/var/mobile/Libary/weDict"
         Me.WeDictDictionariesToolStripMenuItem.Text = "&weDict Dictionaries"
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(245, 6)
         '
         'CameraRollToolStripMenuItem
         '
         Me.CameraRollToolStripMenuItem.Name = "CameraRollToolStripMenuItem"
-        Me.CameraRollToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.CameraRollToolStripMenuItem.Size = New System.Drawing.Size(248, 22)
         Me.CameraRollToolStripMenuItem.Tag = "/var/mobile/Media/DCIM"
         Me.CameraRollToolStripMenuItem.Text = "Camera Roll  (DCIM)"
         '
         'toolStripGoTo19
         '
         Me.toolStripGoTo19.Name = "toolStripGoTo19"
-        Me.toolStripGoTo19.Size = New System.Drawing.Size(244, 22)
+        Me.toolStripGoTo19.Size = New System.Drawing.Size(248, 22)
         Me.toolStripGoTo19.Tag = "/System/Library/Fonts"
         Me.toolStripGoTo19.Text = "&Fonts"
         '
@@ -806,47 +806,47 @@ Partial Class frmMain
         Me.mnuFavorites.Image = CType(resources.GetObject("mnuFavorites.Image"), System.Drawing.Image)
         Me.mnuFavorites.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.mnuFavorites.Name = "mnuFavorites"
-        Me.mnuFavorites.Size = New System.Drawing.Size(65, 22)
+        Me.mnuFavorites.Size = New System.Drawing.Size(67, 22)
         Me.mnuFavorites.Text = "Favorites"
         '
         'AddToFavoritesToolStripMenuItem
         '
         Me.AddToFavoritesToolStripMenuItem.Name = "AddToFavoritesToolStripMenuItem"
-        Me.AddToFavoritesToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.AddToFavoritesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.AddToFavoritesToolStripMenuItem.Text = "Add to Favorites..."
         '
         'OrganizeFavoritesToolStripMenuItem
         '
         Me.OrganizeFavoritesToolStripMenuItem.Name = "OrganizeFavoritesToolStripMenuItem"
-        Me.OrganizeFavoritesToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.OrganizeFavoritesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.OrganizeFavoritesToolStripMenuItem.Text = "Organize Favorites..."
         '
         'ToolStripMenuItem7
         '
         Me.ToolStripMenuItem7.Name = "ToolStripMenuItem7"
-        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(185, 6)
+        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(177, 6)
         '
         'menuRightClickFiles
         '
         Me.menuRightClickFiles.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuRightSaveAs, Me.ToolStripSeparator2, Me.menuRightBackupFile, Me.menuRightRestoreFile, Me.ToolStripSeparator1, Me.cmdRenameFile, Me.menuRightReplaceFile, Me.menuRightDeleteFile})
         Me.menuRightClickFiles.Name = "menuRightClickFiles"
-        Me.menuRightClickFiles.Size = New System.Drawing.Size(156, 148)
+        Me.menuRightClickFiles.Size = New System.Drawing.Size(148, 148)
         '
         'menuRightSaveAs
         '
         Me.menuRightSaveAs.Name = "menuRightSaveAs"
-        Me.menuRightSaveAs.Size = New System.Drawing.Size(155, 22)
+        Me.menuRightSaveAs.Size = New System.Drawing.Size(147, 22)
         Me.menuRightSaveAs.Text = "Save &As..."
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(152, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(144, 6)
         '
         'menuRightBackupFile
         '
         Me.menuRightBackupFile.Name = "menuRightBackupFile"
-        Me.menuRightBackupFile.Size = New System.Drawing.Size(155, 22)
+        Me.menuRightBackupFile.Size = New System.Drawing.Size(147, 22)
         Me.menuRightBackupFile.Text = "&Backup File"
         '
         'menuRightRestoreFile
@@ -854,36 +854,36 @@ Partial Class frmMain
         Me.menuRightRestoreFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItemLoading})
         Me.menuRightRestoreFile.Enabled = False
         Me.menuRightRestoreFile.Name = "menuRightRestoreFile"
-        Me.menuRightRestoreFile.Size = New System.Drawing.Size(155, 22)
+        Me.menuRightRestoreFile.Size = New System.Drawing.Size(147, 22)
         Me.menuRightRestoreFile.Text = "&Restore File"
         '
         'ToolStripMenuItemLoading
         '
         Me.ToolStripMenuItemLoading.Name = "ToolStripMenuItemLoading"
-        Me.ToolStripMenuItemLoading.Size = New System.Drawing.Size(243, 22)
+        Me.ToolStripMenuItemLoading.Size = New System.Drawing.Size(246, 22)
         Me.ToolStripMenuItemLoading.Text = "Loading List of Backed Up Files..."
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(152, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(144, 6)
         '
         'cmdRenameFile
         '
         Me.cmdRenameFile.Name = "cmdRenameFile"
-        Me.cmdRenameFile.Size = New System.Drawing.Size(155, 22)
+        Me.cmdRenameFile.Size = New System.Drawing.Size(147, 22)
         Me.cmdRenameFile.Text = "Rename File..."
         '
         'menuRightReplaceFile
         '
         Me.menuRightReplaceFile.Name = "menuRightReplaceFile"
-        Me.menuRightReplaceFile.Size = New System.Drawing.Size(155, 22)
+        Me.menuRightReplaceFile.Size = New System.Drawing.Size(147, 22)
         Me.menuRightReplaceFile.Text = "Re&place File..."
         '
         'menuRightDeleteFile
         '
         Me.menuRightDeleteFile.Name = "menuRightDeleteFile"
-        Me.menuRightDeleteFile.Size = New System.Drawing.Size(155, 22)
+        Me.menuRightDeleteFile.Size = New System.Drawing.Size(147, 22)
         Me.menuRightDeleteFile.Text = "&Delete File"
         '
         'fileSaveDialog
@@ -908,8 +908,8 @@ Partial Class frmMain
         '
         Me.splMain.Panel2.Controls.Add(Me.splFiles)
         Me.splMain.Panel2.Padding = New System.Windows.Forms.Padding(3)
-        Me.splMain.Size = New System.Drawing.Size(747, 550)
-        Me.splMain.SplitterDistance = 251
+        Me.splMain.Size = New System.Drawing.Size(728, 396)
+        Me.splMain.SplitterDistance = 244
         Me.splMain.TabIndex = 5
         '
         'grpFolders
@@ -919,7 +919,7 @@ Partial Class frmMain
         Me.grpFolders.Location = New System.Drawing.Point(3, 3)
         Me.grpFolders.Margin = New System.Windows.Forms.Padding(0)
         Me.grpFolders.Name = "grpFolders"
-        Me.grpFolders.Size = New System.Drawing.Size(245, 544)
+        Me.grpFolders.Size = New System.Drawing.Size(238, 390)
         Me.grpFolders.TabIndex = 2
         Me.grpFolders.TabStop = False
         Me.grpFolders.Text = "Folders on your iPhone"
@@ -934,7 +934,7 @@ Partial Class frmMain
         Me.trvFolders.PathSeparator = "/"
         Me.trvFolders.SelectedImageIndex = 1
         Me.trvFolders.ShowRootLines = False
-        Me.trvFolders.Size = New System.Drawing.Size(239, 525)
+        Me.trvFolders.Size = New System.Drawing.Size(232, 371)
         Me.trvFolders.TabIndex = 0
         '
         'splFiles
@@ -952,8 +952,8 @@ Partial Class frmMain
         'splFiles.Panel2
         '
         Me.splFiles.Panel2.Controls.Add(Me.grpDetails)
-        Me.splFiles.Size = New System.Drawing.Size(486, 544)
-        Me.splFiles.SplitterDistance = 362
+        Me.splFiles.Size = New System.Drawing.Size(474, 390)
+        Me.splFiles.SplitterDistance = 259
         Me.splFiles.TabIndex = 0
         '
         'grpFiles
@@ -962,7 +962,7 @@ Partial Class frmMain
         Me.grpFiles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.grpFiles.Location = New System.Drawing.Point(0, 0)
         Me.grpFiles.Name = "grpFiles"
-        Me.grpFiles.Size = New System.Drawing.Size(486, 362)
+        Me.grpFiles.Size = New System.Drawing.Size(474, 259)
         Me.grpFiles.TabIndex = 1
         Me.grpFiles.TabStop = False
         Me.grpFiles.Text = "Files on your iPhone"
@@ -978,7 +978,7 @@ Partial Class frmMain
         Me.lstFiles.Location = New System.Drawing.Point(3, 16)
         Me.lstFiles.Name = "lstFiles"
         Me.lstFiles.ShowGroups = False
-        Me.lstFiles.Size = New System.Drawing.Size(480, 343)
+        Me.lstFiles.Size = New System.Drawing.Size(468, 240)
         Me.lstFiles.SmallImageList = Me.imgFilesSmall
         Me.lstFiles.TabIndex = 0
         Me.lstFiles.UseCompatibleStateImageBehavior = False
@@ -1009,7 +1009,7 @@ Partial Class frmMain
         Me.grpDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.grpDetails.Location = New System.Drawing.Point(0, 0)
         Me.grpDetails.Name = "grpDetails"
-        Me.grpDetails.Size = New System.Drawing.Size(486, 178)
+        Me.grpDetails.Size = New System.Drawing.Size(474, 127)
         Me.grpDetails.TabIndex = 0
         Me.grpDetails.TabStop = False
         Me.grpDetails.Text = "File Details"
@@ -1021,7 +1021,7 @@ Partial Class frmMain
         Me.picFileDetails.ImageLocation = ""
         Me.picFileDetails.Location = New System.Drawing.Point(3, 40)
         Me.picFileDetails.Name = "picFileDetails"
-        Me.picFileDetails.Size = New System.Drawing.Size(480, 135)
+        Me.picFileDetails.Size = New System.Drawing.Size(468, 84)
         Me.picFileDetails.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.picFileDetails.TabIndex = 2
         Me.picFileDetails.TabStop = False
@@ -1035,7 +1035,7 @@ Partial Class frmMain
         Me.txtFileDetails.Name = "txtFileDetails"
         Me.txtFileDetails.ReadOnly = True
         Me.txtFileDetails.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtFileDetails.Size = New System.Drawing.Size(480, 135)
+        Me.txtFileDetails.Size = New System.Drawing.Size(468, 84)
         Me.txtFileDetails.TabIndex = 0
         Me.txtFileDetails.Visible = False
         '
@@ -1046,7 +1046,7 @@ Partial Class frmMain
         Me.qtPlugin.Location = New System.Drawing.Point(3, 40)
         Me.qtPlugin.Name = "qtPlugin"
         Me.qtPlugin.OcxState = CType(resources.GetObject("qtPlugin.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.qtPlugin.Size = New System.Drawing.Size(480, 135)
+        Me.qtPlugin.Size = New System.Drawing.Size(468, 84)
         Me.qtPlugin.TabIndex = 4
         Me.qtPlugin.Visible = False
         '
@@ -1057,13 +1057,13 @@ Partial Class frmMain
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(3, 16)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(480, 24)
+        Me.Panel1.Size = New System.Drawing.Size(468, 24)
         Me.Panel1.TabIndex = 5
         '
         'btnPreview
         '
         Me.btnPreview.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnPreview.Location = New System.Drawing.Point(399, 0)
+        Me.btnPreview.Location = New System.Drawing.Point(387, 0)
         Me.btnPreview.Name = "btnPreview"
         Me.btnPreview.Size = New System.Drawing.Size(75, 23)
         Me.btnPreview.TabIndex = 1
@@ -1079,7 +1079,7 @@ Partial Class frmMain
         Me.chkPreviewEnabled.Checked = Global.iPhoneBrowser.My.MySettings.Default.ShowPreviews
         Me.chkPreviewEnabled.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkPreviewEnabled.DataBindings.Add(New System.Windows.Forms.Binding("Checked", Global.iPhoneBrowser.My.MySettings.Default, "ShowPreviews", True, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged))
-        Me.chkPreviewEnabled.Location = New System.Drawing.Point(271, 0)
+        Me.chkPreviewEnabled.Location = New System.Drawing.Point(259, 0)
         Me.chkPreviewEnabled.Name = "chkPreviewEnabled"
         Me.chkPreviewEnabled.Size = New System.Drawing.Size(122, 23)
         Me.chkPreviewEnabled.TabIndex = 0
@@ -1091,46 +1091,46 @@ Partial Class frmMain
         '
         Me.menuRightClickFolders.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItemNewFolder, Me.ToolStripSeparator9, Me.BackupFolderToolStripMenuItem, Me.ToolStripMenuItemSaveFolderIn, Me.cmdRenameFolder, Me.ToolStripSeparator10, Me.ToolStripMenuItemDeleteFolder})
         Me.menuRightClickFolders.Name = "menuRightClickFolders"
-        Me.menuRightClickFolders.Size = New System.Drawing.Size(170, 126)
+        Me.menuRightClickFolders.Size = New System.Drawing.Size(163, 126)
         '
         'ToolStripMenuItemNewFolder
         '
         Me.ToolStripMenuItemNewFolder.Name = "ToolStripMenuItemNewFolder"
-        Me.ToolStripMenuItemNewFolder.Size = New System.Drawing.Size(169, 22)
+        Me.ToolStripMenuItemNewFolder.Size = New System.Drawing.Size(162, 22)
         Me.ToolStripMenuItemNewFolder.Text = "&New Folder..."
         '
         'ToolStripSeparator9
         '
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(166, 6)
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(159, 6)
         '
         'BackupFolderToolStripMenuItem
         '
         Me.BackupFolderToolStripMenuItem.Name = "BackupFolderToolStripMenuItem"
-        Me.BackupFolderToolStripMenuItem.Size = New System.Drawing.Size(169, 22)
+        Me.BackupFolderToolStripMenuItem.Size = New System.Drawing.Size(162, 22)
         Me.BackupFolderToolStripMenuItem.Text = "Backup Folder"
         '
         'ToolStripMenuItemSaveFolderIn
         '
         Me.ToolStripMenuItemSaveFolderIn.Name = "ToolStripMenuItemSaveFolderIn"
-        Me.ToolStripMenuItemSaveFolderIn.Size = New System.Drawing.Size(169, 22)
+        Me.ToolStripMenuItemSaveFolderIn.Size = New System.Drawing.Size(162, 22)
         Me.ToolStripMenuItemSaveFolderIn.Text = "Save Folder In..."
         '
         'cmdRenameFolder
         '
         Me.cmdRenameFolder.Name = "cmdRenameFolder"
-        Me.cmdRenameFolder.Size = New System.Drawing.Size(169, 22)
+        Me.cmdRenameFolder.Size = New System.Drawing.Size(162, 22)
         Me.cmdRenameFolder.Text = "Rename Folder..."
         '
         'ToolStripSeparator10
         '
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        Me.ToolStripSeparator10.Size = New System.Drawing.Size(166, 6)
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(159, 6)
         '
         'ToolStripMenuItemDeleteFolder
         '
         Me.ToolStripMenuItemDeleteFolder.Name = "ToolStripMenuItemDeleteFolder"
-        Me.ToolStripMenuItemDeleteFolder.Size = New System.Drawing.Size(169, 22)
+        Me.ToolStripMenuItemDeleteFolder.Size = New System.Drawing.Size(162, 22)
         Me.ToolStripMenuItemDeleteFolder.Text = "&Delete Folder"
         '
         'folderBrowserDialog
@@ -1143,7 +1143,7 @@ Partial Class frmMain
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(747, 597)
+        Me.ClientSize = New System.Drawing.Size(728, 443)
         Me.Controls.Add(Me.splMain)
         Me.Controls.Add(Me.toolStrip)
         Me.Controls.Add(Me.tlbStatusStrip)
