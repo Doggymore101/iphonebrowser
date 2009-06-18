@@ -17,7 +17,7 @@ Future Versions	??/??/2009	Pete Wilson
   * edit plists
   * Modify delete confirmation to have backup checkbox and All button
   
-v1.9.1 6/17/09 Pete Wilson
+v1.9.1 6/18/09 Pete Wilson
   * Modified Manzana interface to prevent .Net peering too deeply into iTunes DLL structures
     * Fixes issues with execution on Windows 7 (tested) and hopefully Vista
     * Disappointing that XP misses so many memory issues
