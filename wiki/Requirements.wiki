@@ -10,4 +10,3 @@
 
 = Notes =
   * May not work well on non-US versions of Windows XP
-  * Has problems on Vista and Windows 7
