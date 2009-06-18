@@ -62,15 +62,10 @@ namespace Manzana
 	}
 
 	/// <summary>
-	/// Structure describing the iPhone
+	/// Structure describing the iPhone - no longer used
 	/// </summary>
 	/// Just opaque block of memory - give a decent chunk
 	/// 
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-	public struct AMDevice {
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 255)]
-		internal byte[] unknown0;
-	}
 #if false
 	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
 	public struct AMDevice {
@@ -91,7 +86,6 @@ namespace Manzana
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst=8)]
 		internal byte[]		unknown5;		/* 97  + in iTunes 8.0, by iFunbox.dev */
 	}
-#endif
 
 	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
 	internal struct AMDeviceNotification {
@@ -101,17 +95,18 @@ namespace Manzana
 		DeviceNotificationCallback	callback;   /* 12 */ 
 		uint						unknown3;	/* 16 */
 	}
-
+#endif
 	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
 	internal struct AMDeviceNotificationCallbackInfo {
-		public AMDevice dev {
+		unsafe public void* dev {
 			get {
-				return (AMDevice)Marshal.PtrToStructure(dev_ptr, typeof(AMDevice));
+				return dev_ptr;
 			}
 		}
-		internal IntPtr	dev_ptr;
+		unsafe internal void* dev_ptr;
 		public NotificationMessage msg;
 	}
+
 
 	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
 	internal struct AMRecoveryDevice {
@@ -129,6 +124,7 @@ namespace Manzana
 		public byte		write_input_pipe;   /* 36 */
 	};
 
+#if false
 	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
 	internal struct afc_directory {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst=0)]
@@ -151,7 +147,7 @@ namespace Manzana
 		IntPtr afc_lock;                 /* 36 */
 		uint context;           /* 40 */
 	};
-
+#endif
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void DeviceNotificationCallback(ref AMDeviceNotificationCallbackInfo callback_info);
@@ -171,41 +167,29 @@ namespace Manzana
             Environment.SetEnvironmentVariable("Path", newpath);
         }
 
-		public static int AMDeviceNotificationSubscribe(DeviceNotificationCallback callback, uint unused1, uint unused2, uint unused3, ref AMDeviceNotification notification) {
-			IntPtr	ptr;
-			int		ret;
-
-			ptr = IntPtr.Zero;
-			ret = AMDeviceNotificationSubscribe(callback, unused1, unused2, unused3, ref ptr);
-			if ((ret == 0) && (ptr != IntPtr.Zero)) {
-				notification = (AMDeviceNotification)Marshal.PtrToStructure(ptr, notification.GetType());
-			}
-			return ret;
-		}
+		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
+		unsafe public extern static int AMDeviceNotificationSubscribe(DeviceNotificationCallback callback, uint unused1, uint unused2, uint unused3, out void* am_device_notification_ptr);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		private extern static int AMDeviceNotificationSubscribe(DeviceNotificationCallback callback, uint unused1, uint unused2, uint unused3, ref IntPtr am_device_notification_ptr);
+		unsafe public extern static int AMDeviceConnect(void* device);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		unsafe public extern static int AMDeviceDisconnect(void* device);
+
+		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
+		unsafe public extern static int AMDeviceIsPaired(void* device);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AMDeviceConnect(ref AMDevice device);
-
-		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AMDeviceDisconnect(ref AMDevice device);
-
-		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AMDeviceIsPaired(ref AMDevice device);
+		unsafe public extern static int AMDeviceValidatePairing(void* device);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AMDeviceValidatePairing(ref AMDevice device);
-
-		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AMDeviceStartSession(ref AMDevice device);
+		unsafe public extern static int AMDeviceStartSession(void* device);
 
 		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AMDeviceStopSession(ref AMDevice device);
+		unsafe public extern static int AMDeviceStopSession(void* device);
 
 		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AMDeviceGetConnectionID(ref AMDevice device);
+		unsafe public extern static int AMDeviceGetConnectionID(void* device);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
 		public extern static int AMRestoreModeDeviceCreate(uint unknown0, int connection_id, uint unknown1);
@@ -232,36 +216,17 @@ namespace Manzana
 		unsafe public extern static int AFCDirectoryClose(void* conn, void* dir);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AMRestoreRegisterForDeviceNotifications(
+		unsafe public extern static int AMRestoreRegisterForDeviceNotifications(
 			DeviceRestoreNotificationCallback dfu_connect, 
 			DeviceRestoreNotificationCallback recovery_connect, 
 			DeviceRestoreNotificationCallback dfu_disconnect,
 			DeviceRestoreNotificationCallback recovery_disconnect,
 			uint unknown0,
-			IntPtr user_info);
+			void* user_info);
 
-
-		unsafe public static int AMDeviceStartService(ref AMDevice device, string service_name, ref afc_connection conn, void* unknown) {
-			int ret;
-
-			void* ptr = null;
-			ret = AMDeviceStartService(ref device, StringToCFString(service_name), ref ptr, unknown);
-			if ((ret == 0) && (ptr != null)) {
-				conn = (afc_connection)Marshal.PtrToStructure(new IntPtr(ptr), conn.GetType());
-			}
-			return ret;
-		}
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		unsafe public extern static int AMDeviceStartService(ref AMDevice device, byte[] service_name, ref void* handle, void* unknown);
+		unsafe public extern static int AMDeviceStartService(void* device, byte[] service_name, ref void* handle, void* unknown);
 
-		unsafe public static int AFCConnectionOpen(void* handle, uint io_timeout, ref afc_connection conn) {
-			void* ptr = null;
-			int ret = AFCConnectionOpen(handle, io_timeout, ref ptr);
-			if ((ret == 0) && (ptr != null)) {
-				conn = (afc_connection)Marshal.PtrToStructure(new IntPtr(ptr), conn.GetType());
-			}
-			return ret;
-		}
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
 		unsafe public extern static int AFCConnectionOpen(void* handle, uint io_timeout, ref void* conn);
 
@@ -274,13 +239,13 @@ namespace Manzana
 		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
 		unsafe public extern static int AFCConnectionClose(void* conn);
 
-		public static string AMDeviceCopyValue(ref AMDevice device, uint unknown, string name) {
+		unsafe public static string AMDeviceCopyValue(void* device, uint unknown, string name) {
 			IntPtr	result;
 			byte[]	cfstring;
 
 			cfstring = StringToCFString(name);
 
-			result = AMDeviceCopyValue_Int(ref device, unknown, cfstring);
+			result = AMDeviceCopyValue_Int(device, unknown, cfstring);
 			if (result != IntPtr.Zero) {
 				byte length;
 
@@ -295,7 +260,7 @@ namespace Manzana
 		}
 
 		[DllImport(DLLPath, EntryPoint="AMDeviceCopyValue", CallingConvention=CallingConvention.Cdecl)]
-		public extern static IntPtr AMDeviceCopyValue_Int(ref AMDevice device, uint unknown, byte[] cfstring);
+		unsafe public extern static IntPtr AMDeviceCopyValue_Int(void* device, uint unknown, byte[] cfstring);
 
         [DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
         unsafe public extern static int AFCFileInfoOpen(void* conn, string path, ref void* dict);

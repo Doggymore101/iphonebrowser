@@ -41,9 +41,9 @@ namespace Manzana
 	/// </summary>
 	public class ConnectEventArgs : EventArgs{
 		private NotificationMessage	message;
-		private AMDevice device;
+		unsafe private void* device;
  
-		internal ConnectEventArgs(AMDeviceNotificationCallbackInfo cbi) {
+		unsafe internal ConnectEventArgs(AMDeviceNotificationCallbackInfo cbi) {
 			message = cbi.msg;
 			device = cbi.dev;
 		}
@@ -51,7 +51,7 @@ namespace Manzana
 		/// <summary>
 		/// Returns the information for the device that was connected or disconnected.
 		/// </summary>
-		public AMDevice Device {
+		unsafe public void* Device {
 			get { return device; }
 		}
 
