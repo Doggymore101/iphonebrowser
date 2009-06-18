@@ -2,7 +2,7 @@
 #labels Featured,Phase-Deploy
 
 = Program Requirements =
-  * Windows XP
+  * Windows XP / Vista 32-bit / Windows 7 RC 32-bit
   * Microsoft .Net Framework 2.0
   * afc2 service installed on phone (otherwise iPhoneBrowser will not show all files)
     * This is normally installed as part of jailbreaking
