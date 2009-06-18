@@ -2,12 +2,11 @@
 #labels Featured
 
 = Introduction =
+From the what's new.txt file - history of changes to iPhoneBrowser.
 
-From the what's new.txt file included with iPhoneBrowser.
-
+Follow me on Twitter: @NetMage
 
 = Details =
-
 Future Versions	??/??/2009	Pete Wilson
   * conversion to standard PNG creates correct CRC
   * conversion to iPhone PNG (does not premultiply alpha)
@@ -18,8 +17,12 @@ Future Versions	??/??/2009	Pete Wilson
   * edit plists
   * Modify delete confirmation to have backup checkbox and All button
   
-v1.90  6/12/09 Pete Wilson (follow me on twitter @NetMage)
-  * Improved compatiblity with iTunes 8.2
+v1.9.1 6/17/09 Pete Wilson
+  * Modified Manzana interface to prevent .Net peering too deeply into iTunes DLL structures
+    * Fixes issues with execution on Windows 7 (tested) and hopefully Vista
+    * Disappointing that XP misses so many memory issues
+  
+v1.90  6/12/09 Pete Wilson  * Improved compatiblity with iTunes 8.2
   * Handle file (symbolic link) errors a little better
   * Fix multiple bugs in options saving and setting
   * Add options to turn off automatic backup of removed and replaced files
