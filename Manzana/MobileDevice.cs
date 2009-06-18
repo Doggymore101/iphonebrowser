@@ -211,26 +211,25 @@ namespace Manzana
 		public extern static int AMRestoreModeDeviceCreate(uint unknown0, int connection_id, uint unknown1);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCDirectoryOpen(IntPtr conn, string path, ref IntPtr dir);
+		unsafe public extern static int AFCDirectoryOpen(void* conn, string path, ref void* dir);
 
-		public static int AFCDirectoryRead(IntPtr conn, IntPtr dir, ref string buffer) {
-			IntPtr ptr;
+		unsafe public static int AFCDirectoryRead(void* conn, void* dir, ref string buffer) {
 			int ret;
 
-			ptr = IntPtr.Zero;
+			void* ptr = null;
 			ret = AFCDirectoryRead(conn, dir, ref ptr);
-			if ((ret == 0) && (ptr != IntPtr.Zero)) {
-				buffer = Marshal.PtrToStringAnsi(ptr);
+			if ((ret == 0) && (ptr != null)) {
+				buffer = Marshal.PtrToStringAnsi(new IntPtr(ptr));
 			} else {
 				buffer = null;
 			}
 			return ret;
 		}
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCDirectoryRead(IntPtr conn, IntPtr dir, ref IntPtr dirent);
+		unsafe public extern static int AFCDirectoryRead(void* conn, void* dir, ref void* dirent);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCDirectoryClose(IntPtr conn, IntPtr dir);
+		unsafe public extern static int AFCDirectoryClose(void* conn, void* dir);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
 		public extern static int AMRestoreRegisterForDeviceNotifications(
@@ -242,39 +241,38 @@ namespace Manzana
 			IntPtr user_info);
 
 
-		public static int AMDeviceStartService(ref AMDevice device, string service_name, ref afc_connection conn, IntPtr unknown) {
-			IntPtr ptr;
+		unsafe public static int AMDeviceStartService(ref AMDevice device, string service_name, ref afc_connection conn, void* unknown) {
 			int ret;
 
-			ptr = IntPtr.Zero;
+			void* ptr = null;
 			ret = AMDeviceStartService(ref device, StringToCFString(service_name), ref ptr, unknown);
-			if ((ret == 0) && (ptr != IntPtr.Zero)) {
-				conn = (afc_connection)Marshal.PtrToStructure(ptr, conn.GetType());
+			if ((ret == 0) && (ptr != null)) {
+				conn = (afc_connection)Marshal.PtrToStructure(new IntPtr(ptr), conn.GetType());
 			}
 			return ret;
 		}
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AMDeviceStartService(ref AMDevice device, byte[] service_name, ref IntPtr handle, IntPtr unknown);
+		unsafe public extern static int AMDeviceStartService(ref AMDevice device, byte[] service_name, ref void* handle, void* unknown);
 
-		public static int AFCConnectionOpen(IntPtr handle, uint io_timeout, ref afc_connection conn) {
-			IntPtr ptr = IntPtr.Zero;
+		unsafe public static int AFCConnectionOpen(void* handle, uint io_timeout, ref afc_connection conn) {
+			void* ptr = null;
 			int ret = AFCConnectionOpen(handle, io_timeout, ref ptr);
-			if ((ret == 0) && (ptr != IntPtr.Zero)) {
-				conn = (afc_connection)Marshal.PtrToStructure(ptr, conn.GetType());
+			if ((ret == 0) && (ptr != null)) {
+				conn = (afc_connection)Marshal.PtrToStructure(new IntPtr(ptr), conn.GetType());
 			}
 			return ret;
 		}
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCConnectionOpen(IntPtr handle, uint io_timeout, ref IntPtr conn);
+		unsafe public extern static int AFCConnectionOpen(void* handle, uint io_timeout, ref void* conn);
 
 		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AFCConnectionIsValid(IntPtr conn);
+		unsafe public extern static int AFCConnectionIsValid(void* conn);
 
 		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AFCConnectionInvalidate(IntPtr conn);
+		unsafe public extern static int AFCConnectionInvalidate(void* conn);
 
 		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AFCConnectionClose(IntPtr conn);
+		unsafe public extern static int AFCConnectionClose(void* conn);
 
 		public static string AMDeviceCopyValue(ref AMDevice device, uint unknown, string name) {
 			IntPtr	result;
@@ -300,48 +298,48 @@ namespace Manzana
 		public extern static IntPtr AMDeviceCopyValue_Int(ref AMDevice device, uint unknown, byte[] cfstring);
 
         [DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AFCFileInfoOpen(IntPtr conn, string path, ref IntPtr dict);
+        unsafe public extern static int AFCFileInfoOpen(void* conn, string path, ref void* dict);
 
 		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AFCKeyValueRead(IntPtr dict, out string key, out string val);
+		unsafe public extern static int AFCKeyValueRead(void* dict, out void* key, out void* val);
 
 		[DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AFCKeyValueClose(IntPtr dict);
+		unsafe public extern static int AFCKeyValueClose(void* dict);
 
         [DllImport(DLLPath, CallingConvention = CallingConvention.Cdecl)]
-		public extern static int AFCRemovePath(IntPtr conn, string path);
+		unsafe public extern static int AFCRemovePath(void* conn, string path);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCRenamePath(IntPtr conn, string old_path, string new_path);
+		unsafe public extern static int AFCRenamePath(void* conn, string old_path, string new_path);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCFileRefOpen(IntPtr conn, string path, int mode, int unknown, out Int64 handle);
+		unsafe public extern static int AFCFileRefOpen(void* conn, string path, int mode, int unknown, out Int64 handle);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCFileRefClose(IntPtr conn, Int64 handle);
+		unsafe public extern static int AFCFileRefClose(void* conn, Int64 handle);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCFileRefRead(IntPtr conn, Int64 handle, byte[] buffer, ref uint len);
+		unsafe public extern static int AFCFileRefRead(void* conn, Int64 handle, byte[] buffer, ref uint len);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCFileRefWrite(IntPtr conn, Int64 handle, byte[] buffer, uint len);
+		unsafe public extern static int AFCFileRefWrite(void* conn, Int64 handle, byte[] buffer, uint len);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCFlushData(IntPtr conn, Int64 handle);
+		unsafe public extern static int AFCFlushData(void* conn, Int64 handle);
 
 		// FIXME - not working, arguments? Always returns 7
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCFileRefSeek(IntPtr conn, Int64 handle, uint pos, uint origin);
+		unsafe public extern static int AFCFileRefSeek(void* conn, Int64 handle, uint pos, uint origin);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCFileRefTell(IntPtr conn, Int64 handle, ref uint position);
+		unsafe public extern static int AFCFileRefTell(void* conn, Int64 handle, ref uint position);
 
 		// FIXME - not working, arguments?
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCFileRefSetFileSize(IntPtr conn, Int64 handle, uint size);
+		unsafe public extern static int AFCFileRefSetFileSize(void* conn, Int64 handle, uint size);
 
 		[DllImport(DLLPath, CallingConvention=CallingConvention.Cdecl)]
-		public extern static int AFCDirectoryCreate(IntPtr conn, string path);
+		unsafe public extern static int AFCDirectoryCreate(void* conn, string path);
 
 
 		internal static byte[] StringToCFString(string value) {

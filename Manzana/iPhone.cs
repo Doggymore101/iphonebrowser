@@ -51,8 +51,8 @@ namespace Manzana
 		private DeviceRestoreNotificationCallback	drn4;
 
 		internal AMDevice iPhoneHandle;
-		internal IntPtr		hAFC;
-		internal IntPtr hService;
+		unsafe internal void* hAFC;
+		unsafe internal void* hService;
 		private bool		connected;
 		private string		current_directory;
         private bool wasAFC2 = false;
@@ -132,7 +132,7 @@ namespace Manzana
 		/// <summary>
 		/// Returns the handle to the iPhone com.apple.afc service
 		/// </summary>
-		public IntPtr AFCHandle {
+		unsafe public void* AFCHandle {
 			get {
 				return this.hAFC;
 			}
@@ -272,14 +272,14 @@ namespace Manzana
 		/// </summary>
 		/// <param name="path">The directory from which to retrieve the files.</param>
 		/// <returns>A <c>String</c> array of file names in the specified directory. Names are relative to the provided directory</returns>
-		public string[] GetFiles(string path) {
+		unsafe public string[] GetFiles(string path) {
 			if (!connected) {
 				throw new Exception("Not connected to phone");
 			}
 
 			string full_path = FullPath(current_directory, path);
 
-			IntPtr hAFCDir = IntPtr.Zero;
+			void* hAFCDir = null;
 			if (MobileDevice.AFCDirectoryOpen(hAFC, full_path, ref hAFCDir) != 0) {
 				throw new Exception("Path does not exist");
 			}
@@ -302,14 +302,17 @@ namespace Manzana
         /// Returns the FileInfo dictionary
         /// </summary>
         /// <param name="path">The file or directory for which to retrieve information.</param>
-        public Dictionary<string,string> GetFileInfo(string path) {
+        unsafe public Dictionary<string,string> GetFileInfo(string path) {
             Dictionary<string, string> ans = new Dictionary<string,string>();
-            IntPtr data = IntPtr.Zero;
+            void* data = null;
 
 			int ret = MobileDevice.AFCFileInfoOpen(hAFC, path, ref data);
-			if (ret == 0) {
-				string name, value;
-				while (MobileDevice.AFCKeyValueRead(data, out name, out value) == 0 && name != null && value != null) {
+			if (ret == 0 && data != null) {
+                void* pname, pvalue;
+
+				while (MobileDevice.AFCKeyValueRead(data, out pname, out pvalue) == 0 && pname != null && pvalue != null) {
+                    string name = Marshal.PtrToStringAnsi(new IntPtr(pname));
+                    string value = Marshal.PtrToStringAnsi(new IntPtr(pvalue));
 					ans.Add(name, value);
 				}
 
@@ -335,7 +338,7 @@ namespace Manzana
 		/// <param name="path">The file or directory for which to retrieve information.</param>
 		/// <param name="size">Returns the size of the specified file or directory</param>
 		/// <param name="directory">Returns <c>true</c> if the given path describes a directory, false if it is a file.</param>
-		public void GetFileInfo(string path, out ulong size, out bool directory) {
+		unsafe public void GetFileInfo(string path, out ulong size, out bool directory) {
 			Dictionary<string, string> fi = GetFileInfo(path);
 
 			if (fi.ContainsKey("st_size")) {
@@ -354,7 +357,7 @@ namespace Manzana
 			}
 
 			if (SLink) { // test for symbolic directory link
-				IntPtr hAFCDir = IntPtr.Zero;
+				void* hAFCDir = null;
 
 				if (directory = (MobileDevice.AFCDirectoryOpen(hAFC, path, ref hAFCDir) == 0))
 					MobileDevice.AFCDirectoryClose(hAFC, hAFCDir);
@@ -379,7 +382,7 @@ namespace Manzana
 		/// </summary>
 		/// <param name="path">The directory path to create</param>
 		/// <returns>true if directory was created</returns>
-		public bool CreateDirectory(string path) {
+		unsafe public bool CreateDirectory(string path) {
 			string full_path;
 
 			full_path = FullPath(current_directory, path);
@@ -395,8 +398,7 @@ namespace Manzana
 		/// </summary>
 		/// <param name="path">The path for which an array of subdirectory names is returned.</param>
 		/// <returns>An array of type <c>String</c> containing the names of subdirectories in <c>path</c>.</returns>
-		public string[] GetDirectories(string path) {
-			IntPtr hAFCDir;
+		unsafe public string[] GetDirectories(string path) {
 			string buffer;
 			ArrayList paths;
 			string full_path;
@@ -405,7 +407,7 @@ namespace Manzana
 				throw new Exception("Not connected to phone");
 			}
 
-			hAFCDir = new IntPtr();
+			void* hAFCDir = null;
 			full_path = FullPath(current_directory, path);
 
 			if (MobileDevice.AFCDirectoryOpen(hAFC, full_path, ref hAFCDir) != 0) {
@@ -432,7 +434,7 @@ namespace Manzana
 		/// <param name="sourceName">The path of the file or directory to move or rename.</param>
 		/// <param name="destName">The path to the new location for <c>sourceName</c>.</param>
 		///	<remarks>Files cannot be moved across filesystem boundaries.</remarks>
-		public bool Rename(string sourceName, string destName) {
+		unsafe public bool Rename(string sourceName, string destName) {
 			return MobileDevice.AFCRenamePath(hAFC, FullPath(current_directory, sourceName), FullPath(current_directory, destName)) == 0;
 		}
 
@@ -459,8 +461,8 @@ namespace Manzana
 		/// </summary>
 		/// <param name="path">The path to test.</param>
 		/// <returns><c>true</c> if path refers to an existing file or directory, otherwise <c>false</c>.</returns>
-		public bool Exists(string path) {
-			IntPtr data = IntPtr.Zero;
+		unsafe public bool Exists(string path) {
+			void* data = null;
 
 			int ret = MobileDevice.AFCFileInfoOpen(hAFC, path, ref data);
 			if (ret == 0)
@@ -504,7 +506,7 @@ namespace Manzana
 		/// Deletes an empty directory from a specified path.
 		/// </summary>
 		/// <param name="path">The name of the empty directory to remove. This directory must be writable and empty.</param>
-		public void DeleteDirectory(string path) {
+		unsafe public void DeleteDirectory(string path) {
 			string full_path;
 
 			full_path = FullPath(current_directory, path);
@@ -537,7 +539,7 @@ namespace Manzana
 		/// Deletes the specified file.
 		/// </summary>
 		/// <param name="path">The name of the file to remove.</param>
-		public void DeleteFile(string path) {
+		unsafe public void DeleteFile(string path) {
 			string full_path;
 
 			full_path = FullPath(current_directory, path);
@@ -574,7 +576,7 @@ namespace Manzana
 		/// Close and Reopen AFC Connection
 		/// </summary>
 		/// <returns>status from reopen</returns>
-		public void ReConnect() {
+		unsafe public void ReConnect() {
 			int ans = MobileDevice.AFCConnectionClose(hAFC);
 			ans = MobileDevice.AMDeviceStopSession(ref iPhoneHandle);
 			ans = MobileDevice.AMDeviceDisconnect(ref iPhoneHandle);
@@ -583,7 +585,7 @@ namespace Manzana
 		#endregion // public Methods
 
 		#region Private Methods
-		private bool ConnectToPhone() {
+		unsafe private bool ConnectToPhone() {
 			if (MobileDevice.AMDeviceConnect(ref iPhoneHandle) == 1) {
 				//int connid;
 
@@ -604,8 +606,8 @@ namespace Manzana
 				return false;
 			}
 
-            if (MobileDevice.AMDeviceStartService(ref iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc2"), ref hService, IntPtr.Zero) != 0) {
-                if (MobileDevice.AMDeviceStartService(ref iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc"), ref hService, IntPtr.Zero) != 0) {
+            if (MobileDevice.AMDeviceStartService(ref iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc2"), ref hService, null) != 0) {
+                if (MobileDevice.AMDeviceStartService(ref iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc"), ref hService, null) != 0) {
                     return false;
                 }
             }
