@@ -4,7 +4,7 @@
 = Introduction =
 From the what's new.txt file - history of changes to iPhoneBrowser.
 
-Follow me on Twitter: @NetMage
+Follow me on Twitter: @!NetMage
 
 = Details =
 Future Versions	??/??/2009	Pete Wilson
