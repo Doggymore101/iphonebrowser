@@ -1,12 +1,11 @@
 #summary Change Log for iPhoneBrowser
 #labels Featured
 
-= Introduction =
-From the what's new.txt file - history of changes to iPhoneBrowser.
+== Introduction ==
+  * From the what's new.txt file - history of changes to iPhoneBrowser.
+  * Follow me on Twitter: @!NetMage
 
-Follow me on Twitter: @!NetMage
-
-= Details =
+== Timeline ==
 Future Versions	??/??/2009	Pete Wilson
   * conversion to standard PNG creates correct CRC
   * conversion to iPhone PNG (does not premultiply alpha)
@@ -38,7 +37,7 @@ v1.81   9/15/08 Pete Wilson
   * forked Manzana to distribute changes
   
 v1.80   9/11/08 Pete Wilson
-  * detect symbolic links to directories and handle properly
+  * detect symbolic links to directories and work around
   * change to work with iTunes 8.x - may not work with iTunes 7.x
 
 v1.70   7/30/08 Pete Wilson
@@ -115,16 +114,17 @@ v1.3	9/13/2007	Pete Wilson
   * improved context menu handling
   * replaced some alerts with status updates
   * added warning icon and beep to status warnings
-  * added drag and drop of directories to the iPhone   * add eBooks and apps easily
+  * added drag and drop of directories to the iPhone
+    * add eBooks and apps easily
 
 V1.2	8/19/2007	Kevin Hightower
--Added 'Go To Location' feature that automatically selects common locations
--Added preview of audio files using quicktime plugin
--Added creation and deletion of folders (empty ones only)
--Corrected and optimized UI for speed and clarity
+  * Added 'Go To Location' feature that automatically selects common locations
+  * Added preview of audio files using quicktime plugin
+  * Added creation and deletion of folders (empty ones only)
+  * Corrected and optimized UI for speed and clarity
 
 V1.1	8/7/2007 	Kevin Hightower
-  * Added some loggin during startup and extra support for older machines
+  * Added some logging during startup and extra support for older machines
 
 V1.0 	8/5/2007 	Kevin Hightower
   * Initial release
