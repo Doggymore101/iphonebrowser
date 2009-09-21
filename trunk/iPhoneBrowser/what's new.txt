@@ -1,3 +1,5 @@
+Follow me on Twitter: @NetMage
+
 Future Versions	??/??/2009	Pete Wilson
   * conversion to standard PNG creates correct CRC
   * conversion to iPhone PNG (does not premultiply alpha)
@@ -8,9 +10,18 @@ Future Versions	??/??/2009	Pete Wilson
   * edit plists
   * Modify delete confirmation to have backup checkbox and All button
   
+v1.9.3 9/21/09 Pete Wilson
+  * Compatibility with iTunes 9 thanks to Lavarsicious
+  * Uses Apple Registry entries to locate useful DLL's thanks to Lavarsicious
+  * Ignore exception when program closed while starting thanks to Lavarsicious
+
+v1.9.2 7/22/09 Pete Wilson
+  * Preview .css and .js files as text files
+  
 v1.9.1 6/17/09 Pete Wilson
-  * Modified Manzana interface to prevent .Net peering too deeply into iTunes DLL structures
-    * Fixes issues with execution on Windows 7 (tested) and hopefully Vista
+   * Modified Manzana interface to prevent .Net peering too deeply into iTunes DLL structures
+   * Fixes issues with execution on Windows 7 (tested) and hopefully Vista
+   * Disappointing that XP misses so many memory issues
   
 v1.90  6/12/09 Pete Wilson
   * Improved compatiblity with iTunes 8.2

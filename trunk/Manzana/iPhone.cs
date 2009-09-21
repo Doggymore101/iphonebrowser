@@ -37,8 +37,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Manzana
-{
+namespace Manzana {
 	/// <summary>
 	/// Exposes access to the Apple iPhone
 	/// </summary>
@@ -107,7 +106,7 @@ namespace Manzana
 		/// </summary>
 		unsafe public string ActivationState {
 			get {
-				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, 0, "ActivationState");
+				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "ActivationState");
 			}
 		}
 
@@ -126,6 +125,41 @@ namespace Manzana
 		unsafe public void* Device {
 			get {
 				return iPhoneHandle;
+			}
+		}
+
+		///<summary>
+		/// Returns the 40-character UUID of the device
+		///</summary>
+		unsafe public string DeviceId {
+			get {
+				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "UniqueDeviceID");
+			}
+		}
+
+		///<summary>
+		/// Returns the type of the device, should be either 'iPhone' or 'iPod'.
+		///</summary>
+		unsafe public string DeviceType {
+			get {
+				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "DeviceClass");
+			}
+		}
+
+		///<summary>
+		/// Returns the current OS version running on the device (2.0, 2.2, 3.0, 3.1, etc).
+		///</summary>
+		unsafe public string DeviceVersion {
+			get {
+				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "ProductVersion");
+			}
+		}
+		///<summary>
+		/// Returns the name of the device, like "Dan's iPhone"
+		///</summary>
+		unsafe public string DeviceName {
+			get {
+				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "DeviceName");
 			}
 		}
 
@@ -156,7 +190,11 @@ namespace Manzana
 			}
 
 			set {
-				current_directory = value;
+				string new_path = FullPath(current_directory, value);
+				if (!IsDirectory(new_path)) {
+					throw new Exception("Invalid directory specified");
+				}
+				current_directory = new_path;
 			}
 		}
 		#endregion	// Properties
@@ -273,11 +311,11 @@ namespace Manzana
 		/// <param name="path">The directory from which to retrieve the files.</param>
 		/// <returns>A <c>String</c> array of file names in the specified directory. Names are relative to the provided directory</returns>
 		unsafe public string[] GetFiles(string path) {
-			if (!connected) {
+			if (!IsConnected) {
 				throw new Exception("Not connected to phone");
 			}
 
-			string full_path = FullPath(current_directory, path);
+			string full_path = FullPath(CurrentDirectory, path);
 
 			void* hAFCDir = null;
 			if (MobileDevice.AFCDirectoryOpen(hAFC, full_path, ref hAFCDir) != 0) {
@@ -341,11 +379,7 @@ namespace Manzana
 		unsafe public void GetFileInfo(string path, out ulong size, out bool directory) {
 			Dictionary<string, string> fi = GetFileInfo(path);
 
-			if (fi.ContainsKey("st_size")) {
-				size = System.UInt64.Parse(fi["st_size"]);
-			}
-			else
-				size = 0;
+			size = fi.ContainsKey("st_size") ? System.UInt64.Parse(fi["st_size"]) : 0;
 
 			bool SLink = false;
 			directory = false;
@@ -383,14 +417,7 @@ namespace Manzana
 		/// <param name="path">The directory path to create</param>
 		/// <returns>true if directory was created</returns>
 		unsafe public bool CreateDirectory(string path) {
-			string full_path;
-
-			full_path = FullPath(current_directory, path);
-			if (MobileDevice.AFCDirectoryCreate(hAFC, full_path) != 0) {
-				return false;
-			}
-
-			return true;
+			return !(MobileDevice.AFCDirectoryCreate(hAFC, FullPath(CurrentDirectory, path)) != 0);
 		}
 
 		/// <summary>
@@ -399,23 +426,21 @@ namespace Manzana
 		/// <param name="path">The path for which an array of subdirectory names is returned.</param>
 		/// <returns>An array of type <c>String</c> containing the names of subdirectories in <c>path</c>.</returns>
 		unsafe public string[] GetDirectories(string path) {
-			string buffer;
-			ArrayList paths;
-			string full_path;
-
-			if (!connected) {
+			if (!IsConnected) {
 				throw new Exception("Not connected to phone");
 			}
 
 			void* hAFCDir = null;
-			full_path = FullPath(current_directory, path);
+			string full_path = FullPath(CurrentDirectory, path);
+			//full_path = "/private"; // bug test
 
-			if (MobileDevice.AFCDirectoryOpen(hAFC, full_path, ref hAFCDir) != 0) {
-				throw new Exception("Path does not exist");
+			int res = MobileDevice.AFCDirectoryOpen(hAFC, full_path, ref hAFCDir);
+			if (res != 0) {
+				throw new Exception("Path does not exist: " + res.ToString());
 			}
 
-			buffer = null;
-			paths = new ArrayList();
+			string buffer = null;
+			ArrayList paths = new ArrayList();
 			MobileDevice.AFCDirectoryRead(hAFC, hAFCDir, ref buffer);
 
 			while (buffer!=null) {
@@ -435,7 +460,7 @@ namespace Manzana
 		/// <param name="destName">The path to the new location for <c>sourceName</c>.</param>
 		///	<remarks>Files cannot be moved across filesystem boundaries.</remarks>
 		unsafe public bool Rename(string sourceName, string destName) {
-			return MobileDevice.AFCRenamePath(hAFC, FullPath(current_directory, sourceName), FullPath(current_directory, destName)) == 0;
+			return MobileDevice.AFCRenamePath(hAFC, FullPath(CurrentDirectory, sourceName), FullPath(CurrentDirectory, destName)) == 0;
 		}
 
 		/// <summary>
@@ -507,9 +532,7 @@ namespace Manzana
 		/// </summary>
 		/// <param name="path">The name of the empty directory to remove. This directory must be writable and empty.</param>
 		unsafe public void DeleteDirectory(string path) {
-			string full_path;
-
-			full_path = FullPath(current_directory, path);
+			string full_path = FullPath(CurrentDirectory, path);
 			if (IsDirectory(full_path)) {
 				MobileDevice.AFCRemovePath(hAFC, full_path);
 			}
@@ -521,14 +544,12 @@ namespace Manzana
 		/// <param name="path">The name of the directory to remove.</param>
 		/// <param name="recursive"><c>true</c> to remove directories, subdirectories, and files in path; otherwise, <c>false</c>. </param>
 		public void DeleteDirectory(string path, bool recursive) {
-			string full_path;
-
 			if (!recursive) {
 				DeleteDirectory(path);
 				return;
 			}
 
-			full_path = FullPath(current_directory, path);
+			string full_path = FullPath(CurrentDirectory, path);
 			if (IsDirectory(full_path)) {
 				InternalDeleteDirectory(path);
 			}
@@ -540,34 +561,10 @@ namespace Manzana
 		/// </summary>
 		/// <param name="path">The name of the file to remove.</param>
 		unsafe public void DeleteFile(string path) {
-			string full_path;
-
-			full_path = FullPath(current_directory, path);
+			string full_path = FullPath(CurrentDirectory, path);
 			if (Exists(full_path)) {
 				MobileDevice.AFCRemovePath(hAFC, full_path);
 			}
-		}
-
-		/// <summary>
-		/// Gets the current working directory of the object. 
-		/// </summary>
-		/// <returns>A <c>string</c> containing the path of the current working directory. </returns>
-		public string GetCurrentDirectory() {
-			return current_directory;
-		}
-
-		/// <summary>
-		/// Sets the application's current working directory to the specified directory.
-		/// </summary>
-		/// <param name="path">The path to which the current working directory should be set.</param>
-		public void SetCurrentDirectory(string path) {
-			string new_path;
-
-			new_path = FullPath(current_directory, path);
-			if (!IsDirectory(new_path)) {
-				throw new Exception("Invalid directory specified");
-			}
-			current_directory = new_path;
 		}
 		#endregion	// Filesystem
 
@@ -606,8 +603,8 @@ namespace Manzana
 				return false;
 			}
 
-            if (MobileDevice.AMDeviceStartService(iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc2"), ref hService, null) != 0) {
-                if (MobileDevice.AMDeviceStartService(iPhoneHandle, MobileDevice.StringToCFString("com.apple.afc"), ref hService, null) != 0) {
+            if (MobileDevice.AMDeviceStartService(iPhoneHandle, MobileDevice.CFStringMakeConstantString("com.apple.afc2"), ref hService, null) != 0) {
+                if (MobileDevice.AMDeviceStartService(iPhoneHandle, MobileDevice.CFStringMakeConstantString("com.apple.afc"), ref hService, null) != 0) {
                     return false;
                 }
             }
@@ -628,7 +625,8 @@ namespace Manzana
 				if (ConnectToPhone()) {
 					OnConnect(new ConnectEventArgs(callback));
 				}
-			} else if (callback.msg == NotificationMessage.Disconnected) {
+			}
+			else if (callback.msg == NotificationMessage.Disconnected) {
 				connected = false;
 				OnDisconnect(new ConnectEventArgs(callback));
 			}
@@ -651,11 +649,8 @@ namespace Manzana
 		}
 
 		private void InternalDeleteDirectory(string path) {
-			string full_path;
-			string[] contents;
-
-			full_path = FullPath(current_directory, path);
-			contents = GetFiles(path);
+			string full_path = FullPath(CurrentDirectory, path);
+			string[] contents = GetFiles(path);
 			for (int i = 0; i < contents.Length; i++) {
 				DeleteFile(full_path + "/" + contents[i]);
 			}
@@ -670,9 +665,6 @@ namespace Manzana
 
 		static char[] path_separators = { '/' };
 		internal string FullPath(string path1, string path2) {
-			string[]		path_parts;
-			string[]		result_parts;
-			int				target_index;
 
 			if ((path1 == null) || (path1 == String.Empty)) {
 				path1 = "/";
@@ -682,6 +674,7 @@ namespace Manzana
 				path2 = "/";
 			}
 
+			string[] path_parts;
 			if (path2[0] == '/') {
 				path_parts = path2.Split(path_separators);
 			} else if (path1[0] == '/') {
@@ -689,8 +682,9 @@ namespace Manzana
 			} else {
 				path_parts = ("/" + path1 + "/" + path2).Split(path_separators);
 			}
-			result_parts = new string[path_parts.Length];
-			target_index = 0;
+
+			string[] result_parts = new string[path_parts.Length];
+			int target_index = 0;
 
 			for (int i = 0; i < path_parts.Length; i++) {
 				if (path_parts[i] == "..") {

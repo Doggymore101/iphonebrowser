@@ -13,7 +13,7 @@
     <MyType>WindowsForms</MyType>
     <ManifestCertificateThumbprint>3B6A9B7BDDC8B690F46905E315ED5CFD599D2B50</ManifestCertificateThumbprint>
     <ManifestKeyFile>iPhoneBrowser_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>Resources\iPhoneBrowser.ico</ApplicationIcon>
@@ -34,6 +34,7 @@
     <PublisherName>Kevin Hightower</PublisherName>
     <ApplicationVersion>1.3.0.%2a</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,6 +64,7 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
@@ -181,6 +183,7 @@
     <Content Include="Resources\iPhoneBrowser.ico" />
     <Content Include="what%27s new.txt" />
     <None Include="app.config" />
+    <BaseApplicationManifest Include="My Project\app.manifest" />
     <None Include="Resources\warning.ico" />
   </ItemGroup>
   <ItemGroup>

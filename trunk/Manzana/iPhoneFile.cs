@@ -35,8 +35,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Manzana
-{
+namespace Manzana {
 	/// <summary>
 	/// Exposes a stream to a file on an iPhone, supporting both synchronous and asynchronous read and write operations
 	/// </summary>
@@ -240,7 +239,7 @@ namespace Manzana
 				case FileAccess.ReadWrite: throw new NotImplementedException("Read+Write not (yet) implemented");
 			}
 
-			full_path = phone.FullPath(phone.GetCurrentDirectory(), path);
+			full_path = phone.FullPath(phone.CurrentDirectory, path);
 			ret = MobileDevice.AFCFileRefOpen(phone.AFCHandle, full_path, (int)mode, 0, out handle);
 			if (ret != 0) {
 				phone.ReConnect();

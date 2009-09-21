@@ -25,7 +25,6 @@ Public Class frmMain
 
     Private iPhoneInterface As iPhone
 
-    Private txtSerial As String
     Private bNowConnected As Boolean = False
     Private bConnectionChanged As Boolean = False
     Private bUpdateInProgress As Boolean = False
@@ -88,23 +87,27 @@ Public Class frmMain
 
     Public Sub iPhoneConnected_Details() Handles Me.iPhoneConnected
         If Not bNowConnected Then
-            txtSerial = "" ' get serial of device somehow???
-            If Me.InvokeRequired Then
-                Me.Invoke(New NoParmDel(AddressOf DelayedConnectionChange))
-            Else
-                DelayedConnectionChange()
-            End If
+            Try
+                If Me.InvokeRequired Then
+                    Me.Invoke(New NoParmDel(AddressOf DelayedConnectionChange))
+                Else
+                    DelayedConnectionChange()
+                End If
+            Catch
+            End Try
         End If
     End Sub
 
     Public Sub iPhoneDisconnected_Details() Handles Me.iPhoneDisconnected
         If bNowConnected Then
-            txtSerial = ""
-            If Me.InvokeRequired Then
-                Me.Invoke(New NoParmDel(AddressOf DelayedConnectionChange))
-            Else
-                DelayedConnectionChange()
-            End If
+            Try
+                If Me.InvokeRequired Then
+                    Me.Invoke(New NoParmDel(AddressOf DelayedConnectionChange))
+                Else
+                    DelayedConnectionChange()
+                End If
+            Catch
+            End Try
         End If
     End Sub
 
@@ -133,16 +136,21 @@ Public Class frmMain
                 refreshFolders()
                 trvFolders.Focus()
 
+                ' build the status text
+                Dim deviceName As String = iPhoneInterface.DeviceName
+                deviceName = IIf(String.IsNullOrEmpty(deviceName), String.Empty, " (" & deviceName & ")")
+                Dim devStatus As String = String.Format("{0} {1}{2} is connected" & IIf(iPhoneInterface.IsJailbreak, " and jailbroken.", ", not jailbroken (no afc2 service found)"), iPhoneInterface.DeviceType, iPhoneInterface.DeviceVersion, deviceName)
+
                 If iPhoneInterface.IsJailbreak Then
-                    StatusNormal("iPhone is connected and jailbroken")
+                    StatusNormal(devStatus)
                     If iPhoneInterface.Exists("/var/root/Media/DCIM") Then
                         tildeDir = "/var/root"
                     End If
                 Else
-                    StatusWarning("iPhone is connected, not jailbroken (no afc2 service found)")
+                    StatusWarning(devStatus)
                 End If
             Else
-                StatusWarning("iPhone is NOT connected, please check your connections!")
+                StatusWarning("Device is NOT connected, please check your connections!")
             End If
 
         End If
@@ -328,7 +336,7 @@ Public Class frmMain
         Select Case sExt
             Case "png", "jpg", "jpeg", "gif"
                 iReturn = IMAGE_FILE_IMAGE
-            Case "strings", "conf", "txt", "plist", "script", "html"
+            Case "strings", "conf", "txt", "plist", "script", "html", "css", "js"
                 iReturn = IMAGE_FILE_TEXT
             Case "db", "sqlite"
                 iReturn = IMAGE_FILE_DATABASE
@@ -386,7 +394,12 @@ Public Class frmMain
         trvFolders.Nodes.Add(rootNode)
         incrementStatus()
 
-        addFolders("", rootNode)
+        Try
+            addFolders("", rootNode)
+        Catch ex As Exception
+            ' ignore all exceptions
+            Exit Try
+        End Try
         incrementStatus()
 
         rootNode.Expand()
@@ -946,7 +959,7 @@ ErrorHandler:
     End Sub
 
     Private Sub trvFolders_BeforeCollapse(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles trvFolders.BeforeCollapse
-        isCollapsing = True
+        IsCollapsing = True
     End Sub
 
     Private Sub trvFolders_AfterCollapse(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles trvFolders.AfterCollapse
@@ -958,7 +971,11 @@ ErrorHandler:
         If Not IsCollapsing And Not trvFolders.SelectedNode.IsExpanded() Then
             trvFolders.SelectedNode.Expand()
         End If
-        loadFiles()
+        Try
+            loadFiles()
+        Catch ' ignore all errors
+            Exit Try
+        End Try
     End Sub
 
     Private Sub lstFiles_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lstFiles.DragDrop
