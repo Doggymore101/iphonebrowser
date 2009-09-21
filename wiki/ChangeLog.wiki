@@ -15,6 +15,14 @@ Future Versions	??/??/2009	Pete Wilson
   * convert binary plists to text and back
   * edit plists
   * Modify delete confirmation to have backup checkbox and All button
+
+v1.9.3 9/21/09 Pete Wilson
+  * Compatibility with iTunes 9 thanks to Lavarsicious
+  * Uses Apple Registry entries to locate useful DLL's thanks to Lavarsicious
+  * Ignore exception when program closed while starting thanks to Lavarsicious
+
+v1.9.2 7/22/09 Pete Wilson
+  * Preview .css and .js files as text files
   
 v1.91  6/18/09 Pete Wilson
   * Modified Manzana interface to prevent .Net peering too deeply into iTunes DLL structures
